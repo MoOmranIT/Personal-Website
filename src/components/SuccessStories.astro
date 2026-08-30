@@ -1,0 +1,280 @@
+---
+const stories = [
+  {
+    id: 'Case Study 01',
+    title: 'Retail Group — UAE',
+    headline: '+42% Revenue in 9 Months',
+    description: "We redesigned the brand's growth strategy and marketing funnel, resulting in a 42% revenue increase and a fully retrained sales team within nine months.",
+    image: 'https://images.pexels.com/photos/7876706/pexels-photo-7876706.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Retail brand strategic repositioning success story'
+  },
+  {
+    id: 'Case Study 02',
+    title: 'Tech Startup — Dubai',
+    headline: 'From Idea to Series A',
+    description: 'Guided founders through positioning, go-to-market strategy and investor readiness — securing funding within one year of engagement.',
+    image: 'https://images.pexels.com/photos/7793179/pexels-photo-7793179.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Tech startup scaling success story'
+  },
+  {
+    id: 'Case Study 03',
+    title: 'Government Entity',
+    headline: 'Modernized Public Strategy',
+    description: 'Designed an organizational development framework that improved operational performance by over 20% across departments.',
+    image: 'https://images.pexels.com/photos/7793176/pexels-photo-7793176.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Government entity development strategy success story'
+  },
+  {
+    id: 'Case Study 04',
+    title: 'Manufacturing Co.',
+    headline: 'A Phoenix Turnaround',
+    description: "Rebuilt a struggling manufacturer's strategy from the ground up, restoring profitability within 12 months.",
+    image: 'https://images.pexels.com/photos/4872027/pexels-photo-4872027.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Manufacturing company turnaround success story'
+  },
+  {
+    id: 'Case Study 05',
+    title: 'Financial Services',
+    headline: '3x Qualified Leads',
+    description: 'Overhauled the digital marketing engine, tripling qualified leads and improving customer experience scores.',
+    image: 'https://images.pexels.com/photos/9304691/pexels-photo-9304691.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Financial services digital marketing success story'
+  },
+  {
+    id: 'Case Study 06',
+    title: 'Family Business Group',
+    headline: 'Regional Expansion Success',
+    description: 'Structured a scalable expansion strategy that took a family-owned business into three new Gulf markets.',
+    image: 'https://images.pexels.com/photos/8353839/pexels-photo-8353839.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
+    alt: 'Family business expansion success story'
+  }
+];
+---
+
+<section id="success" class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
+        Real Results
+      </span>
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        Success Stories
+      </h2>
+      <p class="text-slate-500 max-w-2xl mx-auto mt-6">
+        Hover over each card to reveal the story behind the results. Real partnerships, real transformation.
+      </p>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div
+        class="flip-card reveal delay-1 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[0].title + ' — ' + stories[0].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[0].image}
+              alt={stories[0].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[0].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[0].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[0].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[0].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flip-card reveal delay-2 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[1].title + ' — ' + stories[1].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[1].image}
+              alt={stories[1].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[1].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[1].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[1].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[1].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flip-card reveal delay-3 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[2].title + ' — ' + stories[2].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[2].image}
+              alt={stories[2].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[2].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[2].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[2].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[2].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flip-card reveal delay-4 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[3].title + ' — ' + stories[3].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[3].image}
+              alt={stories[3].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[3].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[3].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[3].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[3].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flip-card reveal delay-5 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[4].title + ' — ' + stories[4].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[4].image}
+              alt={stories[4].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[4].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[4].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[4].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[4].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flip-card reveal delay-6 cursor-pointer"
+        data-flipped="false"
+        role="button"
+        tabindex="0"
+        aria-label={stories[5].title + ' — ' + stories[5].headline}
+      >
+        <div class="flip-inner shadow-xl h-full">
+          <div class="flip-front relative h-full">
+            <img
+              src={stories[5].image}
+              alt={stories[5].alt}
+              width="700"
+              height="700"
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent flex items-end p-6">
+              <h3 class="text-white text-xl font-bold">
+                {stories[5].title}
+              </h3>
+            </div>
+          </div>
+          <div class="flip-back p-8 flex flex-col justify-between h-full">
+            <div>
+              <span class="gold text-xs uppercase tracking-widest">{stories[5].id}</span>
+              <h3 class="text-xl font-bold mt-2 mb-4">{stories[5].headline}</h3>
+              <p class="text-white/80 text-sm leading-relaxed">{stories[5].description}</p>
+            </div>
+            <a href="#contact" class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
+              Read More <span class="transition-transform duration-300 group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

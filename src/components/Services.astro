@@ -1,0 +1,83 @@
+---
+const services = [
+  {
+    id: '01',
+    title: 'Development',
+    heading: 'Grow Your Business',
+    description: 'We deliver specialized training for business development to elevate performance and achieve sustainable growth. Our focus is on strengthening managerial and marketing capabilities to secure the success of your projects in both local and global markets.',
+    points: [
+      'Executive management & leadership development',
+      'Digital marketing & brand positioning',
+      'Local and international market expansion'
+    ],
+    cta: 'Book a Session',
+    variant: 'light'
+  },
+  {
+    id: '02',
+    title: 'Transformation',
+    heading: 'Rise Like a Phoenix',
+    description: 'We analyze complex institutional challenges and design tailor-made strategic solutions to secure the continuity of your business. Don\'t miss the opportunity or waste another minute — the time to act is now.',
+    points: [
+      'Crisis management & institutional turnaround',
+      'Custom strategic roadmaps',
+      'Business continuity assurance'
+    ],
+    cta: 'Book a Session',
+    variant: 'dark'
+  }
+];
+---
+
+<section id="services" class="relative">
+  <div class="grid lg:grid-cols-2">
+    <div class="reveal-left bg-white px-8 sm:px-16 py-20 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-4">
+        {services[0].id} — {services[0].title}
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-navy mb-6 title-underline">
+        {services[0].heading}
+      </h2>
+      <p class="text-slate-600 text-lg leading-relaxed mb-8">
+        {services[0].description}
+      </p>
+      <ul class="space-y-4 mb-8">
+        {services[0].points.map((point) => (
+          <li class="flex items-start gap-3 group">
+            <span class="w-2 h-2 mt-2 rounded-full bg-navy shrink-0 transition-transform duration-300 group-hover:scale-150"></span>
+            <span class="text-slate-600 transition-colors duration-300 group-hover:text-navy">
+              {point}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <a href="#contact" class="btn-outline w-fit px-7 py-3.5 rounded-full font-semibold">
+        {services[0].cta}
+      </a>
+    </div>
+    <div class="reveal-right navy-grad px-8 sm:px-16 py-20 flex flex-col justify-center text-white">
+      <span class="text-xs uppercase tracking-[.3em] text-white/50 mb-4">
+        {services[1].id} — {services[1].title}
+      </span>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6">
+        Rise Like a <span class="gold">Phoenix</span>
+      </h2>
+      <p class="text-white/80 text-lg leading-relaxed mb-8">
+        {services[1].description}
+      </p>
+      <ul class="space-y-4 mb-8">
+        {services[1].points.map((point) => (
+          <li class="flex items-start gap-3 group">
+            <span class="w-2 h-2 mt-2 rounded-full bg-gold shrink-0 transition-transform duration-300 group-hover:scale-150"></span>
+            <span class="text-white/80 transition-colors duration-300 group-hover:text-white">
+              {point}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <a href="#contact" class="w-fit px-7 py-3.5 rounded-full font-semibold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 transition-all">
+        {services[1].cta}
+      </a>
+    </div>
+  </div>
+</section>

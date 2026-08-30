@@ -1,0 +1,53 @@
+---
+import { siteConfig } from '../scripts/siteConfig';
+---
+
+<header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
+    <a href="#home" class="flex items-center gap-3 group">
+      <span class="w-11 h-11 rounded-full navy-grad flex items-center justify-center text-white font-bold text-lg transition-transform duration-500 group-hover:rotate-6 group-hover:scale-105">
+        KM
+      </span>
+      <span class="leading-tight">
+        <span class="block font-serif text-lg font-bold text-navy tracking-wide">
+          {siteConfig.name}
+        </span>
+        <span class="block text-[11px] uppercase tracking-[.2em] text-slate-400">
+          Business Consultant — Dubai
+        </span>
+      </span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-9 font-medium text-sm text-slate-700" aria-label="Primary">
+      <a href="#home" data-active="true" class="nav-link hover:text-navy transition-colors">Home</a>
+      <a href="#about" data-active="false" class="nav-link hover:text-navy transition-colors">About Me</a>
+      <a href="#books" data-active="false" class="nav-link hover:text-navy transition-colors">My Books</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a href="#contact" class="hidden sm:inline-flex btn-navy btn-sheen px-6 py-3 rounded-full text-sm font-semibold">
+        Contact Me for Advice
+      </a>
+      <button
+        id="menu-toggle"
+        class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
+        aria-label="Open Menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="w-6 h-0.5 bg-navy transition-transform duration-300"></span>
+        <span class="w-6 h-0.5 bg-navy transition-opacity duration-300"></span>
+        <span class="w-6 h-0.5 bg-navy transition-transform duration-300"></span>
+      </button>
+    </div>
+  </div>
+  <div
+    id="mobile-menu"
+    class="lg:hidden overflow-hidden bg-white border-t border-slate-100 text-slate-700 font-medium transition-all duration-300 max-h-0 opacity-0"
+  >
+    <nav class="px-5 py-4 space-y-3" aria-label="Mobile">
+      <a href="#home" class="block py-2 hover:text-navy transition-colors">Home</a>
+      <a href="#about" class="block py-2 hover:text-navy transition-colors">About Me</a>
+      <a href="#books" class="block py-2 hover:text-navy transition-colors">My Books</a>
+      <a href="#contact" class="block py-2 text-navy font-semibold">Contact Me for Advice</a>
+    </nav>
+  </div>
+</header>

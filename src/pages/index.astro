@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import ScrollProgress from '../components/ScrollProgress.astro';
+import Hero from '../components/Hero.astro';
+import Services from '../components/Services.astro';
+import Audience from '../components/Audience.astro';
+import About from '../components/About.astro';
+import Books from '../components/Books.astro';
+import SuccessStories from '../components/SuccessStories.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+import BackToTop from '../components/BackToTop.astro';
+import { siteConfig } from '../scripts/siteConfig';
+---
+
+<BaseLayout>
+  <ScrollProgress />
+  <Header />
+  <main>
+    <Hero />
+    <Services />
+    <Audience />
+    <About />
+    <Books />
+    <SuccessStories />
+    <Contact />
+  </main>
+  <Footer />
+  <a
+    href={siteConfig.contact.whatsapp}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Chat on WhatsApp"
+    class="float-wa fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition-transform"
+  >
+    💬
+  </a>
+  <BackToTop />
+</BaseLayout>

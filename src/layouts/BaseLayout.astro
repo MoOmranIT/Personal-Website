@@ -1,0 +1,195 @@
+---
+import { siteConfig } from '../scripts/siteConfig';
+import '../styles/global.css';
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": siteConfig.url + "#person",
+      "name": siteConfig.name,
+      "jobTitle": "Business Consultant & Marketing Strategist",
+      "description": "PhD holder in Marketing and Consumer Behavior Specialist with 18+ years of experience in business development, strategic marketing and growth consulting based in Dubai, UAE.",
+      "url": siteConfig.url,
+      "image": "https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg",
+      "email": siteConfig.contact.email,
+      "telephone": siteConfig.contact.phone,
+      "sameAs": [
+        siteConfig.social.linkedin,
+        siteConfig.social.instagram,
+        siteConfig.social.twitter
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": siteConfig.name + " Consulting"
+      },
+      "alumniOf": "Marketing PhD Program",
+      "homeLocation": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dubai",
+          "addressCountry": "AE"
+        }
+      },
+      "knowsAbout": [
+        "Business Consulting",
+        "Strategic Marketing",
+        "Consumer Behavior",
+        "Growth Strategy",
+        "Digital Marketing",
+        "Executive Training"
+      ]
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": siteConfig.url + "#service",
+      "name": siteConfig.name + " — Business Consulting Services",
+      "image": "https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg",
+      "url": siteConfig.url,
+      "priceRange": "$$$",
+      "email": siteConfig.contact.email,
+      "telephone": siteConfig.contact.phone,
+      "founder": {
+        "@id": siteConfig.url + "#person"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Dubai",
+        "addressRegion": "Dubai",
+        "addressCountry": "AE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 25.2048,
+        "longitude": 55.2708
+      },
+      "areaServed": [
+        { "@type": "City", "name": "Dubai" },
+        { "@type": "City", "name": "Abu Dhabi" },
+        { "@type": "Country", "name": "United Arab Emirates" },
+        { "@type": "Place", "name": "Gulf Region" }
+      ],
+      "serviceType": [
+        "Business Consulting",
+        "Strategic Marketing",
+        "Growth Strategy",
+        "Executive Training"
+      ],
+      "description": "Strategic business consulting, marketing development and growth solutions for entrepreneurs, business owners and government entities.",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Consulting Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Grow Your Business",
+              "description": "Specialized training for business development to elevate performance and achieve sustainable growth, strengthening managerial and marketing capabilities."
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Rise Like a Phoenix",
+              "description": "Analysis of complex institutional challenges and tailor-made strategic solutions to secure business continuity."
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": siteConfig.url + "#website",
+      "url": siteConfig.url,
+      "name": siteConfig.name + " — Business Consultant",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": siteConfig.url + "#person"
+      }
+    }
+  ]
+};
+
+const professionalServiceLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": siteConfig.name,
+  "url": siteConfig.url,
+  "telephone": siteConfig.contact.phone,
+  "email": siteConfig.contact.email,
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Dubai",
+    "addressCountry": "AE"
+  }
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": siteConfig.name,
+  "url": siteConfig.url,
+  "description": siteConfig.description
+};
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  image = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200'
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="theme-color" content="#0b1c39" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content="business consultant Dubai, strategic consulting UAE, Dr Khaled Al Mohammad, marketing consultant Dubai, business development expert, growth strategy consultant, executive trainer UAE, consumer behavior specialist" />
+    <meta name="author" content={siteConfig.author} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="geo.region" content="AE-DU" />
+    <meta name="geo.placename" content="Dubai, United Arab Emirates" />
+    <meta name="geo.position" content="25.2048;55.2708" />
+    <meta name="ICBM" content="25.2048, 55.2708" />
+    <link rel="canonical" href={siteConfig.url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteConfig.url} />
+    <meta property="og:locale" content={siteConfig.locale} />
+    <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://images.pexels.com" />
+    <link rel="dns-prefetch" href="https://images.pexels.com" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(professionalServiceLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
+    <slot name="head" />
+  </head>
+  <body class="font-sans text-ink antialiased">
+    <slot />
+    <script type="module" src="/src/scripts/site.ts"></script>
+  </body>
+</html>
