@@ -139,12 +139,16 @@ const websiteLd = {
 interface Props {
   title?: string;
   description?: string;
+  ogDescription?: string;
+  twitterDescription?: string;
   image?: string;
 }
 
 const {
   title = siteConfig.title,
   description = siteConfig.description,
+  ogDescription = siteConfig.ogDescription,
+  twitterDescription = siteConfig.twitterDescription,
   image = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200'
 } = Astro.props;
 ---
@@ -167,7 +171,7 @@ const {
     <link rel="canonical" href={siteConfig.url} />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={siteConfig.url} />
     <meta property="og:locale" content={siteConfig.locale} />
     <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
@@ -175,7 +179,7 @@ const {
     <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={twitterDescription} />
     <meta name="twitter:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

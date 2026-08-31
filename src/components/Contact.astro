@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from '../scripts/siteConfig';
 
-const displayPhone = '+971 50 000 0000';
+const displayPhone = '+971 55 343 3150';
 ---
 
 <section id="contact" class="py-24 navy-grad text-white relative overflow-hidden">
@@ -20,6 +20,7 @@ const displayPhone = '+971 50 000 0000';
     </div>
     <div class="grid lg:grid-cols-5 gap-10">
       <form id="contact-form" class="lg:col-span-3 bg-white/5 backdrop-blur rounded-3xl p-8 sm:p-10 border border-white/10 reveal-left" novalidate>
+        <input id="cf-website" type="text" name="website" class="hidden" aria-hidden="true" tabindex="-1" autocomplete="off" />
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
             <label for="cf-name" class="text-sm text-white/70 mb-2 block">Full Name</label>
@@ -88,6 +89,7 @@ const displayPhone = '+971 50 000 0000';
         <button type="submit" class="mt-6 w-full sm:w-auto px-9 py-4 rounded-full font-bold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 active:translate-y-0 transition-all">
           Send My Request
         </button>
+        <p id="form-error" role="alert" class="mt-4 text-red-400 font-semibold transition-all duration-500 hidden opacity-0 translate-y-2"></p>
         <p id="form-success" role="status" class="mt-4 text-gold font-semibold transition-all duration-500 hidden opacity-0 translate-y-2">
           ✓ Thank you! Your request has been received — I will get back to you within 24 hours.
         </p>

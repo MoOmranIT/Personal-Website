@@ -176,9 +176,12 @@
     });
   });
 
-  // Contact form validation (no fake success)
+  // Contact form validation + submission
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-success');
+  const formError = document.getElementById('form-error');
+  const submitBtn = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
+  const apiUrl = (import.meta?.env?.PUBLIC_CONTACT_API_URL || '/api/contact').replace(/\/$/, '');
 
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
@@ -217,50 +220,69 @@
 
       if (!isValid) return;
 
-      // If a contact API URL is configured, submit to it
-      const apiUrl = import.meta?.env?.PUBLIC_CONTACT_API_URL;
-      if (apiUrl) {
-        const formData = new FormData(contactForm);
-        fetch(apiUrl, {
-          method: 'POST',
-          body: formData
-        })
-          .then((response) => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            showFormSuccess();
-          })
-          .catch(() => {
-            showFormError();
-          });
-      } else {
-        // No backend configured — do not fake success
-        showFormPending();
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
       }
+
+      const payload = {
+        name: name?.value.trim(),
+        email: email?.value.trim(),
+        phone: (document.getElementById('cf-phone') as HTMLInputElement | null)?.value.trim() || '',
+        role: (document.getElementById('cf-role') as HTMLSelectElement | null)?.value || '',
+        message: message?.value.trim(),
+        website: (document.getElementById('cf-website') as HTMLInputElement | null)?.value.trim() || ''
+      };
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(async (response) => {
+          const data = await response.json().catch(() => ({ error: 'Invalid server response.' }));
+          if (!response.ok) {
+            throw new Error(data.error || `Request failed with status ${response.status}`);
+          }
+          return data;
+        })
+        .then(() => {
+          showFormSuccess();
+          contactForm.reset();
+        })
+        .catch((err) => {
+          showFormError(err.message);
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send My Request';
+          }
+        });
     });
   }
 
   function showFormSuccess() {
+    if (formError) {
+      formError.classList.add('hidden', 'opacity-0', 'translate-y-2');
+      formError.classList.remove('opacity-100', 'translate-y-0');
+    }
     if (formStatus) {
+      formStatus.textContent = '✓ Thank you! Your request has been received — I will get back to you within 24 hours.';
       formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
       formStatus.classList.add('opacity-100', 'translate-y-0');
     }
   }
 
-  function showFormPending() {
+  function showFormError(message: string) {
     if (formStatus) {
-      formStatus.textContent =
-        'Thank you for reaching out. Your message has been noted. The contact endpoint is not configured yet; please use WhatsApp, email, or phone below.';
-      formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
-      formStatus.classList.add('opacity-100', 'translate-y-0');
+      formStatus.classList.add('hidden', 'opacity-0', 'translate-y-2');
+      formStatus.classList.remove('opacity-100', 'translate-y-0');
     }
-  }
-
-  function showFormError() {
-    if (formStatus) {
-      formStatus.textContent =
-        'Something went wrong. Please try again or reach out via WhatsApp, email, or phone.';
-      formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
-      formStatus.classList.add('opacity-100', 'translate-y-0');
+    if (formError) {
+      formError.textContent = message;
+      formError.classList.remove('hidden', 'opacity-0', 'translate-y-2');
+      formError.classList.add('opacity-100', 'translate-y-0');
     }
   }
 })();
