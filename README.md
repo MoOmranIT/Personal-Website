@@ -20,6 +20,14 @@ npm run dev
 npm run build
 ```
 
+## Start production server
+
+```bash
+npm start
+```
+
+This runs the Node.js server with the bundled `/api/contact` endpoint.
+
 ## Preview production build
 
 ```bash
@@ -34,22 +42,26 @@ Edit `src/scripts/siteConfig.ts` to update:
 - Contact details (email, phone, WhatsApp)
 - Social media links
 
-### Contact form API
-Set the environment variable `PUBLIC_CONTACT_API_URL` to enable form submission to a backend endpoint.
+### Contact form backend
+The contact form submits to the built-in `/api/contact` API route.
 
-Example:
-```bash
-PUBLIC_CONTACT_API_URL=https://api.example.com/contact npm run dev
+Configure the following environment variables in `.env`:
+
+```env
+CONTACT_TO_EMAIL=info@dr-khaledalmohamad.com
+SMTP_HOST=smtp.example.com
+SMTP_PORT=587
+SMTP_USER=user@example.com
+SMTP_PASS=your_smtp_password
 ```
 
-If no API URL is configured, the form will display a message instructing users to use WhatsApp, email, or phone instead.
+See `.env.example` for the full list of required variables.
 
 ## Placeholders
 
 The following values are placeholders and should be replaced with real production data:
-- Phone: `+971500000000`
-- WhatsApp: `971500000000`
 - LinkedIn, Instagram, Twitter URLs
+- SMTP credentials in `.env`
 
 ## Images
 
@@ -74,6 +86,8 @@ All images are currently loaded from external Pexels URLs. To use local images:
 ## Tech Stack
 
 - Astro 5.x
-- Tailwind CSS 4.x
+- @astrojs/node
+- Tailwind CSS 3.x
+- Nodemailer
 - TypeScript
 - Vanilla JavaScript (minimal)
