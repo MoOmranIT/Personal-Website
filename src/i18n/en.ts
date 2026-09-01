@@ -20,7 +20,7 @@ export const en = {
     heading: 'Business Consulting & Strategic Development',
     description: 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>',
     ctaPrimary: 'Start Your Consultation',
-    ctaSecondary: 'Discover My Story →',
+    ctaSecondary: 'Discover My Story',
     stat1Label: 'Years Experience',
     stat2Label: 'Professionals Trained',
     stat3Label: 'Published Books',

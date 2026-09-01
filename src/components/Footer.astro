@@ -1,17 +1,34 @@
 ---
 import { siteConfig } from '../scripts/siteConfig';
+
+interface Props {
+  translations?: {
+    footer?: {
+      nav?: {
+        home?: string;
+        about?: string;
+        books?: string;
+        contact?: string;
+      };
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.footer || {};
 ---
 
 <footer class="bg-white py-10 border-t border-slate-100">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
     <p>
-      © <span id="year">2026</span> {siteConfig.name} — Business Consultant, Dubai, UAE. All rights reserved.
+      © <span id="year">2026</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات' : 'Business Consultant, Dubai, UAE'}. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
     </p>
     <nav class="flex gap-6" aria-label="Footer">
-      <a href="#home" class="hover:text-navy transition-colors">Home</a>
-      <a href="#about" class="hover:text-navy transition-colors">About</a>
-      <a href="#books" class="hover:text-navy transition-colors">Books</a>
-      <a href="#contact" class="hover:text-navy transition-colors">Contact</a>
+      <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="hover:text-navy transition-colors">{t.nav?.home || 'Home'}</a>
+      <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="hover:text-navy transition-colors">{t.nav?.about || 'About'}</a>
+      <a href={lang === 'ar' ? '/ar/#books' : '#books'} class="hover:text-navy transition-colors">{t.nav?.books || 'Books'}</a>
+      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="hover:text-navy transition-colors">{t.nav?.contact || 'Contact'}</a>
     </nav>
   </div>
 </footer>

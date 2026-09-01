@@ -1,5 +1,23 @@
 (function () {
   const OFFSET = 90;
+  const html = document.documentElement;
+  const lang = html.getAttribute('lang') || 'en';
+  const isRTL = html.getAttribute('dir') === 'rtl';
+
+  const labels = {
+    en: {
+      sending: 'Sending...',
+      submit: 'Send My Request',
+      success: '✓ Thank you! Your request has been received — I will get back to you within 24 hours.'
+    },
+    ar: {
+      sending: 'جاري الإرسال...',
+      submit: 'إرسال طلبي',
+      success: '✓ شكراً لك! تم استلام طلبك — سأتواصل معك خلال 24 ساعة.'
+    }
+  };
+
+  const t = labels[lang] || labels.en;
 
   function scrollToHash(hash) {
     if (!hash || hash.length <= 1) return false;
@@ -54,7 +72,7 @@
             current = target;
             clearInterval(timer);
           }
-          el.textContent = current.toLocaleString();
+          el.textContent = current.toLocaleString(lang === 'ar' ? 'ar-AR' : undefined);
         }, 25);
       });
     },
@@ -66,7 +84,7 @@
   // Header state + scroll progress + back to top
   const header = document.getElementById('site-header');
   const progressBar = document.querySelector('.scroll-progress');
-  const backToTop = document.querySelector('[aria-label="Back to top"]');
+  const backToTop = document.querySelector('[aria-label="Back to top"], [aria-label="تواصل عبر واتساب"]');
 
   function onScroll() {
     if (header) header.classList.toggle('scrolled', window.scrollY > 20);
@@ -114,7 +132,8 @@
 
       navLinks.forEach((link) => {
         const href = link.getAttribute('href') || '';
-        link.setAttribute('data-active', href.slice(1) === visible.target.id);
+        const targetId = href.includes('#') ? href.split('#')[1] : href;
+        link.setAttribute('data-active', targetId === visible.target.id);
       });
     },
     { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5, 1] }
@@ -181,6 +200,7 @@
   const formStatus = document.getElementById('form-success');
   const formError = document.getElementById('form-error');
   const submitBtn = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
+<<<<<<< HEAD
   const apiUrl = (import.meta?.env?.PUBLIC_CONTACT_API_URL || '/api/contact').replace(/\/$/, '');
 
   if (contactForm) {
@@ -222,7 +242,7 @@
 
       if (submitBtn) {
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending...';
+        submitBtn.textContent = t.sending;
       }
 
       const payload = {
@@ -256,7 +276,7 @@
         .finally(() => {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Send My Request';
+            submitBtn.textContent = t.submit;
           }
         });
     });
@@ -268,7 +288,7 @@
       formError.classList.remove('opacity-100', 'translate-y-0');
     }
     if (formStatus) {
-      formStatus.textContent = '✓ Thank you! Your request has been received — I will get back to you within 24 hours.';
+      formStatus.textContent = t.success;
       formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
       formStatus.classList.add('opacity-100', 'translate-y-0');
     }

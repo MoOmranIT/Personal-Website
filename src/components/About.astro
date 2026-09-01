@@ -1,5 +1,23 @@
 ---
 const aboutImage = 'https://images.pexels.com/photos/34762353/pexels-photo-34762353.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=700';
+
+interface Props {
+  translations?: {
+    about?: {
+      badge?: string;
+      heading?: string;
+      subheading?: string;
+      paragraphs?: string[];
+      list1?: string[];
+      list2?: string[];
+      cta?: string;
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.about || {};
 ---
 
 <section id="about" class="py-24 bg-white relative overflow-hidden">
@@ -7,56 +25,53 @@ const aboutImage = 'https://images.pexels.com/photos/34762353/pexels-photo-34762
   <div class="max-w-5xl mx-auto px-5 sm:px-8 relative">
     <div class="text-center mb-14 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
-        Get To Know Me
+        {t.badge || 'Get To Know Me'}
       </span>
       <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        Who am I?
+        {t.heading || 'Who am I?'}
       </h2>
     </div>
     <div class="reveal-scale bg-slate-50 rounded-3xl p-8 sm:p-14 shadow-sm">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">
-        I'm Dr. Khaled Al Mohammad
+        {t.subheading || "I'm Dr. Khaled Al Mohammad"}
       </h3>
       <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
-        <p>
-          A PhD holder in Marketing and a Consumer Behavior Specialist since 2016, I work as a <strong class="text-navy">Business Consultant in Dubai</strong> with over 18 years of experience in business development, strategic marketing, and designing both organic and inorganic growth models for companies across diverse industries.
-        </p>
-        <p>
-          I have partnered with top-tier organizations across the Gulf and internationally, successfully leading development projects that delivered more than <strong class="text-navy">30% business growth</strong> and performance improvements exceeding <strong class="text-navy">20%</strong>.
-        </p>
-        <p class="font-semibold text-navy">
-          Throughout my career as a Business Consultant in Dubai:
-        </p>
-        <ul class="space-y-3 pl-2">
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> I have trained over 3,000 professionals in management, marketing, and sales.
-          </li>
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> I have contributed to the growth and transformation of hundreds of companies and public and private entities.
-          </li>
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.
-          </li>
-        </ul>
-        <p>I am a certified consultant and international trainer with hands-on executive expertise in:</p>
-        <ul class="space-y-3 pl-2">
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> Managing and optimizing marketing campaigns
-          </li>
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> Designing scalable expansion and growth strategies
-          </li>
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> Leading and aligning cross-functional teams
-          </li>
-        </ul>
-        <p>
-          In addition, as a Business Consultant in Dubai, I have co-founded multiple innovative ventures, several of which have grown into high-revenue independent companies.
-        </p>
+        {(t.paragraphs || [
+          'A PhD holder in Marketing and a Consumer Behavior Specialist since 2016, I work as a <strong class="text-navy">Business Consultant in Dubai</strong> with over 18 years of experience in business development, strategic marketing, and designing both organic and inorganic growth models for companies across diverse industries.',
+          'I have partnered with top-tier organizations across the Gulf and internationally, successfully leading development projects that delivered more than <strong class="text-navy">30% business growth</strong> and performance improvements exceeding <strong class="text-navy">20%</strong>.',
+          'Throughout my career as a Business Consultant in Dubai:',
+          'I am a certified consultant and international trainer with hands-on executive expertise in:',
+          'In addition, as a Business Consultant in Dubai, I have co-founded multiple innovative ventures, several of which have grown into high-revenue independent companies.'
+        ]).map((p, i) => (
+          <p set:html={p} />
+        ))}
       </div>
+      <ul class="space-y-3 pl-2">
+        {(t.list1 || [
+          'I have trained over 3,000 professionals in management, marketing, and sales.',
+          'I have contributed to the growth and transformation of hundreds of companies and public and private entities.',
+          'I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.'
+        ]).map((item) => (
+          <li class="flex gap-3">
+            <span class="text-navy">✓</span> {item}
+          </li>
+        ))}
+      </ul>
+      <p>{(t.paragraphs || [])[3] || 'I am a certified consultant and international trainer with hands-on executive expertise in:'}</p>
+      <ul class="space-y-3 pl-2">
+        {(t.list2 || [
+          'Managing and optimizing marketing campaigns',
+          'Designing scalable expansion and growth strategies',
+          'Leading and aligning cross-functional teams'
+        ]).map((item) => (
+          <li class="flex gap-3">
+            <span class="text-navy">✓</span> {item}
+          </li>
+        ))}
+      </ul>
       <div class="mt-10 flex justify-center">
-        <a href="#contact" class="btn-navy btn-sheen px-9 py-4 rounded-full font-semibold text-base">
-          Work With Me
+        <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-9 py-4 rounded-full font-semibold text-base">
+          {t.cta || 'Work With Me'}
         </a>
       </div>
     </div>

@@ -142,6 +142,13 @@ interface Props {
   ogDescription?: string;
   twitterDescription?: string;
   image?: string;
+  lang?: string;
+  dir?: string;
+  canonical?: string;
+  translations?: {
+    en?: { href: string };
+    ar?: { href: string };
+  };
 }
 
 const {
@@ -149,12 +156,18 @@ const {
   description = siteConfig.description,
   ogDescription = siteConfig.ogDescription,
   twitterDescription = siteConfig.twitterDescription,
-  image = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200'
+  image = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200',
+  lang = 'en',
+  dir = 'ltr',
+  canonical = siteConfig.url,
+  translations
 } = Astro.props;
+
+const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang} dir={dir}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -168,31 +181,38 @@ const {
     <meta name="geo.placename" content="Dubai, United Arab Emirates" />
     <meta name="geo.position" content="25.2048;55.2708" />
     <meta name="ICBM" content="25.2048, 55.2708" />
-    <link rel="canonical" href={siteConfig.url} />
+    <link rel="canonical" href={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={ogDescription} />
-    <meta property="og:url" content={siteConfig.url} />
-    <meta property="og:locale" content={siteConfig.locale} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={currentLocale} />
     <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={siteConfig.name + ' | Business Consultant in Dubai'} />
+    <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={twitterDescription} />
     <meta name="twitter:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
     <link rel="preconnect" href="https://images.pexels.com" />
     <link rel="dns-prefetch" href="https://images.pexels.com" />
+    {translations && translations.en && (
+      <link rel="alternate" hreflang="en" href={translations.en.href} />
+    )}
+    {translations && translations.ar && (
+      <link rel="alternate" hreflang="ar" href={translations.ar.href} />
+    )}
+    <link rel="alternate" hreflang="x-default" href={siteConfig.url} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(professionalServiceLd)} />
     <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
     <slot name="head" />
   </head>
-  <body class="font-sans text-ink antialiased">
+  <body class="font-sans text-ink antialiased" data-lang={lang}>
     <slot />
     <script type="module" src="/src/scripts/site.ts"></script>
   </body>

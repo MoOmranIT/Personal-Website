@@ -1,5 +1,19 @@
 ---
-const books = [
+interface Props {
+  translations?: {
+    books?: {
+      badge?: string;
+      heading?: string;
+      description?: string;
+      items?: { id?: string; title?: string; category?: string; gradient?: string }[];
+    };
+  };
+}
+
+const { translations = {} } = Astro.props;
+const t = translations.books || {};
+
+const books = t.items || [
   { id: 'Book 01', title: 'Strategic Growth Playbook', category: 'Business Strategy', gradient: 'linear-gradient(135deg,#0b1c39 0%,#1c3a6e 100%)' },
   { id: 'Book 02', title: 'Digital Marketing Mastery', category: 'Digital Marketing', gradient: 'linear-gradient(150deg,#122a52,#0b1c39)' },
   { id: 'Book 03', title: 'Consumer Behavior Decoded', category: 'Consumer Insights', gradient: 'linear-gradient(150deg,#1c3a6e,#122a52)' },
@@ -13,118 +27,35 @@ const books = [
   <div class="max-w-7xl mx-auto px-5 sm:px-8">
     <div class="text-center mb-16 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
-        Published Work
+        {t.badge || 'Published Work'}
       </span>
       <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        My Books
+        {t.heading || 'My Books'}
       </h2>
       <p class="text-slate-500 max-w-2xl mx-auto mt-6">
-        Six published books spanning business management and digital marketing, shared with a global audience of readers and professionals.
+        {t.description || 'Six published books spanning business management and digital marketing, shared with a global audience of readers and professionals.'}
       </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-      <article class="reveal delay-1">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[0].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[0].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[0].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[0].category}
-        </p>
-      </article>
-      <article class="reveal delay-2">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[1].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[1].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[1].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[1].category}
-        </p>
-      </article>
-      <article class="reveal delay-3">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[2].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[2].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[2].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[2].category}
-        </p>
-      </article>
-      <article class="reveal delay-4">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[3].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[3].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[3].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[3].category}
-        </p>
-      </article>
-      <article class="reveal delay-5">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[4].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[4].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[4].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[4].category}
-        </p>
-      </article>
-      <article class="reveal delay-6">
-        <div
-          class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-          style={"background:" + books[5].gradient}
-        >
-          <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-          <span class="text-[10px] uppercase tracking-widest text-white/60">
-            {books[5].id}
-          </span>
-          <h3 class="font-serif font-bold text-lg leading-snug">
-            {books[5].title}
-          </h3>
-        </div>
-        <p class="text-center text-xs text-slate-500 mt-3">
-          {books[5].category}
-        </p>
-      </article>
+      {books.map((book, i) => (
+        <article class={`reveal delay-${i + 1}`}>
+          <div
+            class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
+            style={"background:" + book.gradient}
+          >
+            <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
+            <span class="text-[10px] uppercase tracking-widest text-white/60">
+              {book.id}
+            </span>
+            <h3 class="font-serif font-bold text-lg leading-snug">
+              {book.title}
+            </h3>
+          </div>
+          <p class="text-center text-xs text-slate-500 mt-3">
+            {book.category}
+          </p>
+        </article>
+      ))}
     </div>
   </div>
 </section>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import ScrollProgress from '../../components/ScrollProgress.astro';
+import Hero from '../../components/Hero.astro';
+import Services from '../../components/Services.astro';
+import Audience from '../../components/Audience.astro';
+import About from '../../components/About.astro';
+import Books from '../../components/Books.astro';
+import SuccessStories from '../../components/SuccessStories.astro';
+import Contact from '../../components/Contact.astro';
+import Footer from '../../components/Footer.astro';
+import BackToTop from '../../components/BackToTop.astro';
+import { siteConfig } from '../../scripts/siteConfig';
+import { ar } from '../../i18n/ar';
+---
+
+<BaseLayout
+  title={siteConfig.seo.ar.title}
+  description={siteConfig.seo.ar.description}
+  ogDescription={siteConfig.seo.ar.ogDescription}
+  twitterDescription={siteConfig.seo.ar.twitterDescription}
+  lang="ar"
+  dir="rtl"
+  canonical={siteConfig.url + 'ar/'}
+  translations={{
+    en: { href: siteConfig.url },
+    ar: { href: siteConfig.url + 'ar/' }
+  }}
+>
+  <ScrollProgress />
+  <Header translations={ar.nav} currentLang="ar" />
+  <main>
+    <Hero translations={ar} lang="ar" />
+    <Services translations={ar} lang="ar" />
+    <Audience translations={ar} lang="ar" />
+    <About translations={ar} lang="ar" />
+    <Books translations={ar} />
+    <SuccessStories translations={ar} lang="ar" />
+    <Contact translations={ar} lang="ar" />
+  </main>
+  <Footer translations={ar} lang="ar" />
+  <a
+    href={siteConfig.contact.whatsapp}
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="تواصل عبر واتساب"
+    class="float-wa fixed bottom-6 left-6 z-50 w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition-transform"
+  >
+    💬
+  </a>
+  <BackToTop lang="ar" />
+</BaseLayout>
