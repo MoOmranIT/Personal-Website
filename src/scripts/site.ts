@@ -200,7 +200,6 @@
   const formStatus = document.getElementById('form-success');
   const formError = document.getElementById('form-error');
   const submitBtn = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
-<<<<<<< HEAD
   const apiUrl = (import.meta?.env?.PUBLIC_CONTACT_API_URL || '/api/contact').replace(/\/$/, '');
 
   if (contactForm) {
