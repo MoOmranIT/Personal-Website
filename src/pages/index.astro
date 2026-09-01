@@ -12,21 +12,34 @@ import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import BackToTop from '../components/BackToTop.astro';
 import { siteConfig } from '../scripts/siteConfig';
+import { en } from '../i18n/en';
 ---
 
-<BaseLayout>
+<BaseLayout
+  title={siteConfig.seo.en.title}
+  description={siteConfig.seo.en.description}
+  ogDescription={siteConfig.seo.en.ogDescription}
+  twitterDescription={siteConfig.seo.en.twitterDescription}
+  lang="en"
+  dir="ltr"
+  canonical={siteConfig.url}
+  translations={{
+    en: { href: siteConfig.url },
+    ar: { href: siteConfig.url + 'ar/' }
+  }}
+>
   <ScrollProgress />
-  <Header />
+  <Header translations={en.nav} currentLang="en" />
   <main>
-    <Hero />
-    <Services />
-    <Audience />
-    <About />
-    <Books />
-    <SuccessStories />
-    <Contact />
+    <Hero translations={en} lang="en" />
+    <Services translations={en} lang="en" />
+    <Audience translations={en} lang="en" />
+    <About translations={en} lang="en" />
+    <Books translations={en} />
+    <SuccessStories translations={en} lang="en" />
+    <Contact translations={en} lang="en" />
   </main>
-  <Footer />
+  <Footer translations={en} lang="en" />
   <a
     href={siteConfig.contact.whatsapp}
     target="_blank"
@@ -36,5 +49,5 @@ import { siteConfig } from '../scripts/siteConfig';
   >
     💬
   </a>
-  <BackToTop />
+  <BackToTop lang="en" />
 </BaseLayout>

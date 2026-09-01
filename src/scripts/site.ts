@@ -1,5 +1,23 @@
 (function () {
   const OFFSET = 90;
+  const html = document.documentElement;
+  const lang = html.getAttribute('lang') || 'en';
+  const isRTL = html.getAttribute('dir') === 'rtl';
+
+  const labels = {
+    en: {
+      sending: 'Sending...',
+      submit: 'Send My Request',
+      success: '✓ Thank you! Your request has been received — I will get back to you within 24 hours.'
+    },
+    ar: {
+      sending: 'جاري الإرسال...',
+      submit: 'إرسال طلبي',
+      success: '✓ شكراً لك! تم استلام طلبك — سأتواصل معك خلال 24 ساعة.'
+    }
+  };
+
+  const t = labels[lang] || labels.en;
 
   function scrollToHash(hash) {
     if (!hash || hash.length <= 1) return false;
@@ -54,7 +72,7 @@
             current = target;
             clearInterval(timer);
           }
-          el.textContent = current.toLocaleString();
+          el.textContent = current.toLocaleString(lang === 'ar' ? 'ar-AR' : undefined);
         }, 25);
       });
     },
@@ -66,7 +84,7 @@
   // Header state + scroll progress + back to top
   const header = document.getElementById('site-header');
   const progressBar = document.querySelector('.scroll-progress');
-  const backToTop = document.querySelector('[aria-label="Back to top"]');
+  const backToTop = document.querySelector('[aria-label="Back to top"], [aria-label="تواصل عبر واتساب"]');
 
   function onScroll() {
     if (header) header.classList.toggle('scrolled', window.scrollY > 20);
@@ -114,7 +132,8 @@
 
       navLinks.forEach((link) => {
         const href = link.getAttribute('href') || '';
-        link.setAttribute('data-active', href.slice(1) === visible.target.id);
+        const targetId = href.includes('#') ? href.split('#')[1] : href;
+        link.setAttribute('data-active', targetId === visible.target.id);
       });
     },
     { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5, 1] }
@@ -176,9 +195,12 @@
     });
   });
 
-  // Contact form validation (no fake success)
+  // Contact form validation + submission
   const contactForm = document.getElementById('contact-form');
   const formStatus = document.getElementById('form-success');
+  const formError = document.getElementById('form-error');
+  const submitBtn = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
+  const apiUrl = '/api/contact';
 
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
@@ -217,50 +239,69 @@
 
       if (!isValid) return;
 
-      // If a contact API URL is configured, submit to it
-      const apiUrl = import.meta?.env?.PUBLIC_CONTACT_API_URL;
-      if (apiUrl) {
-        const formData = new FormData(contactForm);
-        fetch(apiUrl, {
-          method: 'POST',
-          body: formData
-        })
-          .then((response) => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            showFormSuccess();
-          })
-          .catch(() => {
-            showFormError();
-          });
-      } else {
-        // No backend configured — do not fake success
-        showFormPending();
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = t.sending;
       }
+
+      const payload = {
+        name: name?.value.trim(),
+        email: email?.value.trim(),
+        phone: (document.getElementById('cf-phone') as HTMLInputElement | null)?.value.trim() || '',
+        role: (document.getElementById('cf-role') as HTMLSelectElement | null)?.value || '',
+        message: message?.value.trim(),
+        website: (document.getElementById('cf-website') as HTMLInputElement | null)?.value.trim() || ''
+      };
+
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(async (response) => {
+          const data = await response.json().catch(() => ({ error: 'Invalid server response.' }));
+          if (!response.ok) {
+            throw new Error(data.error || `Request failed with status ${response.status}`);
+          }
+          return data;
+        })
+        .then(() => {
+          showFormSuccess();
+          contactForm.reset();
+        })
+        .catch((err) => {
+          showFormError(err.message);
+        })
+        .finally(() => {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = t.submit;
+          }
+        });
     });
   }
 
   function showFormSuccess() {
+    if (formError) {
+      formError.classList.add('hidden', 'opacity-0', 'translate-y-2');
+      formError.classList.remove('opacity-100', 'translate-y-0');
+    }
     if (formStatus) {
+      formStatus.textContent = t.success;
       formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
       formStatus.classList.add('opacity-100', 'translate-y-0');
     }
   }
 
-  function showFormPending() {
+  function showFormError(message: string) {
     if (formStatus) {
-      formStatus.textContent =
-        'Thank you for reaching out. Your message has been noted. The contact endpoint is not configured yet; please use WhatsApp, email, or phone below.';
-      formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
-      formStatus.classList.add('opacity-100', 'translate-y-0');
+      formStatus.classList.add('hidden', 'opacity-0', 'translate-y-2');
+      formStatus.classList.remove('opacity-100', 'translate-y-0');
     }
-  }
-
-  function showFormError() {
-    if (formStatus) {
-      formStatus.textContent =
-        'Something went wrong. Please try again or reach out via WhatsApp, email, or phone.';
-      formStatus.classList.remove('hidden', 'opacity-0', 'translate-y-2');
-      formStatus.classList.add('opacity-100', 'translate-y-0');
+    if (formError) {
+      formError.textContent = message;
+      formError.classList.remove('hidden', 'opacity-0', 'translate-y-2');
+      formError.classList.add('opacity-100', 'translate-y-0');
     }
   }
 })();

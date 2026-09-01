@@ -1,39 +1,59 @@
 ---
 const heroImage = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=700';
+
+interface Props {
+  translations?: {
+    hero?: {
+      badge?: string;
+      heading?: string;
+      description?: string;
+      ctaPrimary?: string;
+      ctaSecondary?: string;
+      stat1Label?: string;
+      stat2Label?: string;
+      stat3Label?: string;
+      bottomCta?: string;
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.hero || {};
+const arrow = lang === 'ar' ? '←' : '→';
+const cardPosition = lang === 'ar' ? '-right-6' : '-left-6';
 ---
 
 <section id="home" class="hero-pattern relative pt-36 pb-20 lg:pt-44 lg:pb-28 overflow-hidden">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-14 items-center">
     <div class="reveal-left in-view">
       <span class="inline-block px-4 py-1.5 rounded-full bg-navy/5 text-navy text-xs font-semibold tracking-widest uppercase mb-6">
-        Strategic Business Consulting
+        {t.badge || 'Strategic Business Consulting'}
       </span>
       <h1 class="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-tight text-navy mb-6">
-        Business Consulting & <span class="gold">Strategic Development</span>
+        {t.heading || 'Business Consulting & Strategic Development'}
       </h1>
-      <p class="text-slate-600 text-lg leading-relaxed mb-8 max-w-xl">
-        I provide comprehensive preparation tailored to your professional position — the result of over <strong class="text-navy">18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong class="text-navy">6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>
-      </p>
+      <p class="text-slate-600 text-lg leading-relaxed mb-8 max-w-xl" set:html={t.description || 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>'} />
       <div class="flex flex-wrap items-center gap-4">
-        <a href="#contact" class="btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg">
-          Start Your Consultation
+        <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg">
+          {t.ctaPrimary || 'Start Your Consultation'}
         </a>
-        <a href="#about" class="btn-outline px-8 py-4 rounded-full font-semibold text-base">
-          Discover My Story →
+        <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="btn-outline px-8 py-4 rounded-full font-semibold text-base">
+          {t.ctaSecondary || 'Discover My Story'} {arrow}
         </a>
       </div>
       <div class="grid grid-cols-3 gap-6 mt-12 max-w-lg">
         <div>
           <p class="text-3xl font-bold text-navy"><span class="counter-num" data-target="18">0</span></p>
-          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">Years Experience</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">{t.stat1Label || 'Years Experience'}</p>
         </div>
         <div>
           <p class="text-3xl font-bold text-navy"><span class="counter-num" data-target="3000">0</span>+</p>
-          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">Professionals Trained</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">{t.stat2Label || 'Professionals Trained'}</p>
         </div>
         <div>
           <p class="text-3xl font-bold text-navy"><span class="counter-num" data-target="6">0</span></p>
-          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">Published Books</p>
+          <p class="text-xs uppercase tracking-wide text-slate-500 mt-1">{t.stat3Label || 'Published Books'}</p>
         </div>
       </div>
     </div>
@@ -48,7 +68,7 @@ const heroImage = 'https://images.pexels.com/photos/28426646/pexels-photo-284266
         loading="eager"
         fetchPriority="high"
       />
-      <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl px-6 py-4 hidden sm:block lift-card">
+      <div class={`absolute -bottom-6 ${cardPosition} bg-white rounded-2xl shadow-xl px-6 py-4 hidden sm:block lift-card`}>
         <p class="text-navy font-bold text-lg">+30%</p>
         <p class="text-xs text-slate-500">Average Business Growth</p>
       </div>
@@ -56,10 +76,10 @@ const heroImage = 'https://images.pexels.com/photos/28426646/pexels-photo-284266
   </div>
   <div class="max-w-4xl mx-auto px-5 mt-16 text-center reveal in-view delay-3">
     <a
-      href="#success"
+      href={lang === 'ar' ? '/ar/#success' : '#success'}
       class="inline-flex btn-navy btn-sheen px-10 py-5 rounded-full font-bold text-lg tracking-wide shadow-xl"
     >
-      🏆 Enter the Race for First Place
+      {t.bottomCta || '🏆 Enter the Race for First Place'}
     </a>
   </div>
 </section>

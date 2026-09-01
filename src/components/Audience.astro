@@ -1,5 +1,20 @@
 ---
-const audiences = [
+interface Props {
+  translations?: {
+    audience?: {
+      badge?: string;
+      heading?: string;
+      items?: { emoji?: string; title?: string; description?: string }[];
+      closing?: string;
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.audience || {};
+
+const audiences = t.items || [
   {
     emoji: '🚀',
     title: 'An entrepreneur',
@@ -33,10 +48,10 @@ const audiences = [
     </div>
     <div class="reveal-right order-1 lg:order-2">
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-4 block">
-        Is This For You?
+        {t.badge || 'Is This For You?'}
       </span>
       <h2 class="text-3xl sm:text-4xl font-bold text-navy mb-8">
-        Whether you are...
+        {t.heading || 'Whether you are...'}
       </h2>
       <div class="space-y-5">
         <div class="flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-1">
@@ -59,7 +74,7 @@ const audiences = [
         </div>
       </div>
       <p class="text-navy text-xl font-bold mt-8">
-        You've come to the right place.
+        {t.closing || "You've come to the right place."}
       </p>
     </div>
   </div>

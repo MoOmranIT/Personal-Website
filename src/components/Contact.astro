@@ -1,6 +1,43 @@
 ---
 import { siteConfig } from '../scripts/siteConfig';
 
+interface Props {
+  translations?: {
+    contact?: {
+      badge?: string;
+      heading?: string;
+      description?: string;
+      form?: {
+        nameLabel?: string;
+        namePlaceholder?: string;
+        emailLabel?: string;
+        emailPlaceholder?: string;
+        phoneLabel?: string;
+        phonePlaceholder?: string;
+        roleLabel?: string;
+        roleOptions?: { entrepreneur?: string; businessOwner?: string; governmentEntity?: string; other?: string };
+        messageLabel?: string;
+        messagePlaceholder?: string;
+        submit?: string;
+        sending?: string;
+        success?: string;
+        errorName?: string;
+        errorEmail?: string;
+        errorMessage?: string;
+      };
+      cards?: {
+        whatsapp?: { title?: string; description?: string };
+        email?: { title?: string; description?: string };
+        phone?: { title?: string; description?: string };
+        office?: { title?: string; description?: string };
+      };
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.contact || {};
 const displayPhone = '+971 50 000 0000';
 ---
 
@@ -9,116 +46,118 @@ const displayPhone = '+971 50 000 0000';
   <div class="max-w-6xl mx-auto px-5 sm:px-8 relative">
     <div class="text-center mb-16 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-white/50 mb-3 block">
-        Let's Talk
+        {t.badge || "Let's Talk"}
       </span>
       <h2 class="text-4xl sm:text-5xl font-bold mb-4">
-        Ready to Start Your <span class="gold">Consultation?</span>
+        {t.heading || 'Ready to Start Your'} <span class="gold">{lang === 'ar' ? 'الاستشارة؟' : 'Consultation?'}</span>
       </h2>
       <p class="text-white/70 max-w-2xl mx-auto">
-        Fill in the form below or reach out directly — I personally review every inquiry and respond within 24 hours.
+        {t.description || 'Fill in the form below or reach out directly — I personally review every inquiry and respond within 24 hours.'}
       </p>
     </div>
     <div class="grid lg:grid-cols-5 gap-10">
       <form id="contact-form" class="lg:col-span-3 bg-white/5 backdrop-blur rounded-3xl p-8 sm:p-10 border border-white/10 reveal-left" novalidate>
+        <input id="cf-website" type="text" name="website" class="hidden" aria-hidden="true" tabindex="-1" autocomplete="off" />
         <div class="grid sm:grid-cols-2 gap-5">
           <div>
-            <label for="cf-name" class="text-sm text-white/70 mb-2 block">Full Name</label>
+            <label for="cf-name" class="text-sm text-white/70 mb-2 block">{t.form?.nameLabel || 'Full Name'}</label>
             <input
               id="cf-name"
               type="text"
               required
               class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 placeholder-white/40 text-white transition-colors focus:border-gold focus:outline-none"
-              placeholder="John Smith"
+              placeholder={t.form?.namePlaceholder || 'John Smith'}
               name="name"
               aria-required="true"
             />
-            <p class="text-gold text-xs mt-1 hidden" id="error-name">Please enter your full name.</p>
+            <p class="text-gold text-xs mt-1 hidden" id="error-name">{t.form?.errorName || 'Please enter your full name.'}</p>
           </div>
           <div>
-            <label for="cf-email" class="text-sm text-white/70 mb-2 block">Email Address</label>
+            <label for="cf-email" class="text-sm text-white/70 mb-2 block">{t.form?.emailLabel || 'Email Address'}</label>
             <input
               id="cf-email"
               type="email"
               required
               class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 placeholder-white/40 text-white transition-colors focus:border-gold focus:outline-none"
-              placeholder="you@company.com"
+              placeholder={t.form?.emailPlaceholder || 'you@company.com'}
               name="email"
               aria-required="true"
             />
-            <p class="text-gold text-xs mt-1 hidden" id="error-email">Please enter a valid email address.</p>
+            <p class="text-gold text-xs mt-1 hidden" id="error-email">{t.form?.errorEmail || 'Please enter a valid email address.'}</p>
           </div>
         </div>
         <div class="grid sm:grid-cols-2 gap-5 mt-5">
           <div>
-            <label for="cf-phone" class="text-sm text-white/70 mb-2 block">Phone / WhatsApp</label>
+            <label for="cf-phone" class="text-sm text-white/70 mb-2 block">{t.form?.phoneLabel || 'Phone / WhatsApp'}</label>
             <input
               id="cf-phone"
               type="tel"
               class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 placeholder-white/40 text-white transition-colors focus:border-gold focus:outline-none"
-              placeholder="+971 5X XXX XXXX"
+              placeholder={t.form?.phonePlaceholder || '+971 5X XXX XXXX'}
               name="phone"
             />
           </div>
           <div>
-            <label for="cf-role" class="text-sm text-white/70 mb-2 block">I am a...</label>
+            <label for="cf-role" class="text-sm text-white/70 mb-2 block">{t.form?.roleLabel || 'I am a...'}</label>
             <select
               id="cf-role"
               name="role"
               class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 text-white transition-colors focus:border-gold focus:outline-none"
             >
-              <option value="entrepreneur" class="text-slate-800">Entrepreneur</option>
-              <option value="business-owner" class="text-slate-800">Business Owner</option>
-              <option value="government-entity" class="text-slate-800">Government Entity</option>
-              <option value="other" class="text-slate-800">Other</option>
+              <option value="entrepreneur" class="text-slate-800">{t.form?.roleOptions?.entrepreneur || 'Entrepreneur'}</option>
+              <option value="business-owner" class="text-slate-800">{t.form?.roleOptions?.businessOwner || 'Business Owner'}</option>
+              <option value="government-entity" class="text-slate-800">{t.form?.roleOptions?.governmentEntity || 'Government Entity'}</option>
+              <option value="other" class="text-slate-800">{t.form?.roleOptions?.other || 'Other'}</option>
             </select>
           </div>
         </div>
         <div class="mt-5">
-          <label for="cf-message" class="text-sm text-white/70 mb-2 block">How can I help you?</label>
+          <label for="cf-message" class="text-sm text-white/70 mb-2 block">{t.form?.messageLabel || 'How can I help you?'}</label>
           <textarea
             id="cf-message"
             name="message"
             rows="4"
             class="w-full rounded-xl bg-white/10 border border-white/20 px-4 py-3 placeholder-white/40 text-white transition-colors focus:border-gold focus:outline-none"
-            placeholder="Tell me briefly about your business and goals..."
+            placeholder={t.form?.messagePlaceholder || 'Tell me briefly about your business and goals...'}
             aria-required="true"
           ></textarea>
-          <p class="text-gold text-xs mt-1 hidden" id="error-message">Please describe how I can help you.</p>
+          <p class="text-gold text-xs mt-1 hidden" id="error-message">{t.form?.errorMessage || 'Please describe how I can help you.'}</p>
         </div>
         <button type="submit" class="mt-6 w-full sm:w-auto px-9 py-4 rounded-full font-bold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 active:translate-y-0 transition-all">
-          Send My Request
+          {t.form?.submit || 'Send My Request'}
         </button>
+        <p id="form-error" role="alert" class="mt-4 text-red-400 font-semibold transition-all duration-500 hidden opacity-0 translate-y-2"></p>
         <p id="form-success" role="status" class="mt-4 text-gold font-semibold transition-all duration-500 hidden opacity-0 translate-y-2">
-          ✓ Thank you! Your request has been received — I will get back to you within 24 hours.
+          {t.form?.success || '✓ Thank you! Your request has been received — I will get back to you within 24 hours.'}
         </p>
       </form>
       <div class="lg:col-span-2 flex flex-col gap-5 reveal-right">
         <a href={siteConfig.contact.whatsapp} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
           <span class="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-xl">💬</span>
           <span>
-            <span class="block font-semibold">WhatsApp</span>
-            <span class="block text-white/60 text-sm">Instant response</span>
+            <span class="block font-semibold">{t.cards?.whatsapp?.title || 'WhatsApp'}</span>
+            <span class="block text-white/60 text-sm">{t.cards?.whatsapp?.description || 'Instant response'}</span>
           </span>
         </a>
         <a href={"mailto:" + siteConfig.contact.email} class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
           <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">✉️</span>
           <span>
-            <span class="block font-semibold">Email</span>
+            <span class="block font-semibold">{t.cards?.email?.title || 'Email'}</span>
             <span class="block text-white/60 text-sm">{siteConfig.contact.email}</span>
           </span>
         </a>
         <a href={"tel:" + siteConfig.contact.phone} class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
           <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">📞</span>
           <span>
-            <span class="block font-semibold">Phone</span>
+            <span class="block font-semibold">{t.cards?.phone?.title || 'Phone'}</span>
             <span class="block text-white/60 text-sm">{displayPhone}</span>
           </span>
         </a>
         <div class="flex items-center gap-4 bg-white/10 rounded-2xl p-6 border border-white/10">
           <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">📍</span>
           <span>
-            <span class="block font-semibold">Office</span>
-            <span class="block text-white/60 text-sm">{siteConfig.contact.address}</span>
+            <span class="block font-semibold">{t.cards?.office?.title || 'Office'}</span>
+            <span class="block text-white/60 text-sm">{t.cards?.office?.description || siteConfig.contact.address}</span>
           </span>
         </div>
       </div>

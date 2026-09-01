@@ -1,10 +1,31 @@
 ---
 import { siteConfig } from '../scripts/siteConfig';
+
+interface Props {
+  translations?: {
+    home?: string;
+    about?: string;
+    books?: string;
+    contact?: string;
+    menuOpen?: string;
+    menuClose?: string;
+    otherLang?: string;
+  };
+  currentLang?: string;
+}
+
+const {
+  translations = {},
+  currentLang = 'en'
+} = Astro.props;
+
+const otherLang = currentLang === 'ar' ? '/' : '/ar/';
+const otherLangLabel = currentLang === 'ar' ? 'English' : 'العربية';
 ---
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 transition-all duration-300">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
-    <a href="#home" class="flex items-center gap-3 group">
+    <a href={currentLang === 'ar' ? '/ar/' : '/'} class="flex items-center gap-3 group">
       <span class="w-11 h-11 rounded-full navy-grad flex items-center justify-center text-white font-bold text-lg transition-transform duration-500 group-hover:rotate-6 group-hover:scale-105">
         KM
       </span>
@@ -18,18 +39,26 @@ import { siteConfig } from '../scripts/siteConfig';
       </span>
     </a>
     <nav class="hidden lg:flex items-center gap-9 font-medium text-sm text-slate-700" aria-label="Primary">
-      <a href="#home" data-active="true" class="nav-link hover:text-navy transition-colors">Home</a>
-      <a href="#about" data-active="false" class="nav-link hover:text-navy transition-colors">About Me</a>
-      <a href="#books" data-active="false" class="nav-link hover:text-navy transition-colors">My Books</a>
+      <a href={currentLang === 'ar' ? '/ar/#home' : '#home'} data-active="true" class="nav-link hover:text-navy transition-colors">{translations.home || 'Home'}</a>
+      <a href={currentLang === 'ar' ? '/ar/#about' : '#about'} data-active="false" class="nav-link hover:text-navy transition-colors">{translations.about || 'About Me'}</a>
+      <a href={currentLang === 'ar' ? '/ar/#books' : '#books'} data-active="false" class="nav-link hover:text-navy transition-colors">{translations.books || 'My Books'}</a>
     </nav>
     <div class="flex items-center gap-3">
-      <a href="#contact" class="hidden sm:inline-flex btn-navy btn-sheen px-6 py-3 rounded-full text-sm font-semibold">
-        Contact Me for Advice
+      <a href={currentLang === 'ar' ? '/ar/#contact' : '#contact'} class="hidden sm:inline-flex btn-navy btn-sheen px-6 py-3 rounded-full text-sm font-semibold">
+        {translations.contact || 'Contact Me for Advice'}
+      </a>
+      <a
+        href={otherLang}
+        class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-navy border border-navy/20 rounded-full px-4 py-2 hover:bg-navy hover:text-white transition-colors"
+        aria-label={`Switch to ${otherLangLabel}`}
+      >
+        <span class="text-base leading-none">{currentLang === 'ar' ? '🇬🇧' : '🇸🇦'}</span>
+        <span>{otherLangLabel}</span>
       </a>
       <button
         id="menu-toggle"
         class="lg:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5"
-        aria-label="Open Menu"
+        aria-label={translations.menuOpen || 'Open Menu'}
         aria-expanded="false"
         aria-controls="mobile-menu"
       >
@@ -44,10 +73,13 @@ import { siteConfig } from '../scripts/siteConfig';
     class="lg:hidden overflow-hidden bg-white border-t border-slate-100 text-slate-700 font-medium transition-all duration-300 max-h-0 opacity-0"
   >
     <nav class="px-5 py-4 space-y-3" aria-label="Mobile">
-      <a href="#home" class="block py-2 hover:text-navy transition-colors">Home</a>
-      <a href="#about" class="block py-2 hover:text-navy transition-colors">About Me</a>
-      <a href="#books" class="block py-2 hover:text-navy transition-colors">My Books</a>
-      <a href="#contact" class="block py-2 text-navy font-semibold">Contact Me for Advice</a>
+      <a href={currentLang === 'ar' ? '/ar/#home' : '#home'} class="block py-2 hover:text-navy transition-colors">{translations.home || 'Home'}</a>
+      <a href={currentLang === 'ar' ? '/ar/#about' : '#about'} class="block py-2 hover:text-navy transition-colors">{translations.about || 'About Me'}</a>
+      <a href={currentLang === 'ar' ? '/ar/#books' : '#books'} class="block py-2 hover:text-navy transition-colors">{translations.books || 'My Books'}</a>
+      <a href={currentLang === 'ar' ? '/ar/#contact' : '#contact'} class="block py-2 text-navy font-semibold">{translations.contact || 'Contact Me for Advice'}</a>
+      <a href={otherLang} class="block py-2 text-navy font-semibold border-t border-slate-100 mt-2 pt-3">
+        {otherLangLabel}
+      </a>
     </nav>
   </div>
 </header>

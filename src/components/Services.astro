@@ -1,29 +1,56 @@
 ---
+interface Props {
+  translations?: {
+    services?: {
+      section1?: {
+        id?: string;
+        title?: string;
+        heading?: string;
+        description?: string;
+        points?: string[];
+        cta?: string;
+      };
+      section2?: {
+        id?: string;
+        title?: string;
+        heading?: string;
+        description?: string;
+        points?: string[];
+        cta?: string;
+      };
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.services || {};
+
 const services = [
   {
-    id: '01',
-    title: 'Development',
-    heading: 'Grow Your Business',
-    description: 'We deliver specialized training for business development to elevate performance and achieve sustainable growth. Our focus is on strengthening managerial and marketing capabilities to secure the success of your projects in both local and global markets.',
-    points: [
+    id: t.section1?.id || '01',
+    title: t.section1?.title || 'Development',
+    heading: t.section1?.heading || 'Grow Your Business',
+    description: t.section1?.description || 'We deliver specialized training for business development to elevate performance and achieve sustainable growth. Our focus is on strengthening managerial and marketing capabilities to secure the success of your projects in both local and global markets.',
+    points: t.section1?.points || [
       'Executive management & leadership development',
       'Digital marketing & brand positioning',
       'Local and international market expansion'
     ],
-    cta: 'Book a Session',
+    cta: t.section1?.cta || 'Book a Session',
     variant: 'light'
   },
   {
-    id: '02',
-    title: 'Transformation',
-    heading: 'Rise Like a Phoenix',
-    description: 'We analyze complex institutional challenges and design tailor-made strategic solutions to secure the continuity of your business. Don\'t miss the opportunity or waste another minute — the time to act is now.',
-    points: [
+    id: t.section2?.id || '02',
+    title: t.section2?.title || 'Transformation',
+    heading: t.section2?.heading || 'Rise Like a Phoenix',
+    description: t.section2?.description || "We analyze complex institutional challenges and design tailor-made strategic solutions to secure the continuity of your business. Don't miss the opportunity or waste another minute — the time to act is now.",
+    points: t.section2?.points || [
       'Crisis management & institutional turnaround',
       'Custom strategic roadmaps',
       'Business continuity assurance'
     ],
-    cta: 'Book a Session',
+    cta: t.section2?.cta || 'Book a Session',
     variant: 'dark'
   }
 ];
@@ -51,7 +78,7 @@ const services = [
           </li>
         ))}
       </ul>
-      <a href="#contact" class="btn-outline w-fit px-7 py-3.5 rounded-full font-semibold">
+      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-outline w-fit px-7 py-3.5 rounded-full font-semibold">
         {services[0].cta}
       </a>
     </div>
@@ -59,9 +86,7 @@ const services = [
       <span class="text-xs uppercase tracking-[.3em] text-white/50 mb-4">
         {services[1].id} — {services[1].title}
       </span>
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6">
-        Rise Like a <span class="gold">Phoenix</span>
-      </h2>
+      <h2 class="text-3xl sm:text-4xl font-bold mb-6" set:html={services[1].heading.replace('Phoenix', '<span class="gold">Phoenix</span>')} />
       <p class="text-white/80 text-lg leading-relaxed mb-8">
         {services[1].description}
       </p>
@@ -75,7 +100,7 @@ const services = [
           </li>
         ))}
       </ul>
-      <a href="#contact" class="w-fit px-7 py-3.5 rounded-full font-semibold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 transition-all">
+      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="w-fit px-7 py-3.5 rounded-full font-semibold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 transition-all">
         {services[1].cta}
       </a>
     </div>
