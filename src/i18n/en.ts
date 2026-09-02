@@ -100,14 +100,87 @@ export const en = {
   books: {
     badge: 'Published Work',
     heading: 'My Books',
-    description: 'Six published books spanning business management and digital marketing, shared with a global audience of readers and professionals.',
+    description: 'A collection of published and upcoming books on business management, marketing, and leadership.',
+    cta: 'View Book',
+    close: 'Close',
+    status: {
+      notApproved: 'Not Approved',
+      inDevelopment: 'In Development'
+    },
     items: [
-      { id: 'Book 01', title: 'Strategic Growth Playbook', category: 'Business Strategy' },
-      { id: 'Book 02', title: 'Digital Marketing Mastery', category: 'Digital Marketing' },
-      { id: 'Book 03', title: 'Consumer Behavior Decoded', category: 'Consumer Insights' },
-      { id: 'Book 04', title: 'The Phoenix Company', category: 'Business Turnaround' },
-      { id: 'Book 05', title: 'Leading High-Impact Teams', category: 'Leadership' },
-      { id: 'Book 06', title: 'Scaling Beyond Borders', category: 'Global Expansion' }
+      {
+        id: 'Book 01',
+        title: 'The Business Developer\'s Mindset',
+        category: 'Business Strategy',
+        gradient: 'linear-gradient(135deg,#0b1c39 0%,#1c3a6e 100%)',
+        description: 'A Strategic Framework for Designing Organic and Inorganic Growth Strategies for Scalable Organizations. Available on Amazon Kindle.',
+        amazonUrl: 'https://www.amazon.com/stores/Dr.-Khaled-Almohamad/author/B0H217J18V'
+      },
+      {
+        id: 'Book 02',
+        title: 'For Happy Clients: Behind Each Customer, 3,600 Potential Clients',
+        category: 'Customer Experience',
+        gradient: 'linear-gradient(150deg,#122a52,#0b1c39)',
+        description: 'This book focuses on customer service strategies and building sustainable relationships, revealing how every satisfied customer can be a gateway to thousands of new clients.'
+      },
+      {
+        id: 'Book 03',
+        title: 'KPIs: Performance Indicators and the Balanced Scorecard',
+        category: 'Performance Management',
+        gradient: 'linear-gradient(150deg,#1c3a6e,#122a52)',
+        description: 'Covers key performance indicators (KPIs) and how to design a balanced scorecard (BSC) to measure organizational achievement and drive continuous improvement.'
+      },
+      {
+        id: 'Book 04',
+        title: 'Work Ethics',
+        category: 'Professional Development',
+        gradient: 'linear-gradient(150deg,#0b1c39,#c9a769)',
+        description: 'Discusses the values and professional behaviors that form the foundation of individual and organizational success, with practical models for embedding ethics into workplace culture.'
+      },
+      {
+        id: 'Book 05',
+        title: 'How to Write a Marketing Plan',
+        category: 'Marketing Strategy',
+        gradient: 'linear-gradient(150deg,#122a52,#1c3a6e)',
+        description: 'A practical guide to designing an effective marketing plan, from market analysis to campaign execution, with real examples and customizable templates.'
+      },
+      {
+        id: 'Book 06',
+        title: 'Presentation Skills',
+        category: 'Communication',
+        gradient: 'linear-gradient(150deg,#0b1c39,#122a52)',
+        description: 'Focuses on professional presentation and public speaking skills, including body language, content preparation, and audience engagement, with practical exercises to build confidence and impact.'
+      },
+      {
+        id: 'Book 07',
+        title: 'Advanced Business Management',
+        category: 'Management',
+        gradient: 'linear-gradient(135deg,#0b1c39 0%,#1c3a6e 100%)',
+        status: 'notApproved',
+        description: 'An attempt to present advanced management models that integrate strategy, leadership, and innovation; however, it has not been formally approved for publication yet.'
+      },
+      {
+        id: 'Book 08',
+        title: 'Professional Project Management',
+        category: 'Project Management',
+        gradient: 'linear-gradient(150deg,#122a52,#0b1c39)',
+        status: 'inDevelopment',
+        description: 'A draft book aimed at simplifying project management through PMBOK tools in a practical, hands-on approach. Currently in development.'
+      },
+      {
+        id: 'Book 09',
+        title: 'Psychological Secrets in the Art of Sales',
+        category: 'Sales Psychology',
+        gradient: 'linear-gradient(150deg,#1c3a6e,#122a52)',
+        description: 'Reveals the hidden psychological factors that influence purchasing decisions and equips readers with tools to persuade customers and influence their behavior.'
+      },
+      {
+        id: 'Book 10',
+        title: 'I Am Business Developer',
+        category: 'Business Development',
+        gradient: 'linear-gradient(150deg,#0b1c39,#c9a769)',
+        description: 'A modern book blending hands-on experience with forward-thinking business development, featuring Gulf and global examples on growth, partnerships, and opportunity discovery.'
+      }
     ]
   },
   success: {
@@ -145,12 +218,6 @@ export const en = {
         title: 'Financial Services',
         headline: '3x Qualified Leads',
         description: 'Overhauled the digital marketing engine, tripling qualified leads and improving customer experience scores.'
-      },
-      {
-        id: 'Case Study 06',
-        title: 'Family Business Group',
-        headline: 'Regional Expansion Success',
-        description: 'Structured a scalable expansion strategy that took a family-owned business into three new Gulf markets.'
       }
     ]
   },

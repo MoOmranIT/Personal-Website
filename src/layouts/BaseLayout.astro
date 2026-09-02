@@ -12,7 +12,7 @@ const jsonLd = {
       "jobTitle": "Business Consultant & Marketing Strategist",
       "description": "PhD holder in Marketing and Consumer Behavior Specialist with 18+ years of experience in business development, strategic marketing and growth consulting based in Dubai, UAE.",
       "url": siteConfig.url,
-      "image": "https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg",
+      "image": siteConfig.url + "images/og-image.jpg",
       "email": siteConfig.contact.email,
       "telephone": siteConfig.contact.phone,
       "sameAs": [
@@ -46,7 +46,7 @@ const jsonLd = {
       "@type": "ProfessionalService",
       "@id": siteConfig.url + "#service",
       "name": siteConfig.name + " — Business Consulting Services",
-      "image": "https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg",
+      "image": siteConfig.url + "images/og-image.jpg",
       "url": siteConfig.url,
       "priceRange": "$$$",
       "email": siteConfig.contact.email,
@@ -156,7 +156,7 @@ const {
   description = siteConfig.description,
   ogDescription = siteConfig.ogDescription,
   twitterDescription = siteConfig.twitterDescription,
-  image = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=630&w=1200',
+  image = '/images/og-image.jpg',
   lang = 'en',
   dir = 'ltr',
   canonical = siteConfig.url,
@@ -198,8 +198,6 @@ const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://images.pexels.com" />
-    <link rel="dns-prefetch" href="https://images.pexels.com" />
     {translations && translations.en && (
       <link rel="alternate" hreflang="en" href={translations.en.href} />
     )}

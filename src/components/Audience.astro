@@ -38,7 +38,7 @@ const audiences = t.items || [
     <div class="relative reveal-left order-2 lg:order-1">
       <div class="absolute -inset-5 rounded-[2rem] bg-navy/5 -rotate-3"></div>
       <img
-        src="https://images.pexels.com/photos/34762353/pexels-photo-34762353.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=700"
+        src="/images/about.jpg"
         alt="Dr. Khaled Al Mohammad seated confidently, business consultant Dubai"
         width="700"
         height="900"
@@ -47,35 +47,31 @@ const audiences = t.items || [
       />
     </div>
     <div class="reveal-right order-1 lg:order-2">
-      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-4 block">
-        {t.badge || 'Is This For You?'}
-      </span>
+      {t.badge && (
+        <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-4 block">
+          {t.badge}
+        </span>
+      )}
       <h2 class="text-3xl sm:text-4xl font-bold text-navy mb-8">
         {t.heading || 'Whether you are...'}
       </h2>
       <div class="space-y-5">
-        <div class="flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-1">
-          <span class="text-navy text-2xl">{audiences[0].emoji}</span>
-          <p class="text-slate-600 text-lg">
-            <strong class="text-navy">{audiences[0].title}</strong> {audiences[0].description}
-          </p>
-        </div>
-        <div class="flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-2">
-          <span class="text-navy text-2xl">{audiences[1].emoji}</span>
-          <p class="text-slate-600 text-lg">
-            <strong class="text-navy">{audiences[1].title}</strong> {audiences[1].description}
-          </p>
-        </div>
-        <div class="flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-3">
-          <span class="text-navy text-2xl">{audiences[2].emoji}</span>
-          <p class="text-slate-600 text-lg">
-            <strong class="text-navy">{audiences[2].title}</strong> {audiences[2].description}
-          </p>
-        </div>
+        {audiences.map((audience, index) => (
+          <div class={`flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-${index + 1}`}>
+            {audience.emoji && (
+              <span class="text-navy text-2xl">{audience.emoji}</span>
+            )}
+            <p class="text-slate-600 text-lg">
+              <strong class="text-navy">{audience.title}</strong> {audience.description}
+            </p>
+          </div>
+        ))}
       </div>
-      <p class="text-navy text-xl font-bold mt-8">
-        {t.closing || "You've come to the right place."}
-      </p>
+      {t.closing && (
+        <p class="text-navy text-xl font-bold mt-8">
+          {t.closing}
+        </p>
+      )}
     </div>
   </div>
 </section>

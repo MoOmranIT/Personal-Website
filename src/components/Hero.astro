@@ -1,5 +1,5 @@
 ---
-const heroImage = 'https://images.pexels.com/photos/28426646/pexels-photo-28426646.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=900&w=700';
+const heroImage = '/images/hero.jpg';
 
 interface Props {
   translations?: {
@@ -33,7 +33,7 @@ const cardPosition = lang === 'ar' ? '-right-6' : '-left-6';
       <h1 class="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold leading-tight text-navy mb-6">
         {t.heading || 'Business Consulting & Strategic Development'}
       </h1>
-      <p class="text-slate-600 text-lg leading-relaxed mb-8 max-w-xl" set:html={t.description || 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>'} />
+      <div class="text-slate-600 text-lg leading-relaxed mb-8 max-w-xl" set:html={t.description || 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>'} />
       <div class="flex flex-wrap items-center gap-4">
         <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg">
           {t.ctaPrimary || 'Start Your Consultation'}

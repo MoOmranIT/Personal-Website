@@ -6,7 +6,8 @@ interface Props {
       heading?: string;
       description?: string;
       cta?: string;
-      items?: { id?: string; title?: string; headline?: string; description?: string; image?: string; alt?: string }[];
+      ctaFull?: string;
+      items?: { id?: string; title?: string; headline?: string; excerpt?: string; description?: string; image?: string; alt?: string }[];
     };
   };
   lang?: string;
@@ -16,57 +17,51 @@ const { translations = {}, lang = 'en' } = Astro.props;
 const t = translations.success || {};
 const arrow = lang === 'ar' ? '←' : '→';
 
-const stories = t.items || [
-  {
-    id: 'Case Study 01',
-    title: 'Retail Group — UAE',
-    headline: '+42% Revenue in 9 Months',
-    description: "We redesigned the brand's growth strategy and marketing funnel, resulting in a 42% revenue increase and a fully retrained sales team within nine months.",
-    image: 'https://images.pexels.com/photos/7876706/pexels-photo-7876706.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Retail brand strategic repositioning success story'
-  },
-  {
-    id: 'Case Study 02',
-    title: 'Tech Startup — Dubai',
-    headline: 'From Idea to Series A',
-    description: 'Guided founders through positioning, go-to-market strategy and investor readiness — securing funding within one year of engagement.',
-    image: 'https://images.pexels.com/photos/7793179/pexels-photo-7793179.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Tech startup scaling success story'
-  },
-  {
-    id: 'Case Study 03',
-    title: 'Government Entity',
-    headline: 'Modernized Public Strategy',
-    description: 'Designed an organizational development framework that improved operational performance by over 20% across departments.',
-    image: 'https://images.pexels.com/photos/7793176/pexels-photo-7793176.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Government entity development strategy success story'
-  },
-  {
-    id: 'Case Study 04',
-    title: 'Manufacturing Co.',
-    headline: 'A Phoenix Turnaround',
-    description: "Rebuilt a struggling manufacturer's strategy from the ground up, restoring profitability within 12 months.",
-    image: 'https://images.pexels.com/photos/4872027/pexels-photo-4872027.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Manufacturing company turnaround success story'
-  },
-  {
-    id: 'Case Study 05',
-    title: 'Financial Services',
-    headline: '3x Qualified Leads',
-    description: 'Overhauled the digital marketing engine, tripling qualified leads and improving customer experience scores.',
-    image: 'https://images.pexels.com/photos/9304691/pexels-photo-9304691.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Financial services digital marketing success story'
-  },
-  {
-    id: 'Case Study 06',
-    title: 'Family Business Group',
-    headline: 'Regional Expansion Success',
-    description: 'Structured a scalable expansion strategy that took a family-owned business into three new Gulf markets.',
-    image: 'https://images.pexels.com/photos/8353839/pexels-photo-8353839.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=700&w=700',
-    alt: 'Family business expansion success story'
-  }
-];
+const stories = (t.items || []).map((item) => ({
+  ...item,
+  image: '/images/story.jpg',
+  alt: item.alt || item.title || 'Success story'
+}));
 ---
+
+<style>
+  .story-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .story-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .story-modal {
+    background: #fff;
+    color: #1b2130;
+    border-radius: 1.5rem;
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+    box-shadow: 0 30px 55px -15px #0b1c398c;
+  }
+  .story-modal-backdrop.open .story-modal {
+    transform: translateY(0);
+  }
+  .story-modal p,
+  .story-modal li {
+    line-height: 1.7;
+  }
+</style>
 
 <section id="success" class="py-24 bg-white">
   <div class="max-w-7xl mx-auto px-5 sm:px-8">
@@ -110,15 +105,130 @@ const stories = t.items || [
               <div>
                 <span class="gold text-xs uppercase tracking-widest">{story.id}</span>
                 <h3 class="text-xl font-bold mt-2 mb-4">{story.headline}</h3>
-                <p class="text-white/80 text-sm leading-relaxed">{story.description}</p>
+                <p class="text-white/80 text-sm leading-relaxed">{story.excerpt || story.description}</p>
               </div>
-              <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group">
-                {t.cta || 'Read More'} <span class="transition-transform duration-300 group-hover:translate-x-1">{arrow}</span>
-              </a>
+              <button
+                type="button"
+                class="story-open-btn inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group"
+                data-index={i}
+              >
+                {t.ctaFull || t.cta || 'اقرأ القصة كاملة'}
+              </button>
             </div>
           </div>
         </div>
       ))}
     </div>
   </div>
+
+  <div class="story-modal-backdrop" id="story-modal" aria-hidden="true">
+    <div class="story-modal" role="dialog" aria-modal="true" aria-label={t.heading || 'Success Stories'}>
+      <div class="p-6 sm:p-10">
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <span class="gold text-xs uppercase tracking-widest" id="story-modal-id"></span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy mt-2" id="story-modal-title"></h3>
+          </div>
+          <button
+            type="button"
+            id="story-modal-close"
+            class="text-navy hover:text-gold transition-colors"
+            aria-label="Close"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="text-slate-600 text-lg leading-relaxed space-y-4" id="story-modal-body"></div>
+        <div class="mt-8 text-center">
+          <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-3.5 rounded-full font-semibold">
+            {t.cta || 'Book a Session'}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script is:inline set:html={`
+  window.__SUCCESS_STORIES__ = ${JSON.stringify(stories).replace(/</g, '\\u003c')};
+`}></script>
+
+<script>
+  (function () {
+    const storyData = window.__SUCCESS_STORIES__ || [];
+    const modal = document.getElementById('story-modal');
+    const modalTitle = document.getElementById('story-modal-title');
+    const modalId = document.getElementById('story-modal-id');
+    const modalBody = document.getElementById('story-modal-body');
+    const closeBtn = document.getElementById('story-modal-close');
+    const openButtons = document.querySelectorAll('.story-open-btn');
+
+    function formatStory(text) {
+      if (!text) return '';
+      const lines = text.split('\n').filter((line) => line.trim() !== '');
+      if (lines.length <= 1) {
+        return '<p>' + escapeHtml(text) + '</p>';
+      }
+      const html = lines.map((line) => {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('- ')) {
+          return '<li>' + escapeHtml(trimmed.slice(2)) + '</li>';
+        }
+        if (/^##\\s/.test(trimmed)) {
+          return '<h4 class="text-navy font-bold text-xl mt-6 mb-2">' + escapeHtml(trimmed.replace(/^##\\s*/, '')) + '</h4>';
+        }
+        return '<p>' + escapeHtml(trimmed) + '</p>';
+      });
+      if (html.some((item) => item.startsWith('<li>'))) {
+        return '<ul class="list-disc pl-6 space-y-2">' + html.map((item) => item.startsWith('<li>') ? item : '<p>' + item.replace(/^<p>|<\/p>$/g, '') + '</p>').join('') + '</ul>';
+      }
+      return html.join('');
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function openModal(index) {
+      const story = storyData[index];
+      if (!story || !modal) return;
+      modalId.textContent = story.id || '';
+      modalTitle.textContent = story.title || '';
+      modalBody.innerHTML = formatStory(story.description || story.excerpt || '');
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    }
+
+    function closeModal() {
+      modal?.classList.remove('open');
+      modal?.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const index = parseInt(btn.getAttribute('data-index') || '0', 10);
+        openModal(index);
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  })();
+</script>

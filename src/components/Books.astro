@@ -5,12 +5,19 @@ interface Props {
       badge?: string;
       heading?: string;
       description?: string;
-      items?: { id?: string; title?: string; category?: string; gradient?: string }[];
+      cta?: string;
+      close?: string;
+      status?: {
+        notApproved?: string;
+        inDevelopment?: string;
+      };
+      items?: { id?: string; title?: string; category?: string; gradient?: string; description?: string; status?: string; amazonUrl?: string }[];
     };
   };
+  lang?: string;
 }
 
-const { translations = {} } = Astro.props;
+const { translations = {}, lang = 'en' } = Astro.props;
 const t = translations.books || {};
 
 const books = t.items || [
@@ -23,6 +30,62 @@ const books = t.items || [
 ];
 ---
 
+<style>
+  .book-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .book-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .book-modal {
+    background: #fff;
+    color: #1b2130;
+    border-radius: 1.5rem;
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    transform: translateY(20px);
+    transition: transform 0.25s ease;
+    box-shadow: 0 30px 55px -15px #0b1c398c;
+  }
+  .book-modal-backdrop.open .book-modal {
+    transform: translateY(0);
+  }
+  .book-modal p {
+    line-height: 1.7;
+  }
+  .book-status {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .book-status-notApproved {
+    background: #fef2f2;
+    color: #991b1b;
+  }
+  .book-status-inDevelopment {
+    background: #fffbeb;
+    color: #92400e;
+  }
+</style>
+
 <section id="books" class="py-24 bg-slate-50">
   <div class="max-w-7xl mx-auto px-5 sm:px-8">
     <div class="text-center mb-16 reveal">
@@ -33,24 +96,39 @@ const books = t.items || [
         {t.heading || 'My Books'}
       </h2>
       <p class="text-slate-500 max-w-2xl mx-auto mt-6">
-        {t.description || 'Six published books spanning business management and digital marketing, shared with a global audience of readers and professionals.'}
+        {t.description || 'A collection of published and upcoming books on business management, marketing, and leadership.'}
       </p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
       {books.map((book, i) => (
         <article class={`reveal delay-${i + 1}`}>
-          <div
-            class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
-            style={"background:" + book.gradient}
+          <button
+            type="button"
+            class="book-open-btn text-left w-full"
+            data-index={i}
+            aria-label={book.title + ' — ' + (book.category || '')}
           >
-            <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
-            <span class="text-[10px] uppercase tracking-widest text-white/60">
-              {book.id}
-            </span>
-            <h3 class="font-serif font-bold text-lg leading-snug">
-              {book.title}
-            </h3>
-          </div>
+            <div
+              class="book-cover flex flex-col justify-between p-4 text-white relative overflow-hidden"
+              style={"background:" + book.gradient}
+            >
+              <span class="absolute inset-y-0 left-0 w-1.5 bg-gold/70" aria-hidden="true"></span>
+              <div class="flex items-start justify-between gap-2">
+                <span class="text-[10px] uppercase tracking-widest text-white/60">
+                  {book.id}
+                </span>
+                {book.status === 'notApproved' && (
+                  <span class="book-status book-status-notApproved">{t.status?.notApproved || 'Not Approved'}</span>
+                )}
+                {book.status === 'inDevelopment' && (
+                  <span class="book-status book-status-inDevelopment">{t.status?.inDevelopment || 'In Development'}</span>
+                )}
+              </div>
+              <h3 class="font-serif font-bold text-lg leading-snug">
+                {book.title}
+              </h3>
+            </div>
+          </button>
           <p class="text-center text-xs text-slate-500 mt-3">
             {book.category}
           </p>
@@ -58,4 +136,115 @@ const books = t.items || [
       ))}
     </div>
   </div>
+
+  <div class="book-modal-backdrop" id="book-modal" aria-hidden="true">
+    <div class="book-modal" role="dialog" aria-modal="true" aria-label={t.heading || 'My Books'}>
+      <div class="p-6 sm:p-10">
+        <div class="flex items-start justify-between gap-4 mb-6">
+          <div>
+            <span class="gold text-xs uppercase tracking-widest" id="book-modal-id"></span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-navy mt-2" id="book-modal-title"></h3>
+            <span id="book-modal-status" class="mt-2 hidden"></span>
+          </div>
+          <button
+            type="button"
+            id="book-modal-close"
+            class="text-navy hover:text-gold transition-colors"
+            aria-label={t.close || 'Close'}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="text-slate-600 text-lg leading-relaxed space-y-4" id="book-modal-body"></div>
+        <div class="mt-8 text-center space-y-3">
+          <a id="book-modal-amazon" href="#" target="_blank" rel="noopener noreferrer" class="hidden inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold bg-[#FF9900] text-white hover:bg-[#e88a00] transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.071-.116.185-.133.312-.041C4.86 20.962 10.45 22.1 15.536 22.1c4.076 0 8.154-1.037 11.596-3.018.135-.077.247.09.128.233-3.172 3.904-10.26 5.237-15.67 5.237C8.31 24.552 1.23 23.093.045 18.02zm7.698-3.21c0-1.108.9-1.988 2.004-1.988 1.108 0 2.008.88 2.008 1.988 0 1.112-.9 1.992-2.008 1.992-1.104 0-2.004-.88-2.004-1.992zm5.533 0c0-2.632-2.364-4.784-5.533-4.784-3.172 0-5.536 2.152-5.536 4.784 0 2.636 2.364 4.788 5.536 4.788 3.169 0 5.533-2.152 5.533-4.788zm-7.205-.008c0-1.256.733-2.364 1.672-2.364.94 0 1.672 1.108 1.672 2.364 0 1.256-.732 2.36-1.672 2.36-.939 0-1.672-1.104-1.672-2.36zm13.707 3.14c-.124-.068-.237.06-.124.204 2.944 3.808 6.844 5.684 11.14 5.684.816 0 1.632-.076 2.436-.228.128-.024.236.088.128.212-2.708 3.612-10.876 4.896-15.564 4.896-4.824 0-12.264-1.428-15.612-4.896-.12-.128-.012-.256.124-.212.8.152 1.616.228 2.432.228 4.08 0 7.708-1.7 11.14-5.684l.004.004v-.004zm6.28-2.688c-.084-.052-.164.044-.084.144 1.656 2.184 2.796 4.716 3.084 7.368.024.216.164.24.276.048.612-1.044 1.008-2.22 1.008-3.468 0-1.34-.456-2.568-1.152-3.552-.096-.136-.204-.024-.132.128l-.004.004.004-.672zm-13.32.24c-.096-.052-.18.048-.096.156 1.44 2.004 2.34 4.416 2.34 6.984 0 2.472-.816 4.74-2.172 6.648-.096.132.012.204.108.156 2.304-1.344 3.864-3.84 3.864-6.648 0-2.88-1.656-5.436-4.044-7.296z"/></svg>
+            View on Amazon
+          </a>
+          <button type="button" id="book-modal-close-btn" class="btn-navy btn-sheen px-8 py-3.5 rounded-full font-semibold">
+            {t.close || 'Close'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script is:inline set:html={`
+  window.__BOOKS__ = ${JSON.stringify(books).replace(/</g, '\\u003c')};
+`}></script>
+
+<script>
+  (function () {
+    const bookData = window.__BOOKS__ || [];
+    const modal = document.getElementById('book-modal');
+    const modalTitle = document.getElementById('book-modal-title');
+    const modalId = document.getElementById('book-modal-id');
+    const modalStatus = document.getElementById('book-modal-status');
+    const modalBody = document.getElementById('book-modal-body');
+    const closeBtn = document.getElementById('book-modal-close');
+    const closeBtnBottom = document.getElementById('book-modal-close-btn');
+    const amazonBtn = document.getElementById('book-modal-amazon');
+    const openButtons = document.querySelectorAll('.book-open-btn');
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function openModal(index) {
+      const book = bookData[index];
+      if (!book || !modal) return;
+      modalId.textContent = book.id || '';
+      modalTitle.textContent = book.title || '';
+      modalBody.textContent = book.description || '';
+      if (book.amazonUrl && amazonBtn) {
+        amazonBtn.href = book.amazonUrl;
+        amazonBtn.classList.remove('hidden');
+      } else if (amazonBtn) {
+        amazonBtn.classList.add('hidden');
+      }
+      if (book.status === 'notApproved' || book.status === 'inDevelopment') {
+        modalStatus.textContent = book.status === 'notApproved' ? 'Not Approved' : 'In Development';
+        modalStatus.className = 'book-status mt-2 ' + (book.status === 'notApproved' ? 'book-status-notApproved' : 'book-status-inDevelopment');
+        modalStatus.classList.remove('hidden');
+      } else {
+        modalStatus.classList.add('hidden');
+      }
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      closeBtn?.focus();
+    }
+
+    function closeModal() {
+      modal?.classList.remove('open');
+      modal?.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const index = parseInt(btn.getAttribute('data-index') || '0', 10);
+        openModal(index);
+      });
+    });
+
+    closeBtn?.addEventListener('click', closeModal);
+    closeBtnBottom?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  })();
+</script>
