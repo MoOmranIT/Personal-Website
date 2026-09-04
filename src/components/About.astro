@@ -1,6 +1,4 @@
 ---
-const aboutImage = '/images/about.jpg';
-
 interface Props {
   translations?: {
     about?: {
@@ -31,7 +29,8 @@ const t = translations.about || {};
         {t.heading || 'Who am I?'}
       </h2>
     </div>
-    <div class="reveal-scale bg-slate-50 rounded-3xl p-8 sm:p-14 shadow-sm">
+    <div class="reveal-scale bg-slate-50 rounded-3xl p-8 sm:p-14 ring-1 ring-slate-100 shadow-sm relative overflow-hidden">
+      <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 pointer-events-none"></span>
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">
         {t.subheading || "I'm Dr. Khaled Al Mohammad"}
       </h3>
@@ -56,7 +55,7 @@ const t = translations.about || {};
               'I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.'
             ]).map((item) => (
               <li class="flex gap-3">
-                <span class="text-navy">✓</span> {item}
+                <span aria-hidden="true" class="mt-1 w-5 h-5 rounded-full bg-gold/15 text-gold flex items-center justify-center text-xs font-bold">✓</span> {item}
               </li>
             ))}
           </ul>
@@ -70,7 +69,7 @@ const t = translations.about || {};
               'Leading and aligning cross-functional teams'
             ]).map((item) => (
               <li class="flex gap-3">
-                <span class="text-navy">✓</span> {item}
+                <span aria-hidden="true" class="mt-1 w-5 h-5 rounded-full bg-gold/15 text-gold flex items-center justify-center text-xs font-bold">✓</span> {item}
               </li>
             ))}
           </ul>

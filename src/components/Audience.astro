@@ -56,9 +56,9 @@ const audiences = t.items || [
       </h2>
       <div class="space-y-5">
         {audiences.map((audience, index) => (
-          <div class={`flex gap-4 items-start bg-white p-5 rounded-xl shadow-sm lift-card reveal delay-${index + 1}`}>
+          <div class={`flex gap-4 items-start bg-white p-5 rounded-xl ring-1 ring-slate-200 shadow-sm lift-card reveal delay-${index + 1}`}>
             {audience.emoji && (
-              <span class="text-navy text-2xl">{audience.emoji}</span>
+              <span aria-hidden="true" class="icon-chip text-2xl">{audience.emoji}</span>
             )}
             <p class="text-slate-600 text-lg">
               <strong class="text-navy">{audience.title}</strong> {audience.description}

@@ -190,6 +190,23 @@
     });
   }
 
+  // Close mobile menu with Escape (regardless of focus)
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && menuOpen) {
+      closeMenu();
+      menuToggle?.focus();
+    }
+  });
+
+  // Close mobile menu when clicking outside it
+  document.addEventListener('click', (e: MouseEvent) => {
+    if (!menuOpen) return;
+    const target = e.target as Element | null;
+    if (menuToggle && target && menuToggle.contains(target)) return;
+    if (mobileMenu && target && mobileMenu.contains(target)) return;
+    closeMenu();
+  });
+
   // Flip cards
   document.querySelectorAll('.flip-card').forEach((el) => {
     const card = el as HTMLElement;

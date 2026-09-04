@@ -21,6 +21,7 @@ interface Props {
 const { translations = {}, lang = 'en' } = Astro.props;
 const t = translations.contact || {};
 const displayPhone = '+971 55 343 3150';
+const contactArrow = lang === 'ar' ? '←' : '→';
 ---
 
 <section id="contact" class="py-24 navy-grad text-white relative overflow-hidden">
@@ -39,30 +40,33 @@ const displayPhone = '+971 55 343 3150';
     </div>
     <div class="max-w-xl mx-auto">
       <div class="flex flex-col gap-5 reveal">
-        <a href={siteConfig.contact.whatsapp} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
-          <span class="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-xl">💬</span>
-          <span>
+        <a href={siteConfig.contact.whatsapp} target="_blank" rel="noopener noreferrer" class="flex items-center gap-4 bg-white/10 hover:bg-white/15 transition rounded-2xl p-6 border border-white/10 hover:border-gold/40 lift-card group">
+          <span class="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center text-xl ring-2 ring-white/30">💬</span>
+          <span class="flex-1">
             <span class="block font-semibold">{t.cards?.whatsapp?.title || 'WhatsApp'}</span>
             <span class="block text-white/60 text-sm">{t.cards?.whatsapp?.description || 'Instant response'}</span>
           </span>
+          <span aria-hidden="true" class="cta-arrow text-white/60">{contactArrow}</span>
         </a>
-        <a href={"mailto:" + siteConfig.contact.email} class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
-          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">✉️</span>
-          <span>
+        <a href={"mailto:" + siteConfig.contact.email} class="flex items-center gap-4 bg-white/10 hover:bg-white/15 transition rounded-2xl p-6 border border-white/10 hover:border-gold/40 lift-card group">
+          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl ring-2 ring-white/20">✉️</span>
+          <span class="flex-1">
             <span class="block font-semibold">{t.cards?.email?.title || 'Email'}</span>
             <span class="block text-white/60 text-sm">{siteConfig.contact.email}</span>
           </span>
+          <span aria-hidden="true" class="cta-arrow text-white/60">{contactArrow}</span>
         </a>
-        <a href={"tel:" + siteConfig.contact.phone} class="flex items-center gap-4 bg-white/10 hover:bg-white/20 transition rounded-2xl p-6 border border-white/10 lift-card">
-          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">📞</span>
-          <span>
+        <a href={"tel:" + siteConfig.contact.phone} class="flex items-center gap-4 bg-white/10 hover:bg-white/15 transition rounded-2xl p-6 border border-white/10 hover:border-gold/40 lift-card group">
+          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl ring-2 ring-white/20">📞</span>
+          <span class="flex-1">
             <span class="block font-semibold">{t.cards?.phone?.title || 'Phone'}</span>
             <span class="block text-white/60 text-sm">{displayPhone}</span>
           </span>
+          <span aria-hidden="true" class="cta-arrow text-white/60">→</span>
         </a>
         <div class="flex items-center gap-4 bg-white/10 rounded-2xl p-6 border border-white/10">
-          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl">📍</span>
-          <span>
+          <span class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center text-xl ring-2 ring-white/20">📍</span>
+          <span class="flex-1">
             <span class="block font-semibold">{t.cards?.office?.title || 'Office'}</span>
             <span class="block text-white/60 text-sm">{t.cards?.office?.description || siteConfig.contact.address}</span>
           </span>

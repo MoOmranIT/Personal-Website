@@ -32,46 +32,50 @@ const stats = [
 
 <section id="home" class="hero-pattern relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
-    <div class="reveal-left">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy/5 text-navy text-xs font-semibold tracking-widest uppercase mb-8">
+    <div>
+      <span class="reveal delay-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-navy/5 text-navy text-xs font-semibold tracking-widest uppercase mb-8">
         <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
         {t.badge || 'Strategic Business Consulting'}
       </span>
-      <h1 class="text-4xl sm:text-5xl lg:text-[3.6rem] font-bold leading-[1.05] text-navy mb-6 tracking-tight">
+      <h1 class="reveal delay-2 text-4xl sm:text-5xl lg:text-[3.6rem] font-bold leading-[1.05] text-navy mb-6 tracking-tight">
         {t.heading || 'Business Consulting & Strategic Development'}
       </h1>
-      <div class="text-slate-600 text-lg leading-relaxed mb-10 max-w-xl" set:html={t.description || 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>'} />
-      <div class="flex flex-wrap items-center gap-4">
+      <div class="reveal delay-3 text-slate-600 text-lg leading-relaxed mb-10 max-w-xl" set:html={t.description || 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>'} />
+      <div class="reveal delay-4 flex flex-wrap items-center gap-4">
         <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg">
           {t.ctaPrimary || 'Start Your Consultation'}
         </a>
         <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="btn-outline px-8 py-4 rounded-full font-semibold text-base flex items-center gap-2">
-          {t.ctaSecondary || 'Discover My Story'} {arrow}
+          {t.ctaSecondary || 'Discover My Story'} <span class="cta-arrow">{arrow}</span>
         </a>
       </div>
-      <div class="grid grid-cols-3 gap-6 mt-14 max-w-lg">
+      <div class="reveal delay-5 grid grid-cols-3 gap-6 mt-14 max-w-lg">
         {stats.map((stat, i) => (
-          <div class={`reveal ${stat.delay}`}>
+          <div>
             <p class="text-3xl sm:text-4xl font-bold text-navy counter-num" data-target={stat.value}>0{stat.suffix}</p>
             <p class="text-xs uppercase tracking-wide text-slate-500 mt-2">{stat.label}</p>
           </div>
         ))}
       </div>
     </div>
-    <div class="relative reveal-right delay-2">
-      <picture>
-        <source srcset={heroImage} type="image/webp" />
-        <img
-          src={heroFallback}
-          alt="Dr. Khaled Al Mohammad, Business Consultant in Dubai"
-          width="800"
-          height="800"
-          class="relative rounded-[2.5rem] w-full max-w-md mx-auto aspect-square object-cover object-top shadow-2xl parallax-img"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-        />
-      </picture>
+    <div class="reveal-right delay-6 relative">
+      <div class="w-full max-w-md mx-auto relative">
+        <div aria-hidden="true" class="absolute -inset-3 rounded-[2.6rem] border border-gold/25 pointer-events-none"></div>
+        <div aria-hidden="true" class="absolute -inset-1 rounded-[2.5rem] bg-navy-soft/10 pointer-events-none"></div>
+        <picture>
+          <source srcset={heroImage} type="image/webp" />
+          <img
+            src={heroFallback}
+            alt="Dr. Khaled Al Mohammad, Business Consultant in Dubai"
+            width="800"
+            height="800"
+            class="relative rounded-[2.5rem] w-full max-w-md mx-auto aspect-square object-cover object-top shadow-2xl parallax-img"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
       <div class={`absolute -bottom-6 ${cardPosition} bg-white rounded-2xl shadow-xl px-6 py-4 hidden sm:block lift-card`}>
         <p class="text-navy font-bold text-lg">+30%</p>
         <p class="text-xs text-slate-500">Average Business Growth</p>

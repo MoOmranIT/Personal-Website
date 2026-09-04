@@ -19,18 +19,49 @@ const { translations = {}, lang = 'en' } = Astro.props;
 const t = translations.footer || {};
 ---
 
-<footer class="bg-white py-10 border-t border-slate-100">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-    <p>
-      © <span id="year">{new Date().getFullYear()}</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات' : 'Business Consultant, Dubai, UAE'}. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
-    </p>
-    <nav class="flex flex-wrap gap-4 sm:gap-5 text-xs sm:text-sm" aria-label="Footer">
-      <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="hover:text-navy transition-colors">{t.nav?.home || 'Home'}</a>
-      <a href={lang === 'ar' ? '/ar/#services' : '#services'} class="hover:text-navy transition-colors">{lang === 'ar' ? 'خدماتنا' : 'Services'}</a>
-      <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="hover:text-navy transition-colors">{t.nav?.about || 'About'}</a>
-      <a href={lang === 'ar' ? '/ar/#books' : '#books'} class="hover:text-navy transition-colors">{t.nav?.books || 'Books'}</a>
-      <a href={lang === 'ar' ? '/ar/#success' : '#success'} class="hover:text-navy transition-colors">{lang === 'ar' ? 'قصص النجاح' : 'Success'}</a>
-      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="hover:text-navy transition-colors">{t.nav?.contact || 'Contact'}</a>
-    </nav>
+<footer class="navy-grad text-white relative overflow-hidden">
+  <div aria-hidden="true" class="absolute -top-24 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div aria-hidden="true" class="absolute bottom-0 left-0 w-[24rem] h-64 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-14">
+    <div class="grid md:grid-cols-3 gap-10 md:gap-8">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-full bg-white/10 ring-1 ring-gold/40 flex items-center justify-center text-white font-bold text-lg">KM</span>
+          <span class="leading-tight">
+            <span class="block font-serif text-lg font-bold text-white">{siteConfig.name}</span>
+            <span class="block text-[11px] uppercase tracking-[.2em] text-white/50">{lang === 'ar' ? 'مستشار أعمال، دبي' : 'Business Consultant — Dubai'}</span>
+          </span>
+        </div>
+        <p class="text-white/60 text-sm mt-5 max-w-xs leading-relaxed">
+          {lang === 'ar' ? 'استشارات استراتيجية وتسويقية وحلول نمو مبنية على أكثر من 18 عاماً من الخبرة في دبي والخليج.' : 'Strategic consulting, marketing and growth solutions built on 18+ years of experience across the Gulf.'}
+        </p>
+      </div>
+      <nav class="space-y-2.5" aria-label="Footer">
+        <h3 class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-5">{lang === 'ar' ? 'روابط سريعة' : 'Quick Links'}</h3>
+        <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{t.nav?.home || 'Home'}</a>
+        <a href={lang === 'ar' ? '/ar/#services' : '#services'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{lang === 'ar' ? 'خدماتنا' : 'Services'}</a>
+        <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{t.nav?.about || 'About'}</a>
+        <a href={lang === 'ar' ? '/ar/#books' : '#books'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{t.nav?.books || 'Books'}</a>
+        <a href={lang === 'ar' ? '/ar/#success' : '#success'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{lang === 'ar' ? 'قصص النجاح' : 'Success'}</a>
+        <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="hover:text-gold inline-block text-white/80 text-sm transition-colors">{t.nav?.contact || 'Contact'}</a>
+      </nav>
+      <div class="space-y-2.5">
+        <h3 class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-5">{lang === 'ar' ? 'تواصل معنا' : 'Get in Touch'}</h3>
+        <a href={"mailto:" + siteConfig.contact.email} class="hover:text-gold inline-flex items-center gap-2 text-white/80 text-sm transition-colors">
+          <span aria-hidden="true" class="text-base">✉️</span>{siteConfig.contact.email}
+        </a>
+        <a href={"tel:" + siteConfig.contact.phone} class="hover:text-gold inline-flex items-center gap-2 text-white/80 text-sm transition-colors">
+          <span aria-hidden="true" class="text-base">📞</span>+971 55 343 3150
+        </a>
+        <span class="inline-flex items-center gap-2 text-white/80 text-sm">
+          <span aria-hidden="true" class="text-base">📍</span>{siteConfig.contact.address}
+        </span>
+      </div>
+    </div>
+    <div class="border-t border-white/10 mt-12 pt-6 text-center">
+      <p class="text-white/50 text-sm">
+        © <span id="year">{new Date().getFullYear()}</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات.' : 'Business Consultant, Dubai, UAE.'} {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+      </p>
+    </div>
   </div>
 </footer>

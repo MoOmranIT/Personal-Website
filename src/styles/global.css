@@ -240,7 +240,24 @@
   }
 
   #site-header.scrolled {
-    box-shadow: 0 6px 25px -10px #0b1c3940;
+    box-shadow: 0 10px 30px -14px #0b1c3945;
+    border-bottom: 1px solid #0b1c3914;
+  }
+
+  /* Gold hairline under the header for premium separation */
+  #site-header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  #site-header.scrolled::after {
+    opacity: .5;
   }
 
   .nav-link {
@@ -339,18 +356,6 @@
     right: 0;
   }
 
-  .book-cover {
-    aspect-ratio: 3/4.2;
-    border-radius: .5rem;
-    transition: transform .5s, box-shadow .5s;
-    box-shadow: 0 20px 40px -15px #0b1c3966;
-  }
-
-  .book-cover:hover {
-    box-shadow: var(--shadow-lift);
-    transform: translateY(-10px) rotate(-1deg) scale(1.03);
-  }
-
   .float-wa {
     animation: 2.4s infinite pulse-wa;
   }
@@ -378,14 +383,52 @@
     box-shadow: 0 22px 45px -22px #0b1c3973;
   }
 
-  @keyframes float-soft {
-    0%, to { transform: translateY(0) rotate(3deg); }
-    50% { transform: translateY(-14px) rotate(3deg); }
+  /* ---- Premium motion utilities ---- */
+
+  /* Consistent card elevation on hover */
+  .card-premium {
+    transition: transform .5s var(--ease-out-expo), box-shadow .5s var(--ease-out-expo), border-color .5s;
+  }
+  .card-premium:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lift);
   }
 
-  .float-soft {
-    animation: 7s ease-in-out infinite float-soft;
+  /* Directional arrow micro-interaction */
+  .cta-arrow {
+    display: inline-block;
+    transition: transform .35s var(--ease-out-expo);
   }
+  .group:hover .cta-arrow,
+  .group:focus-visible .cta-arrow {
+    transform: translateX(4px);
+  }
+  [dir="rtl"] .group:hover .cta-arrow,
+  [dir="rtl"] .group:focus-visible .cta-arrow {
+    transform: translateX(-4px);
+  }
+
+  /* Flip card keyboard focus */
+  .flip-card:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 1rem;
+  }
+
+  /* Icon chip */
+  .icon-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    background: rgba(11, 28, 57, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(201, 167, 105, 0.28);
+  }
+
+  /* Button sheen respects reduced motion automatically via global rule. */
 
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -430,11 +473,6 @@
   }
 
   [dir="rtl"] .title-underline:after {
-    left: auto;
-    right: 0;
-  }
-
-  [dir="rtl"] .book-cover .absolute.inset-y-0 {
     left: auto;
     right: 0;
   }

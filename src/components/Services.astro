@@ -70,12 +70,15 @@ const services = [
     </div>
     <div class="grid lg:grid-cols-2 gap-8">
       {services.map((service, i) => (
-        <div class={`reveal ${i === 1 ? 'delay-2' : ''} ${service.variant === 'dark' ? 'navy-grad text-white rounded-3xl p-8 sm:p-12' : 'bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100'}`}>
+        <div class={`reveal ${i === 1 ? 'delay-2' : ''} card-premium group relative ${service.variant === 'dark' ? 'navy-grad text-white rounded-3xl p-8 sm:p-12' : 'bg-white ring-1 ring-slate-100 rounded-3xl p-8 sm:p-12'}`}>
+          {service.variant !== 'dark' && (
+            <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></span>
+          )}
           <div class="flex items-start justify-between gap-4 mb-6">
             <span class="text-xs uppercase tracking-[.3em] text-slate-400">
               {service.id} — {service.title}
             </span>
-            <span class="text-3xl">{service.icon}</span>
+            <span aria-hidden="true" class="icon-chip text-2xl">{service.icon}</span>
           </div>
           <h3 class={`text-3xl sm:text-4xl font-bold mb-6 leading-tight ${service.variant === 'dark' ? 'text-white' : 'text-navy'}`} set:html={service.heading.replace(/Phoenix/g, '<span class="gold">Phoenix</span>')} />
           {service.description && (
@@ -93,9 +96,9 @@ const services = [
               ))}
             </ul>
           )}
-          <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class={`inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-full transition-all ${service.variant === 'dark' ? 'bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5' : 'btn-outline'}`}>
+          <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class={`group inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-full transition-all ${service.variant === 'dark' ? 'bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5' : 'btn-outline'}`}>
             {service.cta}
-            <span>{lang === 'ar' ? '←' : '→'}</span>
+            <span class="cta-arrow" aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span>
           </a>
         </div>
       ))}

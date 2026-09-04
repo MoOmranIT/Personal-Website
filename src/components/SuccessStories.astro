@@ -50,16 +50,28 @@ const stories = (t.items || []).map((item) => ({
     width: 100%;
     max-height: 85vh;
     overflow-y: auto;
-    transform: translateY(20px);
-    transition: transform 0.25s ease;
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    transition: transform 0.3s var(--ease-out-expo), opacity 0.3s var(--ease-out-expo);
     box-shadow: 0 30px 55px -15px #0b1c398c;
+    will-change: transform, opacity;
   }
   .story-modal-backdrop.open .story-modal {
-    transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
   .story-modal p,
   .story-modal li {
     line-height: 1.7;
+  }
+  .story-modal .story-hero {
+    border-radius: 1.2rem;
+    height: 12rem;
+    object-fit: cover;
+    width: 100%;
+  }
+  .story-modal .story-body {
+    padding: 1.5rem 1.75rem 1rem;
   }
 </style>
 
@@ -112,7 +124,8 @@ const stories = (t.items || []).map((item) => ({
                 class="story-open-btn inline-flex items-center gap-2 text-gold font-semibold text-sm mt-6 group"
                 data-index={i}
               >
-                {t.ctaFull || t.cta || 'اقرأ القصة كاملة'}
+                {t.ctaFull || t.cta || (lang === 'ar' ? 'اقرأ القصة كاملة' : 'Read the Full Story')}
+                <span class="cta-arrow" aria-hidden="true">{arrow}</span>
               </button>
             </div>
           </div>
@@ -123,30 +136,34 @@ const stories = (t.items || []).map((item) => ({
 
   <div class="story-modal-backdrop" id="story-modal" aria-hidden="true">
     <div class="story-modal" role="dialog" aria-modal="true" aria-label={t.heading || 'Success Stories'}>
-      <div class="p-6 sm:p-10">
-        <div class="flex items-start justify-between gap-4 mb-6">
-          <div>
+      <div class="px-5 sm:px-8">
+        <div class="flex items-start justify-between gap-4 pt-5 sm:pt-8">
+          <div class="flex-1">
             <span class="gold text-xs uppercase tracking-widest" id="story-modal-id"></span>
             <h3 class="text-2xl sm:text-3xl font-bold text-navy mt-2" id="story-modal-title"></h3>
+            <span aria-hidden="true" class="mt-5 block h-0.5 w-12 bg-gold/70"></span>
           </div>
           <button
             type="button"
             id="story-modal-close"
-            class="text-navy hover:text-gold transition-colors"
+            class="mt-1 w-11 h-11 rounded-full border border-navy/15 bg-white/90 text-navy hover:bg-navy hover:text-white hover:border-gold/60 transition-all duration-300 flex items-center justify-center"
             aria-label={lang === 'ar' ? 'إغلاق' : 'Close'}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
-        <div class="text-slate-600 text-lg leading-relaxed space-y-4" id="story-modal-body"></div>
-        <div class="mt-8 text-center">
-          <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-3.5 rounded-full font-semibold">
-            {t.cta || 'Book a Session'}
-          </a>
+        <div class="mt-5">
+          <img class="story-hero" id="story-modal-image" width="720" height="300" alt="" />
         </div>
+      </div>
+      <div class="story-body text-slate-600 text-lg leading-relaxed space-y-4" id="story-modal-body"></div>
+      <div class="px-5 sm:px-8 py-6 text-center">
+        <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-8 py-3.5 rounded-full font-semibold">
+          {t.cta || 'Book a Session'}
+        </a>
       </div>
     </div>
   </div>
@@ -202,6 +219,11 @@ const stories = (t.items || []).map((item) => ({
       if (!story || !modal) return;
       modalId.textContent = story.id || '';
       modalTitle.textContent = story.title || '';
+      const hero = document.getElementById('story-modal-image') as HTMLImageElement | null;
+      if (hero) {
+        hero.src = story.image || '';
+        hero.dataset.hero = story.alt || story.title || '';
+      }
       modalBody.innerHTML = formatStory(story.description || story.excerpt || '');
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
