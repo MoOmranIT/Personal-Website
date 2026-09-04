@@ -38,6 +38,7 @@ const services = [
       'Local and international market expansion'
     ],
     cta: t.section1?.cta ?? 'Book a Session',
+    icon: '📈',
     variant: 'light'
   },
   {
@@ -51,62 +52,53 @@ const services = [
       'Business continuity assurance'
     ],
     cta: t.section2?.cta ?? 'Book a Session',
+    icon: '🔥',
     variant: 'dark'
   }
 ];
 ---
 
-<section id="services" class="relative">
-  <div class="grid lg:grid-cols-2">
-    <div class="reveal-left bg-white px-8 sm:px-16 py-20 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-slate-100">
-      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-4">
-        {services[0].id} — {services[0].title}
+<section id="services" class="relative bg-slate-50">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
+        {lang === 'ar' ? 'خدماتنا' : 'Our Services'}
       </span>
-      <h2 class="text-3xl sm:text-4xl font-bold text-navy mb-6 title-underline">
-        {services[0].heading}
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        {lang === 'ar' ? 'كيف نساعد شركتك على النمو' : 'How We Drive Your Growth'}
       </h2>
-      {services[0].description && (
-        <p class="text-slate-600 text-lg leading-relaxed mb-8">
-          {services[0].description}
-        </p>
-      )}
-      {services[0].points.length > 0 && (
-        <ul class="space-y-4 mb-8">
-          {services[0].points.map((point) => (
-            <li class="flex items-start gap-3 group">
-              <span class="w-2 h-2 mt-2 rounded-full bg-navy shrink-0 transition-transform duration-300 group-hover:scale-150"></span>
-              <span class="text-slate-600 transition-colors duration-300 group-hover:text-navy" set:html={point} />
-            </li>
-          ))}
-        </ul>
-      )}
-      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-outline w-fit px-7 py-3.5 rounded-full font-semibold">
-        {services[0].cta}
-      </a>
     </div>
-    <div class="reveal-right navy-grad px-8 sm:px-16 py-20 flex flex-col justify-center text-white">
-      <span class="text-xs uppercase tracking-[.3em] text-white/50 mb-4">
-        {services[1].id} — {services[1].title}
-      </span>
-      <h2 class="text-3xl sm:text-4xl font-bold mb-6" set:html={services[1].heading.replace('Phoenix', '<span class="gold">Phoenix</span>')} />
-      {services[1].description && (
-        <p class="text-white/80 text-lg leading-relaxed mb-8">
-          {services[1].description}
-        </p>
-      )}
-      {services[1].points.length > 0 && (
-        <ul class="space-y-4 mb-8">
-          {services[1].points.map((point) => (
-            <li class="flex items-start gap-3 group">
-              <span class="w-2 h-2 mt-2 rounded-full bg-gold shrink-0 transition-transform duration-300 group-hover:scale-150"></span>
-              <span class="text-white/80 transition-colors duration-300 group-hover:text-white" set:html={point} />
-            </li>
-          ))}
-        </ul>
-      )}
-      <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="w-fit px-7 py-3.5 rounded-full font-semibold bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5 transition-all">
-        {services[1].cta}
-      </a>
+    <div class="grid lg:grid-cols-2 gap-8">
+      {services.map((service, i) => (
+        <div class={`reveal ${i === 1 ? 'delay-2' : ''} ${service.variant === 'dark' ? 'navy-grad text-white rounded-3xl p-8 sm:p-12' : 'bg-white rounded-3xl p-8 sm:p-12 shadow-sm border border-slate-100'}`}>
+          <div class="flex items-start justify-between gap-4 mb-6">
+            <span class="text-xs uppercase tracking-[.3em] text-slate-400">
+              {service.id} — {service.title}
+            </span>
+            <span class="text-3xl">{service.icon}</span>
+          </div>
+          <h3 class="text-3xl sm:text-4xl font-bold text-navy mb-6 leading-tight" set:html={service.heading.replace(/Phoenix/g, '<span class="gold">Phoenix</span>')} />
+          {service.description && (
+            <p class={`text-lg leading-relaxed mb-8 ${service.variant === 'dark' ? 'text-white/80' : 'text-slate-600'}`}>
+              {service.description}
+            </p>
+          )}
+          {service.points.length > 0 && (
+            <ul class="space-y-4 mb-10">
+              {service.points.map((point) => (
+                <li class="flex items-start gap-3 group">
+                  <span class={`w-2 h-2 mt-2 rounded-full shrink-0 transition-transform duration-300 group-hover:scale-150 ${service.variant === 'dark' ? 'bg-gold' : 'bg-navy'}`}></span>
+                  <span class={`transition-colors duration-300 group-hover:text-navy ${service.variant === 'dark' ? 'text-white/80 group-hover:text-white' : 'text-slate-600'}`} set:html={point} />
+                </li>
+              ))}
+            </ul>
+          )}
+          <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class={`inline-flex items-center gap-2 font-semibold px-7 py-3.5 rounded-full transition-all ${service.variant === 'dark' ? 'bg-white text-navy hover:bg-gold hover:text-white hover:-translate-y-0.5' : 'btn-outline'}`}>
+            {service.cta}
+            <span>{lang === 'ar' ? '←' : '→'}</span>
+          </a>
+        </div>
+      ))}
     </div>
   </div>
 </section>

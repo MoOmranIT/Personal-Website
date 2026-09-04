@@ -4,14 +4,14 @@ interface Props {
 }
 
 const { lang = 'en' } = Astro.props;
-const positionClass = lang === 'ar' ? 'left-6' : 'right-6';
+const positionClass = lang === 'ar' ? 'right-6' : 'left-6';
 ---
 
 <button
   type="button"
-  aria-label={lang === 'ar' ? 'العودة إلى الأعلى' : 'Back to top'}
+  aria-label={lang === 'ar' ? 'العود إلى الأعلى' : 'Back to top'}
   id="back-to-top"
-  class={`fixed bottom-26 ${positionClass} z-50 w-12 h-12 rounded-full bg-navy text-white shadow-xl flex items-center justify-center transition-all duration-400 hover:bg-gold opacity-0 translate-y-4 pointer-events-none`}
+  class={`fixed bottom-24 ${positionClass} z-[65] w-12 h-12 rounded-full bg-navy text-white shadow-xl flex items-center justify-center transition-all duration-400 hover:bg-gold opacity-0 translate-y-4 pointer-events-none`}
 >
   ↑
 </button>

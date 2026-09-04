@@ -11,6 +11,61 @@
     background-color: rgba(11, 28, 57, 0.2);
     color: inherit;
   }
+
+  html {
+    scroll-padding-top: 90px;
+    overflow-x: hidden;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  main {
+    overflow-x: hidden;
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Skip link for keyboard navigation */
+  .skip-link {
+    position: absolute;
+    left: 50%;
+    top: -40px;
+    transform: translateX(-50%);
+    z-index: 100;
+    background: var(--navy);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 0 0.75rem 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top .3s;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  /* Focus visibility */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+  }
 }
 
 @layer components {
@@ -190,6 +245,7 @@
 
   .nav-link {
     position: relative;
+    padding: 0.5rem 0;
   }
 
   .nav-link:after {
@@ -199,8 +255,9 @@
     height: 2px;
     transition: width .3s;
     position: absolute;
-    bottom: -4px;
+    bottom: 0;
     left: 0;
+    right: 0;
   }
 
   .nav-link:hover:after,
@@ -215,6 +272,18 @@
   .scroll-progress {
     transform-origin: 0;
     background: var(--grad-gold);
+  }
+
+  /* Modal focus trap */
+  .modal-focus-trap {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .modal-focus-trap:focus {
+    outline: none;
   }
 
   .flip-card {

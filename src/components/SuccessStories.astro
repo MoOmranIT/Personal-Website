@@ -79,7 +79,7 @@ const stories = (t.items || []).map((item) => ({
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {stories.map((story, i) => (
         <div
-          class={`flip-card reveal delay-${i + 1} cursor-pointer`}
+          class="flip-card reveal cursor-pointer"
           data-flipped="false"
           role="button"
           tabindex="0"
@@ -133,7 +133,7 @@ const stories = (t.items || []).map((item) => ({
             type="button"
             id="story-modal-close"
             class="text-navy hover:text-gold transition-colors"
-            aria-label="Close"
+            aria-label={lang === 'ar' ? 'إغلاق' : 'Close'}
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -177,8 +177,8 @@ const stories = (t.items || []).map((item) => ({
         if (trimmed.startsWith('- ')) {
           return '<li>' + escapeHtml(trimmed.slice(2)) + '</li>';
         }
-        if (/^##\\s/.test(trimmed)) {
-          return '<h4 class="text-navy font-bold text-xl mt-6 mb-2">' + escapeHtml(trimmed.replace(/^##\\s*/, '')) + '</h4>';
+        if (/^##\s/.test(trimmed)) {
+          return '<h4 class="text-navy font-bold text-xl mt-6 mb-2">' + escapeHtml(trimmed.replace(/^##\s*/, '')) + '</h4>';
         }
         return '<p>' + escapeHtml(trimmed) + '</p>';
       });

@@ -42,15 +42,15 @@ const displayPhone = '+971 55 343 3150';
 ---
 
 <section id="contact" class="py-24 navy-grad text-white relative overflow-hidden">
-  <div class="absolute -top-20 -right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+  <div class="hidden lg:block absolute -top-20 -right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none"></div>
   <div class="max-w-6xl mx-auto px-5 sm:px-8 relative">
     <div class="text-center mb-16 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-white/50 mb-3 block">
         {t.badge || "Let's Talk"}
       </span>
-      <h2 class="text-4xl sm:text-5xl font-bold mb-4">
-        {t.heading || 'Ready to Start Your'} <span class="gold">{lang === 'ar' ? 'الاستشارة؟' : 'Consultation?'}</span>
-      </h2>
+<h2 class="text-4xl sm:text-5xl font-bold mb-4 text-white" set:html={(lang === 'ar'
+  ? 'جاهز لبدء <span class="gold">استشارتك</span>؟'
+  : 'Ready to Start Your <span class="gold">Consultation?</span>')}></h2>
       <p class="text-white/70 max-w-2xl mx-auto">
         {t.description || 'Fill in the form below or reach out directly — I personally review every inquiry and respond within 24 hours.'}
       </p>

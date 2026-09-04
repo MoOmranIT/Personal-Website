@@ -21,7 +21,7 @@ const t = translations.about || {};
 ---
 
 <section id="about" class="py-24 bg-white relative overflow-hidden">
-  <div class="absolute top-0 right-0 w-96 h-96 bg-navy/5 rounded-full blur-3xl"></div>
+  <div class="hidden lg:block absolute top-0 right-0 w-96 h-96 bg-navy/5 rounded-full blur-3xl pointer-events-none"></div>
   <div class="max-w-5xl mx-auto px-5 sm:px-8 relative">
     <div class="text-center mb-14 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
@@ -46,29 +46,36 @@ const t = translations.about || {};
           <p set:html={p} />
         ))}
       </div>
-      <ul class="space-y-3 pl-2">
-        {(t.list1 || [
-          'I have trained over 3,000 professionals in management, marketing, and sales.',
-          'I have contributed to the growth and transformation of hundreds of companies and public and private entities.',
-          'I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.'
-        ]).map((item) => (
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> {item}
-          </li>
-        ))}
-      </ul>
-      <p>{(t.paragraphs || [])[3] || 'I am a certified consultant and international trainer with hands-on executive expertise in:'}</p>
-      <ul class="space-y-3 pl-2">
-        {(t.list2 || [
-          'Managing and optimizing marketing campaigns',
-          'Designing scalable expansion and growth strategies',
-          'Leading and aligning cross-functional teams'
-        ]).map((item) => (
-          <li class="flex gap-3">
-            <span class="text-navy">✓</span> {item}
-          </li>
-        ))}
-      </ul>
+      <div class="grid sm:grid-cols-2 gap-8 mt-10">
+        <div>
+          <h4 class="text-sm uppercase tracking-widest text-navy font-bold mb-4">{lang === 'ar' ? 'أبرز إنجازاتي' : 'Key Achievements'}</h4>
+          <ul class="space-y-3 pl-2">
+            {(t.list1 || [
+              'I have trained over 3,000 professionals in management, marketing, and sales.',
+              'I have contributed to the growth and transformation of hundreds of companies and public and private entities.',
+              'I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.'
+            ]).map((item) => (
+              <li class="flex gap-3">
+                <span class="text-navy">✓</span> {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-sm uppercase tracking-widest text-navy font-bold mb-4">{lang === 'ar' ? 'الخبرة التنفذية' : 'Executive Expertise'}</h4>
+          <ul class="space-y-3 pl-2">
+            {(t.list2 || [
+              'Managing and optimizing marketing campaigns',
+              'Designing scalable expansion and growth strategies',
+              'Leading and aligning cross-functional teams'
+            ]).map((item) => (
+              <li class="flex gap-3">
+                <span class="text-navy">✓</span> {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
       <div class="mt-10 flex justify-center">
         <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-9 py-4 rounded-full font-semibold text-base">
           {t.cta || 'Work With Me'}

@@ -2,6 +2,35 @@
 import { siteConfig } from '../scripts/siteConfig';
 import '../styles/global.css';
 
+interface Props {
+  title?: string;
+  description?: string;
+  ogDescription?: string;
+  twitterDescription?: string;
+  image?: string;
+  lang?: string;
+  dir?: string;
+  canonical?: string;
+  translations?: {
+    en?: { href: string };
+    ar?: { href: string };
+  };
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  ogDescription = siteConfig.ogDescription,
+  twitterDescription = siteConfig.twitterDescription,
+  image = '/images/og-image.jpg',
+  lang = 'en',
+  dir = 'ltr',
+  canonical = siteConfig.url,
+  translations
+} = Astro.props;
+
+const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@graph": [
@@ -106,7 +135,7 @@ const jsonLd = {
       "@id": siteConfig.url + "#website",
       "url": siteConfig.url,
       "name": siteConfig.name + " — Business Consultant",
-      "inLanguage": "en",
+      "inLanguage": lang,
       "publisher": {
         "@id": siteConfig.url + "#person"
       }
@@ -135,35 +164,6 @@ const websiteLd = {
   "url": siteConfig.url,
   "description": siteConfig.description
 };
-
-interface Props {
-  title?: string;
-  description?: string;
-  ogDescription?: string;
-  twitterDescription?: string;
-  image?: string;
-  lang?: string;
-  dir?: string;
-  canonical?: string;
-  translations?: {
-    en?: { href: string };
-    ar?: { href: string };
-  };
-}
-
-const {
-  title = siteConfig.title,
-  description = siteConfig.description,
-  ogDescription = siteConfig.ogDescription,
-  twitterDescription = siteConfig.twitterDescription,
-  image = '/images/og-image.jpg',
-  lang = 'en',
-  dir = 'ltr',
-  canonical = siteConfig.url,
-  translations
-} = Astro.props;
-
-const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
 ---
 
 <!DOCTYPE html>
@@ -195,6 +195,7 @@ const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.
     <meta name="twitter:description" content={twitterDescription} />
     <meta name="twitter:image" content={image} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -211,7 +212,10 @@ const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.
     <slot name="head" />
   </head>
   <body class="font-sans text-ink antialiased" data-lang={lang}>
+    <a href="#main" class="skip-link">Skip to main content</a>
     <slot />
-    <script type="module" src="/src/scripts/site.ts"></script>
+    <script>
+      import "../scripts/site.ts";
+    </script>
   </body>
 </html>

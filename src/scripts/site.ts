@@ -39,6 +39,34 @@
     }
   });
 
+  // Modal focus trap (applied on open)
+  function trapFocus(modal) {
+    if (!modal) return;
+    const focusable = modal.querySelectorAll(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+    function handleTab(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return;
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    modal.addEventListener('keydown', handleTab);
+    // Return cleanup
+    return () => modal.removeEventListener('keydown', handleTab);
+  }
+
   // Reveal on scroll
   const revealObserver = new IntersectionObserver(
     (entries) => {
@@ -84,7 +112,7 @@
   // Header state + scroll progress + back to top
   const header = document.getElementById('site-header');
   const progressBar = document.querySelector('.scroll-progress');
-  const backToTop = document.querySelector('[aria-label="Back to top"], [aria-label="تواصل عبر واتساب"]');
+  const backToTop = document.getElementById('back-to-top');
 
   function onScroll() {
     if (header) header.classList.toggle('scrolled', window.scrollY > 20);

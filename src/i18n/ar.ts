@@ -97,88 +97,32 @@ export const ar = {
     cta: 'اعمل معي'
   },
   books: {
-    badge: 'أعمال منشورة',
-    heading: 'كتبي',
-    description: 'مجموعة من الكتب المنشورة والقادمة في إدارة الأعمال والتسويق والقيادة.',
-    cta: 'عرض الكتاب',
-    close: 'إغلاق',
-    status: {
-      notApproved: 'غير معتمد للنشر',
-      inDevelopment: 'قيد التطوير'
-    },
+    badge: '\u0623\u0639\u0645\u0627\u0644 \u0645\u0646\u0634\u0648\u0631\u0629',
+    heading: '\u0643\u062a\u0628\u064a',
+    description: '\u062b\u0644\u0627\u062b\u0629 \u0643\u062a\u0628 \u0623\u0633\u0627\u0633\u064a\u0629 \u062d\u0648\u0644 \u062a\u0637\u0648\u064a\u0631 \u0627\u0644\u0623\u0639\u0645\u0627\u0644 \u0648\u062a\u0623\u062b\u064a\u0631 \u0627\u0644\u0639\u0645\u064a\u0644 \u0648\u0633\u064a\u0643\u0648\u0644\u0648\u062c\u064a\u0629 \u0627\u0644\u0634\u0631\u0627\u0621 \u2014 \u0645\u062a\u0648\u0641\u0631\u0629 \u0628\u0627\u0644\u0639\u0631\u0628\u064a\u0629 \u0648\u0627\u0644\u0625\u0646\u062c\u0644\u064a\u0632\u064a\u0629.',
+    cta: '\u0627\u0634\u062a\u0631\u0650 \u0645\u0646 Amazon \u2197',
+    close: '\u0625\u063a\u0644\u0627\u0642',
     items: [
       {
-        id: 'Book 01',
-        title: 'The Business Developer\'s Mindset',
-        category: 'استراتيجية الأعمال',
-        gradient: 'linear-gradient(135deg,#0b1c39 0%,#1c3a6e 100%)',
-        description: 'إطار استراتيجي لتصميم استراتيجيات النمو العضوي وغير العضوي للمنظمات القابلة للتوسع. متاح على Amazon Kindle.',
-        amazonUrl: 'https://www.amazon.com/stores/Dr.-Khaled-Almohamad/author/B0H217J18V'
+        id: 'business-developer',
+        title: '\u0639\u0642\u0644\u064a\u0629 \u0645\u0637\u0648\u0631 \u0627\u0644\u0623\u0639\u0645\u0627\u0644',
+        image: '/images/books/business-developers-mindset-ar.png',
+        alt: '\u063a\u0644\u0627\u0641 \u0643\u062a\u0627\u0628 \u0639\u0642\u0644\u064a\u0629 \u0645\u0637\u0648\u0631 \u0627\u0644\u0623\u0639\u0645\u0627\u0644',
+        amazonUrl: 'https://www.amazon.com/dp/B0H11YGJXR/ref=sr_1_3?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.+Khaled++Almohamad&s=digital-text&sr=1-3&text=Dr.+Khaled++Almohamad'
       },
       {
-        id: 'Book 02',
-        title: 'For Happy Clients: Behind Each Customer, 3,600 Potential Clients',
-        category: 'تجربة العملاء',
-        gradient: 'linear-gradient(150deg,#122a52,#0b1c39)',
-        description: 'يركز هذا الكتاب على استراتيجيات خدمة العملاء وبناء العلاقات المستدامة، ويكشف كيف يمكن لكل عميل راضٍ أن يكون بوابة لآلاف العملاء الجدد.'
+        id: 'customer-effect',
+        title: '\u0623\u062b\u0631 \u0627\u0644\u0639\u0645\u064a\u0644',
+        image: '/images/books/customer-effect-ar.png',
+        alt: '\u063a\u0644\u0627\u0641 \u0643\u062a\u0627\u0628 \u0623\u062b\u0631 \u0627\u0644\u0639\u0645\u064a\u0644',
+        amazonUrl: 'https://www.amazon.com/dp/B0GXH3H1NF/ref=sr_1_6?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.+Khaled++Almohamad&s=digital-text&sr=1-6&text=Dr.+Khaled++Almohamad'
       },
       {
-        id: 'Book 03',
-        title: 'KPIs: Performance Indicators and the Balanced Scorecard',
-        category: 'إدارة الأداء',
-        gradient: 'linear-gradient(150deg,#1c3a6e,#122a52)',
-        description: 'يتناول أهم مؤشرات الأداء الرئيسية (KPIs) وكيفية تصميم بطاقة الأداء المتوازن (BSC) لقياس الإنجاز المؤسسي وتحقيق التحسين المستمر.'
-      },
-      {
-        id: 'Book 04',
-        title: 'Work Ethics',
-        category: 'التطوير المهني',
-        gradient: 'linear-gradient(150deg,#0b1c39,#c9a769)',
-        description: 'يناقش هذا الكتاب القيم والسلوكيات المهنية التي تُعد أساساً لنجاح الأفراد والمؤسسات، ويقدّم نماذج تطبيقية لغرس الأخلاقيات في ثقافة العمل.'
-      },
-      {
-        id: 'Book 05',
-        title: 'How to Write a Marketing Plan',
-        category: 'استراتيجية التسويق',
-        gradient: 'linear-gradient(150deg,#122a52,#1c3a6e)',
-        description: 'دليل تطبيقي لتصميم خطة تسويق فعالة، من تحليل السوق إلى تنفيذ الحملات، مع أمثلة حقيقية ونماذج قابلة للتخصيص.'
-      },
-      {
-        id: 'Book 06',
-        title: 'Presentation Skills',
-        category: 'التواصل',
-        gradient: 'linear-gradient(150deg,#0b1c39,#122a52)',
-        description: 'يركز على مهارات العرض والتقديم الاحترافي، بما في ذلك لغة الجسد، إعداد المحتوى، والتعامل مع الجمهور، مع تدريبات عملية لرفع الثقة والأثر.'
-      },
-      {
-        id: 'Book 07',
-        title: 'Advanced Business Management',
-        category: 'الإدارة',
-        gradient: 'linear-gradient(135deg,#0b1c39 0%,#1c3a6e 100%)',
-        status: 'notApproved',
-        description: 'محاولة لتقديم نماذج إدارية متقدمة تجمع بين الاستراتيجية والقيادة والابتكار، لكنها لم تُعتمد رسمياً للنشر بعد.'
-      },
-      {
-        id: 'Book 08',
-        title: 'Professional Project Management',
-        category: 'إدارة المشاريع',
-        gradient: 'linear-gradient(150deg,#122a52,#0b1c39)',
-        status: 'inDevelopment',
-        description: 'مسودة لكتاب احترافي يهدف إلى تبسيط إدارة المشاريع عبر أدوات PMBOK بأسلوب عملي وتطبيقي، قيد التطوير.'
-      },
-      {
-        id: 'Book 09',
-        title: 'Psychological Secrets in the Art of Sales',
-        category: 'سيكولوجية البيع',
-        gradient: 'linear-gradient(150deg,#1c3a6e,#122a52)',
-        description: 'يكشف هذا الكتاب عن الجوانب النفسية الخفية التي تؤثر في قرارات الشراء، ويزوّد القارئ بأدوات لإقناع العملاء والتأثير في سلوكهم.'
-      },
-      {
-        id: 'Book 10',
-        title: 'I Am Business Developer',
-        category: 'تطوير الأعمال',
-        gradient: 'linear-gradient(150deg,#0b1c39,#c9a769)',
-        description: 'كتاب حديث يدمج الخبرة العملية بالرؤية المستقبلية لتطوير الأعمال، مع أمثلة خليجية وعالمية حول النمو، الشراكات، واكتشاف الفرص.'
+        id: 'why-people-buy',
+        title: '\u0644\u0645\u0627\u0630\u0627 \u064a\u0634\u062a\u0631\u064a \u0627\u0644\u0646\u0627\u0633\u061f',
+        image: '/images/books/why-people-buy-ar.png',
+        alt: '\u063a\u0644\u0627\u0641 \u0643\u062a\u0627\u0628 \u0644\u0645\u0627\u0630\u0627 \u064a\u0634\u062a\u0631\u064a \u0627\u0644\u0646\u0627\u0633\u061f',
+        amazonUrl: 'https://www.amazon.com/dp/B0GXPL8W9R/ref=sr_1_4?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.+Khaled++Almohamad&s=digital-text&sr=1-4&text=Dr.+Khaled++Almohamad'
       }
     ]
   },

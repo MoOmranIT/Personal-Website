@@ -24,10 +24,12 @@ const t = translations.footer || {};
     <p>
       © <span id="year">2026</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات' : 'Business Consultant, Dubai, UAE'}. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
     </p>
-    <nav class="flex gap-6" aria-label="Footer">
+    <nav class="flex flex-wrap gap-4 sm:gap-5 text-xs sm:text-sm" aria-label="Footer">
       <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="hover:text-navy transition-colors">{t.nav?.home || 'Home'}</a>
+      <a href={lang === 'ar' ? '/ar/#services' : '#services'} class="hover:text-navy transition-colors">{lang === 'ar' ? 'خدماتنا' : 'Services'}</a>
       <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="hover:text-navy transition-colors">{t.nav?.about || 'About'}</a>
       <a href={lang === 'ar' ? '/ar/#books' : '#books'} class="hover:text-navy transition-colors">{t.nav?.books || 'Books'}</a>
+      <a href={lang === 'ar' ? '/ar/#success' : '#success'} class="hover:text-navy transition-colors">{lang === 'ar' ? 'قصص النجاح' : 'Success'}</a>
       <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="hover:text-navy transition-colors">{t.nav?.contact || 'Contact'}</a>
     </nav>
   </div>
