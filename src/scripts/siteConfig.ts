@@ -14,9 +14,9 @@ export const siteConfig = {
     address: 'Dubai, United Arab Emirates'
   },
   social: {
-    linkedin: '#',
-    instagram: '#',
-    twitter: '#',
+    linkedin: 'https://www.linkedin.com/in/khaled-almohammad-7507b419/',
+    instagram: 'https://www.instagram.com/dr.khaled.almohammad/',
+    twitter: 'https://x.com/dr_khaled_mohd',
     amazon: 'https://www.amazon.com/stores/Dr.-Khaled-Almohamad/author/B0H217J18V'
   },
   placeholder: {
