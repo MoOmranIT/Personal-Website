@@ -4,7 +4,7 @@
   const lang = html.getAttribute('lang') || 'en';
   const isRTL = html.getAttribute('dir') === 'rtl';
 
-  const labels = {
+  const labels: Record<string, { sending: string; submit: string; success: string }> = {
     en: {
       sending: 'Sending...',
       submit: 'Send My Request',
@@ -19,7 +19,7 @@
 
   const t = labels[lang] || labels.en;
 
-  function scrollToHash(hash) {
+  function scrollToHash(hash: string): boolean {
     if (!hash || hash.length <= 1) return false;
     const target = document.querySelector(hash);
     if (!target) return false;
@@ -31,16 +31,17 @@
   }
 
   document.addEventListener('click', function (e) {
-    const anchor = e.target.closest && e.target.closest('a[href^="#"]');
+    const target = e.target as Element | null;
+    const anchor = target?.closest ? target.closest('a[href^="#"]') : null;
     if (!anchor) return;
-    if (scrollToHash(anchor.getAttribute('href'))) {
+    if (scrollToHash(anchor.getAttribute('href') || '')) {
       e.preventDefault();
       closeMenu();
     }
   });
 
   // Modal focus trap (applied on open)
-  function trapFocus(modal) {
+  function trapFocus(modal: HTMLElement) {
     if (!modal) return;
     const focusable = modal.querySelectorAll(
       'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
@@ -90,7 +91,7 @@
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         counterObserver.unobserve(entry.target);
-        const el = entry.target;
+        const el = entry.target as HTMLElement;
         const target = parseInt(el.dataset.target || '0', 10);
         let current = 0;
         const step = Math.max(1, Math.ceil(target / 60));
@@ -111,7 +112,7 @@
 
   // Header state + scroll progress + back to top
   const header = document.getElementById('site-header');
-  const progressBar = document.querySelector('.scroll-progress');
+  const progressBar = document.querySelector('.scroll-progress') as HTMLElement | null;
   const backToTop = document.getElementById('back-to-top');
 
   function onScroll() {
@@ -148,7 +149,7 @@
   const navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
   const sections = sectionIds
     .map((id) => document.getElementById(id))
-    .filter(Boolean);
+    .filter((section): section is HTMLElement => section !== null);
 
   const scrollSpyObserver = new IntersectionObserver(
     (entries) => {
@@ -205,7 +206,8 @@
   }
 
   // Flip cards
-  document.querySelectorAll('.flip-card').forEach((card) => {
+  document.querySelectorAll('.flip-card').forEach((el) => {
+    const card = el as HTMLElement;
     function flip() {
       const isFlipped = card.getAttribute('data-flipped') === 'true';
       document.querySelectorAll('.flip-card').forEach((c) => {
@@ -215,7 +217,7 @@
     }
 
     card.addEventListener('click', flip);
-    card.addEventListener('keydown', (e) => {
+    card.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         flip();
@@ -224,19 +226,21 @@
   });
 
   // Contact form validation + submission
-  const contactForm = document.getElementById('contact-form');
+  const contactForm = document.getElementById('contact-form') as HTMLFormElement | null;
   const formStatus = document.getElementById('form-success');
   const formError = document.getElementById('form-error');
-  const submitBtn = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
+  const submitBtn = contactForm
+    ? (contactForm.querySelector('button[type="submit"]') as HTMLButtonElement | null)
+    : null;
   const apiUrl = (import.meta?.env?.PUBLIC_CONTACT_API_URL || '/api/contact').replace(/\/$/, '');
 
   if (contactForm) {
     contactForm.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const name = document.getElementById('cf-name');
-      const email = document.getElementById('cf-email');
-      const message = document.getElementById('cf-message');
+      const name = document.getElementById('cf-name') as HTMLInputElement | null;
+      const email = document.getElementById('cf-email') as HTMLInputElement | null;
+      const message = document.getElementById('cf-message') as HTMLTextAreaElement | null;
       const errorName = document.getElementById('error-name');
       const errorEmail = document.getElementById('error-email');
       const errorMessage = document.getElementById('error-message');

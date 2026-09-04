@@ -19,6 +19,7 @@ function sanitizeHeaderValue(value: string): string {
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT_WINDOW = 15 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
+const RATE_LIMIT_CLEANUP_THRESHOLD = 1000;
 
 const MAX_BODY_BYTES = 64 * 1024;
 const MAX_NAME_LENGTH = 120;
@@ -32,8 +33,53 @@ function getClientIp(request: Request): string {
   return forwarded ? forwarded.split(',')[0].trim() : 'unknown';
 }
 
+/**
+ * Rejects cross-site browser requests (basic CSRF protection).
+ * Non-browser clients without an Origin header are still subject
+ * to rate limiting and input validation.
+ */
+function isAllowedOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin');
+  if (!origin) return true;
+  const siteUrl = import.meta.env.SITE || 'https://www.drkhaledalmohamad.com/';
+  try {
+    return new URL(origin).host === new URL(siteUrl).host;
+  } catch {
+    return false;
+  }
+}
+
+// Sender identity used in the From header. Never use visitor-supplied
+// values here — they can be spoofed and break DMARC alignment.
+const FROM_EMAIL: string =
+  import.meta.env.CONTACT_FROM_EMAIL ||
+  import.meta.env.CONTACT_TO_EMAIL ||
+  'no-reply@drkhaledalmohamad.com';
+
+// Reuse a single SMTP transport across requests instead of
+// creating a new connection pool for every submission.
+const transporter = nodemailer.createTransport({
+  host: import.meta.env.SMTP_HOST,
+  port: Number(import.meta.env.SMTP_PORT) || 587,
+  secure: Number(import.meta.env.SMTP_PORT) === 465,
+  auth: {
+    user: import.meta.env.SMTP_USER,
+    pass: import.meta.env.SMTP_PASS
+  }
+});
+
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+
+  // Periodically purge expired entries to keep memory usage bounded
+  if (rateLimitMap.size >= RATE_LIMIT_CLEANUP_THRESHOLD) {
+    for (const [key, record] of rateLimitMap) {
+      if (now > record.resetAt) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
+
   const record = rateLimitMap.get(ip);
   if (!record || now > record.resetAt) {
     rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
@@ -58,6 +104,13 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response(JSON.stringify({ error: 'Method not allowed' }), {
       status: 405,
       headers: { 'Content-Type': 'application/json', Allow: 'POST' }
+    });
+  }
+
+  if (!isAllowedOrigin(request)) {
+    return new Response(JSON.stringify({ error: 'Request origin not allowed.' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' }
     });
   }
 
@@ -152,17 +205,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: import.meta.env.SMTP_HOST,
-      port: Number(import.meta.env.SMTP_PORT) || 587,
-      secure: Number(import.meta.env.SMTP_PORT) === 465,
-      auth: {
-        user: import.meta.env.SMTP_USER,
-        pass: import.meta.env.SMTP_PASS
-      }
-    });
-
-    const sanitizedName = sanitizeHeaderValue(safeName);
+    const senderName = sanitizeHeaderValue(safeName).replace(/"/g, '');
     const sanitizedEmail = sanitizeHeaderValue(safeEmail);
     const sanitizedSubject = sanitizeHeaderValue(`New Contact Form Submission from ${safeName}`);
 
@@ -182,7 +225,7 @@ export const POST: APIRoute = async ({ request }) => {
 </html>`;
 
     await transporter.sendMail({
-      from: `"${sanitizedName}" <${sanitizedEmail}>`,
+      from: `"${senderName} (via website)" <${FROM_EMAIL}>`,
       replyTo: sanitizedEmail,
       to: toEmail,
       subject: sanitizedSubject,

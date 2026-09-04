@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Sitemap: https://www.drkhaledalmohammad.com/sitemap.xml
+Sitemap: https://www.drkhaledalmohamad.com/sitemap-index.xml

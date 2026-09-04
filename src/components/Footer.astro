@@ -22,7 +22,7 @@ const t = translations.footer || {};
 <footer class="bg-white py-10 border-t border-slate-100">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
     <p>
-      © <span id="year">2026</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات' : 'Business Consultant, Dubai, UAE'}. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
+      © <span id="year">{new Date().getFullYear()}</span> {siteConfig.name} — {lang === 'ar' ? 'مستشار أعمال، دبي، الإمارات' : 'Business Consultant, Dubai, UAE'}. {lang === 'ar' ? 'جميع الحقوق محفوظة.' : 'All rights reserved.'}
     </p>
     <nav class="flex flex-wrap gap-4 sm:gap-5 text-xs sm:text-sm" aria-label="Footer">
       <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="hover:text-navy transition-colors">{t.nav?.home || 'Home'}</a>

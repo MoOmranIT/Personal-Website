@@ -63,11 +63,24 @@ The following values are placeholders and should be replaced with real productio
 - LinkedIn, Instagram, Twitter URLs
 - SMTP credentials in `.env`
 
+## Testing
+
+Playwright is configured (`playwright.config.ts`). Tests live in `tests/` and run against the production build:
+
+```bash
+npm run build
+npx playwright test
+```
+
+If Playwright browsers are not installed yet:
+
+```bash
+npx playwright install chromium
+```
+
 ## Images
 
-All images are currently loaded from external Pexels URLs. To use local images:
-1. Place images in `public/images/`
-2. Update the `src` attributes in the components
+All images are served locally from `public/images/`.
 
 ## Sections
 
@@ -75,13 +88,19 @@ All images are currently loaded from external Pexels URLs. To use local images:
 - `src/components/Services.astro` — Services section
 - `src/components/Audience.astro` — Target audience section
 - `src/components/About.astro` — About Dr. Khaled
-- `src/components/Books.astro` — Published books
+- `src/components/Books.astro` — Published books (data in `src/data/books.ts`)
 - `src/components/SuccessStories.astro` — Success stories with flip cards
 - `src/components/Contact.astro` — Contact form and info
 - `src/components/Header.astro` — Site header with navigation
 - `src/components/Footer.astro` — Site footer
 - `src/components/BackToTop.astro` — Back to top button
 - `src/components/ScrollProgress.astro` — Scroll progress bar
+
+## Bilingual support
+
+- English: `/` (`src/pages/index.astro`, translations in `src/i18n/en.ts`)
+- Arabic (RTL): `/ar/` (`src/pages/ar/index.astro`, translations in `src/i18n/ar.ts`)
+- Sitemap is generated automatically by `@astrojs/sitemap` (`/sitemap-index.xml`)
 
 ## Tech Stack
 
@@ -90,4 +109,4 @@ All images are currently loaded from external Pexels URLs. To use local images:
 - Tailwind CSS 3.x
 - Nodemailer
 - TypeScript
-- Vanilla JavaScript (minimal)
+- Playwright (E2E tests)
