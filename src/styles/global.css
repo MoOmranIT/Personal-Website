@@ -479,12 +479,9 @@
     }
   }
 
-  [dir="rtl"] .reveal-left {
-    transform: translate(60px);
-  }
-
+  [dir="rtl"] .reveal-left,
   [dir="rtl"] .reveal-right {
-    transform: translate(-60px);
+    transform: translateX(0);
   }
 
   [dir="rtl"] .nav-link:after {
