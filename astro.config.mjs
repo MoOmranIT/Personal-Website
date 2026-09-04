@@ -6,6 +6,14 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://www.drkhaledalmohamad.com/',
   output: 'server',
-  integrations: [tailwind(), sitemap()],
+  integrations: [tailwind(), sitemap({
+    i18n: {
+      defaultLocale: 'en',
+      locales: {
+        en: 'en',
+        ar: 'ar'
+      }
+    }
+  })],
   adapter: node({ mode: 'standalone' })
 });

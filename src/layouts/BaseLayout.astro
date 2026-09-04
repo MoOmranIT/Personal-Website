@@ -30,6 +30,7 @@ const {
 } = Astro.props;
 
 const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
+const alternateLocale = lang === 'ar' ? siteConfig.seo.en.locale : siteConfig.seo.ar.locale;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -143,27 +144,6 @@ const jsonLd = {
   ]
 };
 
-const professionalServiceLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": siteConfig.name,
-  "url": siteConfig.url,
-  "telephone": siteConfig.contact.phone,
-  "email": siteConfig.contact.email,
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Dubai",
-    "addressCountry": "AE"
-  }
-};
-
-const websiteLd = {
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": siteConfig.name,
-  "url": siteConfig.url,
-  "description": siteConfig.description
-};
 ---
 
 <!DOCTYPE html>
@@ -187,6 +167,7 @@ const websiteLd = {
     <meta property="og:description" content={ogDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={currentLocale} />
+    <meta property="og:locale:alternate" content={alternateLocale} />
     <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
@@ -207,8 +188,6 @@ const websiteLd = {
     )}
     <link rel="alternate" hreflang="x-default" href={siteConfig.url} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(professionalServiceLd)} />
-    <script type="application/ld+json" set:html={JSON.stringify(websiteLd)} />
     <slot name="head" />
   </head>
   <body class="font-sans text-ink antialiased" data-lang={lang}>
