@@ -168,7 +168,7 @@ export const en = {
   contact: {
     badge: 'Let\'s Talk',
     heading: 'Ready to Start Your Consultation?',
-    description: 'Fill in the form below or reach out directly — I personally review every inquiry and respond within 24 hours.',
+    description: 'Reach out directly — I personally review every inquiry and respond within 24 hours.',
     form: {
       nameLabel: 'Full Name',
       namePlaceholder: 'John Smith',
