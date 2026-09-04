@@ -81,6 +81,64 @@ The exact redirect configuration depends on your hosting platform:
 - **VPS / Nginx:** Use Nginx `server` blocks with `return 301` redirects.
 - **Render / Fly.io / DigitalOcean:** Use the platform's built-in domain/redirect settings.
 - **Vercel / Netlify:** Use their redirect configuration files (`_redirects`, `vercel.json`, `netlify.toml`).
+- **GoDaddy / cPanel:** Use the Redirect Manager in cPanel or `.htaccess` rules.
+
+## GoDaddy Node.js Hosting
+
+This project is compatible with **GoDaddy Node.js Hosting** (cPanel/Plesk-based).
+
+### Deployment Steps
+
+1. **Build locally or in CI:**
+   ```bash
+   npm install
+   npm run build
+   ```
+   This produces `dist/server/entry.mjs` (server entrypoint) and `dist/client/` (static assets).
+
+2. **Upload files** to your GoDaddy Node.js hosting:
+   - Upload the entire `dist/` directory.
+   - Upload `node_modules/` (or run `npm install --omit=dev` on the server).
+   - Upload `package.json`.
+
+3. **Configure startup file:**
+   GoDaddy Node.js hosting typically expects a startup entry point. Create or update the startup file
+   (often configured via the cPanel "Setup Node.js App" panel) to run:
+   ```bash
+   node dist/server/entry.mjs
+   ```
+   Alternatively, add a `server.js` in the project root that requires the Astro entrypoint:
+   ```js
+   // server.js
+   require('./dist/server/entry.mjs');
+   ```
+   *(Note: since the project is `type: "module"`, use a `.mjs` startup file or set `"type": "module"` in a `package.json` inside `dist/`).*
+
+4. **Set environment variables** via the cPanel "Setup Node.js App" panel or `.env` file:
+   - `CONTACT_TO_EMAIL`
+   - `SMTP_HOST`
+   - `SMTP_PORT`
+   - `SMTP_USER`
+   - `SMTP_PASS`
+   - `PORT` (GoDaddy sets this automatically; do not override)
+
+5. **Restart** the Node.js application from the cPanel panel.
+
+### Node.js Version
+
+- Minimum: **Node.js 18.17.0**
+- Recommended: **Node.js 20.x LTS** (20.18.0+)
+- The project uses ESM (`"type": "module"`) and requires Node.js ≥ 18.
+
+### GoDaddy-Specific Notes
+
+- GoDaddy sets the `PORT` environment variable automatically. Do **not** hardcode a port.
+- Static assets (CSS, JS, images) are served from `dist/client/` automatically by the Node adapter.
+- The `@astrojs/node` adapter with `mode: "standalone"` bundles everything needed — no separate web server (nginx/Apache) is required for the application to run.
+- Use **PM2** (if available) or GoDaddy's built-in process manager for uptime/restart:
+  ```bash
+  pm2 start dist/server/entry.mjs --name "dr-khaled-website" --env production
+  ```
 
 ## Contact Form Backend
 
