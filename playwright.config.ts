@@ -16,9 +16,9 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: 'node dist/server/entry.mjs',
+    command: 'npm run build && node dist/server/entry.mjs',
     url: 'http://localhost:4321',
-    reuseExistingServer: true,
-    timeout: 60_000
+    reuseExistingServer: false,
+    timeout: 120_000
   }
 });
