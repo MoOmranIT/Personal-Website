@@ -19,7 +19,7 @@ const arrow = lang === 'ar' ? '←' : '→';
 
 const stories = (t.items || []).map((item) => ({
   ...item,
-  image: '/images/story.jpg',
+  image: item.image || '/images/story.jpg',
   alt: item.alt || item.title || 'Success story'
 }));
 ---
