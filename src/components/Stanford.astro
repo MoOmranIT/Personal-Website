@@ -1,0 +1,59 @@
+---
+interface Props {
+  translations?: {
+    hero?: {
+      stanfordHeading?: string;
+      stanfordParagraph1?: string;
+      stanfordParagraph2?: string;
+      stanfordCta?: string;
+      stanfordCta2?: string;
+    };
+  };
+}
+
+const { translations = {} } = Astro.props;
+const t = translations.hero || {};
+
+const authorizationPdf = '/Official%20Authorization%20Dr%20Khaled%20Almohammad%20.pdf';
+const authorizationFile = 'Official Authorization Dr Khaled Almohammad.pdf';
+const supplementalPdf = '/Supplemental%20Authorization.pdf';
+const supplementalFile = 'Supplemental Authorization.pdf';
+---
+
+<section class="py-16 sm:py-20 bg-white relative overflow-hidden">
+  <div class="max-w-5xl mx-auto px-5 sm:px-8 relative">
+    <div class="reveal-scale bg-slate-50 rounded-3xl p-8 sm:p-14 ring-1 ring-slate-100 shadow-sm relative overflow-hidden">
+      <span
+        aria-hidden="true"
+        class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c59c07]/70 via-[#c59c07] to-[#c59c07]/70 pointer-events-none"
+      ></span>
+      <h2 class="text-2xl sm:text-3xl font-bold text-navy mb-6">
+        {t.stanfordHeading || 'Stanford University for Professional Training-UAE'}
+      </h2>
+      <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
+        <p>
+          {t.stanfordParagraph1 || 'I serve as an Authorized Representative & Signatory for Stanford University for Professional Training in the UAE, with responsibilities covering program management and institutional partnerships within the scope of my official authorization.'}
+        </p>
+        <p>
+          {t.stanfordParagraph2 || 'My role includes representing the institution within the authorized scope, managing professional training programs and institutional partnerships, and carrying out the responsibilities formally granted under the authorization.'}
+        </p>
+      </div>
+      <div class="mt-10 flex flex-wrap gap-4">
+        <a
+          href={authorizationPdf}
+          download={authorizationFile}
+          class="inline-flex items-center gap-2 btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg"
+        >
+          <span aria-hidden="true">⬇</span> {t.stanfordCta || 'View Official Authorization'}
+        </a>
+        <a
+          href={supplementalPdf}
+          download={supplementalFile}
+          class="inline-flex items-center gap-2 btn-navy btn-sheen px-8 py-4 rounded-full font-semibold text-base shadow-lg"
+        >
+          <span aria-hidden="true">⬇</span> {t.stanfordCta2 || 'View Supplemental Authorization'}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

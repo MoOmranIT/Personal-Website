@@ -16,14 +16,20 @@ export const en = {
     menuClose: 'Close Menu'
   },
   hero: {
-    badge: 'Strategic Business Consulting',
-    heading: 'Business Consulting & Strategic Development',
-    description: 'I provide comprehensive preparation tailored to your professional position — the result of over <strong>18 years</strong> of experience in consulting, business management and digital marketing across the UAE, and more than <strong>6 published books</strong> on business management and digital marketing recognized on a global scale. I deliver integrated strategic solutions that elevate your company to new heights. <span class="text-navy font-semibold">Let the results speak for themselves!</span>',
-    ctaPrimary: 'Start Your Consultation',
-    ctaSecondary: 'Discover My Story',
+    badge: 'Executive Leader. Advisor. Trainer. Author',
+    heading: 'Turning Business Strategy Into',
+    headingHighlight: 'Sustainable Growth',
+    description: 'I work at the intersection of strategy, growth, marketing, and leadership, helping organizations turn business challenges into clear strategies, stronger opportunities, and measurable results.<br />My experience spans executive leadership, strategic advisory, business development, training, and venture building across the UAE and beyond.',
+    ctaPrimary: 'Book a Strategic Consulting',
+    ctaSecondary: 'Explore My Executive Profile',
     stat1Label: 'Years Experience',
     stat2Label: 'Professionals Trained',
     stat3Label: 'Published Books',
+    stanfordHeading: 'Stanford University for Professional Training-UAE',
+    stanfordParagraph1: 'I serve as an Authorized Representative & Signatory for Stanford University for Professional Training in the UAE, with responsibilities covering program management and institutional partnerships within the scope of my official authorization.',
+    stanfordParagraph2: 'My role includes representing the institution within the authorized scope, managing professional training programs and institutional partnerships, and carrying out the responsibilities formally granted under the authorization.',
+    stanfordCta: 'View Official Authorization',
+    stanfordCta2: 'View Supplemental Authorization',
     bottomCta: '🏆 Enter the Race for First Place'
   },
   services: {
