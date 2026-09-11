@@ -27,10 +27,20 @@ const supplementalFile = 'Supplemental Authorization.pdf';
         aria-hidden="true"
         class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#c59c07]/70 via-[#c59c07] to-[#c59c07]/70 pointer-events-none"
       ></span>
-      <h2 class="text-2xl sm:text-3xl font-bold text-navy mb-6">
-        {t.stanfordHeading || 'Stanford University for Professional Training-UAE'}
-      </h2>
-      <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
+      <div class="stanford-heading-row">
+        <h2 class="min-w-0 flex-1 text-3xl sm:text-4xl font-bold text-navy">
+          {t.stanfordHeading || 'Stanford University for Professional Training-UAE'}
+        </h2>
+        <div class="stanford-mark shrink-0" aria-label="Stanford University for Professional Training logo">
+          <iframe
+            src="/images/logo%20stan%20flatten.pdf#toolbar=0&navpanes=0&scrollbar=0&view=FitH"
+            title="Stanford University for Professional Training logo"
+            loading="lazy"
+            tabindex="-1"
+          ></iframe>
+        </div>
+      </div>
+      <div class="mt-6 space-y-6 text-slate-600 text-lg leading-relaxed">
         <p>
           {t.stanfordParagraph1 || 'I serve as an Authorized Representative & Signatory for Stanford University for Professional Training in the UAE, with responsibilities covering program management and institutional partnerships within the scope of my official authorization.'}
         </p>
@@ -57,3 +67,52 @@ const supplementalFile = 'Supplemental Authorization.pdf';
     </div>
   </div>
 </section>
+
+<style>
+  .stanford-mark {
+    width: 10rem;
+    height: 10rem;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .stanford-mark iframe {
+    display: block;
+    width: 20rem;
+    height: 14.75rem;
+    border: 0;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    transform: translate(-4.625rem, -2.375rem);
+  }
+
+  @media (max-width: 639px) {
+    .stanford-mark {
+      width: 10.5rem;
+      height: 10.5rem;
+    }
+
+    .stanford-mark iframe {
+      transform: translate(-4.625rem, -2.375rem);
+    }
+  }
+
+  @media (min-width: 640px) {
+    .stanford-mark {
+      margin-inline-end: -0.5rem;
+    }
+  }
+
+  .stanford-heading-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 639px) {
+    .stanford-heading-row {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+  }
+</style>
