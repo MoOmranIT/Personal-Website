@@ -26,6 +26,49 @@ export const ar = {
     stat3Label: 'كتب منشورة',
     bottomCta: '🏆 انضم إلى سباق المركز الأول'
   },
+  currentRoles: {
+    heading: 'المناصب التنفيذية والاستشارية الحالية',
+    executive: {
+      heading: 'القيادة التنفيذية',
+      roles: [
+        {
+          title: 'المدير التنفيذي',
+          organization: 'Elite Maison Marketing Consultancies',
+          description: 'قيادة الاستراتيجية والعمليات في مشاريع التسويق ونمو الأعمال لدى الشركة الاستشارية.'
+        },
+        {
+          title: 'استشاري تطوير الأعمال',
+          organization: 'AI Brains- Ajman',
+          description: 'توجيه الاستراتيجية والنمو لمنظومة مشاريع AI Brains ومحفظة منتجاتها (Kaveo, AIRIS, HOLORISER, Morork).'
+        },
+        {
+          title: 'المدير العام',
+          organization: 'Bin Jassim Group for Business Solutions',
+          description: 'الإشراف الإداري العام على عمليات حلول الأعمال.'
+        }
+      ]
+    },
+    advisory: {
+      heading: 'الأدوار الاستشارية',
+      roles: [
+        {
+          title: 'مستشار تسويق ومدرب إداري',
+          organization: 'ManageMark-Dubai',
+          description: 'تقديم الاستشارات التسويقية والتدريب الإداري المستمر لفريق ManageMark.'
+        },
+        {
+          title: 'مستشار تسويق',
+          organization: 'One Place-Ajman',
+          description: 'تقديم الاستشارات في الاستراتيجية التسويقية لدعم تموضع العلامة التجارية ونموها.'
+        },
+        {
+          title: 'مستشار تطوير الأعمال',
+          organization: 'Enmacon-Damascous',
+          description: 'تقديم استشارات تطوير الأعمال لتوجيه النمو واستراتيجية السوق.'
+        }
+      ]
+    }
+  },
   services: {
     section1: {
       id: '01',

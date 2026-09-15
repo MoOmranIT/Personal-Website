@@ -32,6 +32,49 @@ export const en = {
     stanfordCta2: 'View Supplemental Authorization',
     bottomCta: '🏆 Enter the Race for First Place'
   },
+  currentRoles: {
+    heading: 'Current Executive & Advisory Roles',
+    executive: {
+      heading: 'Executive Leadership',
+      roles: [
+        {
+          title: 'Executive Director',
+          organization: 'Elite Maison Marketing Consultancies',
+          description: 'Leading strategy and operations for the consultancy’s marketing and business growth engagements'
+        },
+        {
+          title: 'Business development consultant',
+          organization: 'AI Brains- Ajman',
+          description: 'Directing strategy and growth for AI Brains venture ecosystem and its product portfolio (Kaveo, AIRIS, HOLORISER, Morork).'
+        },
+        {
+          title: 'General Manager',
+          organization: 'Bin Jassim Group for Business Solutions',
+          description: 'General management oversight for business solutions operations.'
+        }
+      ]
+    },
+    advisory: {
+      heading: 'Advisory Roles',
+      roles: [
+        {
+          title: 'Marketing Consultant & Management Trainer',
+          organization: 'ManageMark-Dubai',
+          description: 'Ongoing marketing advisory and management training for the ManageMark team.'
+        },
+        {
+          title: 'Marketing Consultant',
+          organization: 'One Place-Ajman',
+          description: 'Marketing strategy advisory supporting brand positioning and growth.'
+        },
+        {
+          title: 'Business Development Consultant',
+          organization: 'Enmacon-Damascous',
+          description: 'Business development advisory guiding growth and market strategy.'
+        }
+      ]
+    }
+  },
   services: {
     section1: {
       id: '01',

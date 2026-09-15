@@ -1,0 +1,110 @@
+---
+interface Role {
+  title: string;
+  organization: string;
+  description: string;
+}
+
+interface RoleGroup {
+  heading?: string;
+  roles?: Role[];
+}
+
+interface Props {
+  translations?: {
+    currentRoles?: {
+      heading?: string;
+      executive?: RoleGroup;
+      advisory?: RoleGroup;
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.currentRoles || {};
+const groups = [
+  {
+    heading: t.executive?.heading || 'Executive Leadership',
+    roles: t.executive?.roles || [
+      {
+        title: 'Executive Director',
+        organization: 'Elite Maison Marketing Consultancies',
+        description: 'Leading strategy and operations for the consultancy’s marketing and business growth engagements'
+      },
+      {
+        title: 'Business development consultant',
+        organization: 'AI Brains- Ajman',
+        description: 'Directing strategy and growth for AI Brains venture ecosystem and its product portfolio (Kaveo, AIRIS, HOLORISER, Morork).'
+      },
+      {
+        title: 'General Manager',
+        organization: 'Bin Jassim Group for Business Solutions',
+        description: 'General management oversight for business solutions operations.'
+      }
+    ],
+    variant: 'light'
+  },
+  {
+    heading: t.advisory?.heading || 'Advisory Roles',
+    roles: t.advisory?.roles || [
+      {
+        title: 'Marketing Consultant & Management Trainer',
+        organization: 'ManageMark-Dubai',
+        description: 'Ongoing marketing advisory and management training for the ManageMark team.'
+      },
+      {
+        title: 'Marketing Consultant',
+        organization: 'One Place-Ajman',
+        description: 'Marketing strategy advisory supporting brand positioning and growth.'
+      },
+      {
+        title: 'Business Development Consultant',
+        organization: 'Enmacon-Damascous',
+        description: 'Business development advisory guiding growth and market strategy.'
+      }
+    ],
+    variant: 'dark'
+  }
+];
+---
+
+<section id="executive-roles" class="relative bg-white">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
+        {lang === 'ar' ? 'المناصب الحالية' : 'Current Roles'}
+      </span>
+      <h2 id="executive-roles-heading" class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        {t.heading || 'Current Executive & Advisory Roles'}
+      </h2>
+    </div>
+    <div class="grid lg:grid-cols-2 gap-8" aria-labelledby="executive-roles-heading">
+      {groups.map((group, i) => (
+        <article class={`reveal ${i === 1 ? 'delay-2' : ''} card-premium group relative ${group.variant === 'dark' ? 'navy-grad text-white rounded-3xl p-8 sm:p-12' : 'bg-slate-50 ring-1 ring-slate-100 rounded-3xl p-8 sm:p-12'}`}>
+          {group.variant !== 'dark' && (
+            <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></span>
+          )}
+          <h3 class={`text-3xl sm:text-4xl font-bold mb-8 leading-tight ${group.variant === 'dark' ? 'text-white' : 'text-navy'}`}>
+            {group.heading}
+          </h3>
+          <ul class="space-y-6">
+            {group.roles?.map((role) => (
+              <li class="flex items-start gap-3">
+                <span aria-hidden="true" class={`w-2 h-2 mt-2 rounded-full shrink-0 ${group.variant === 'dark' ? 'bg-gold' : 'bg-navy'}`}></span>
+                <div class={`leading-relaxed ${group.variant === 'dark' ? 'text-white/80' : 'text-slate-600'}`}>
+                  <p>
+                    <strong class={`font-semibold ${group.variant === 'dark' ? 'text-white' : 'text-navy'}`}>{role.title}</strong>
+                    <span aria-hidden="true"> | </span>
+                    <span>{role.organization}</span>
+                  </p>
+                  <p class="mt-1">{role.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
