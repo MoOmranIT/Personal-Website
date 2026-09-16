@@ -22,6 +22,101 @@ const stories = (t.items || []).map((item) => ({
   image: item.image || '/images/story.jpg',
   alt: item.alt || item.title || 'Success story'
 }));
+
+const medicalCenterTable = [
+  {
+    label: 'Challenges',
+    value: 'A dental clinic operating with a single chair, limited capacity, no structured plan for specialties or scaling operations.'
+  },
+  {
+    label: 'Strategy',
+    value: 'Building a multi-specialty positioning, a hiring plan for new doctors, and a referral and patient-acquisition system to support growth.'
+  },
+  {
+    label: 'Execution',
+    value: 'recruiting specialists, restructuring operations for a larger patient base, and repositioning the brand from a single clinic to an integrated medical center.'
+  },
+  {
+    label: 'Result',
+    value: 'Grow into a fully medical center with 15 doctors across specialties.'
+  }
+];
+
+const franchiseTable = [
+  {
+    label: 'Challenges',
+    value: 'A single café in Abu Dhabi with growth ambition, but no franchise structure, brand standards, or expansion plan.'
+  },
+  {
+    label: 'Strategy',
+    value: 'Standardizing the brand and operating model, and designing a market-by-market expansion plan across the Emirates.'
+  },
+  {
+    label: 'Execution',
+    value: 'Structured franchise agreements and training systems, then rolled out new branches in a phased sequence across multiple Emirates.'
+  },
+  {
+    label: 'Result',
+    value: 'Expanded to more than 9 franchise branches, from Ras Al Khaimah to Abu Dhabi.'
+  }
+];
+
+const humanitarianAppTable = [
+  {
+    label: 'Challenges',
+    value: 'A new humanitarian app, the <<Syrians Around the World>> app, with no existing audience, install base, or awareness.'
+  },
+  {
+    label: 'Strategy',
+    value: "Designed an emotional marketing campaign built around the app's humanitarian purpose, targeting the diaspora community directly."
+  },
+  {
+    label: 'Execution',
+    value: 'Launched and ran the campaign, driving organic sharing and community-led growth around a strong emotional message.'
+  },
+  {
+    label: 'Result',
+    value: '100,000 downloads achieved in less than 25 days.'
+  }
+];
+
+const technicalProblemTable = [
+  {
+    label: 'Challenges',
+    value: 'An internal software department of 5 programmers at Saudi German Hospital, treated as a cost center rather than a growth opportunity.'
+  },
+  {
+    label: 'Strategy',
+    value: 'Developed a non-organic growth strategy to restructure the department into an independent commercial entity within the medical sector.'
+  },
+  {
+    label: 'Execution',
+    value: "Led the spin-off structuring and commercialization of the department's software services into a standalone business."
+  },
+  {
+    label: 'Result',
+    value: 'The department became an independent company generating its own revenue.'
+  }
+];
+
+const trainingCenterTable = [
+  {
+    label: 'Challenges',
+    value: 'The High Innovation Training Center was on the verge of collapse, at risk of shutting down entirely.'
+  },
+  {
+    label: 'Strategy',
+    value: 'Designed a turnaround strategy, repositioning the center and rationalizing its program offering around what the market actually wanted.'
+  },
+  {
+    label: 'Execution',
+    value: 'Implemented the recovery plan over a 3-month period, rebuilding both operations and demand.'
+  },
+  {
+    label: 'Result',
+    value: 'Generated revenues exceeding AED 105,000 within 3 months, turning the center around.'
+  }
+];
 ---
 
 <style>
@@ -72,6 +167,66 @@ const stories = (t.items || []).map((item) => ({
   }
   .story-modal .story-body {
     padding: 1.5rem 1.75rem 1rem;
+  }
+  :global(.story-modal .story-table-wrap) {
+    margin: .25rem 0 .5rem;
+    padding: .35rem;
+    border: 1px solid rgba(11, 28, 57, .08);
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #fff, #f8fafc);
+    overflow-x: auto;
+  }
+  :global(.story-modal .story-table) {
+    width: 100%;
+    min-width: 0;
+    border-collapse: separate;
+    border-spacing: 0 .55rem;
+    color: #334155;
+    font-size: .98rem;
+    line-height: 1.65;
+    table-layout: fixed;
+  }
+  :global(.story-modal .story-table th),
+  :global(.story-modal .story-table td) {
+    border-top: 1px solid rgba(11, 28, 57, .08);
+    border-bottom: 1px solid rgba(11, 28, 57, .08);
+    padding: 1rem 1.1rem;
+    text-align: left;
+    vertical-align: top;
+    overflow-wrap: anywhere;
+  }
+  :global(.story-modal .story-table th) {
+    width: 23%;
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 3px solid var(--gold);
+    border-radius: .75rem 0 0 .75rem;
+    background: var(--navy);
+    color: white;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  :global(.story-modal .story-table td) {
+    border-right: 1px solid rgba(11, 28, 57, .08);
+    border-radius: 0 .75rem .75rem 0;
+    background: #f8fafc;
+  }
+  @media (max-width: 639px) {
+    :global(.story-modal .story-table-wrap) {
+      padding: .2rem;
+    }
+    :global(.story-modal .story-table) {
+      font-size: .88rem;
+      line-height: 1.55;
+      border-spacing: 0 .45rem;
+    }
+    :global(.story-modal .story-table th),
+    :global(.story-modal .story-table td) {
+      padding: .8rem .7rem;
+    }
+    :global(.story-modal .story-table th) {
+      width: 27%;
+    }
   }
 </style>
 
@@ -132,6 +287,22 @@ const stories = (t.items || []).map((item) => ({
         </div>
       ))}
     </div>
+    {lang === 'en' && (
+      <div class="mt-14 text-center reveal">
+        <a
+          href="/downloads/business-development-success-stories-portfolio.pdf"
+          download
+          class="btn-navy btn-sheen inline-flex items-center gap-3 px-8 py-4 rounded-full font-semibold"
+        >
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12"></path>
+            <path d="m7 10 5 5 5-5"></path>
+            <path d="M5 21h14"></path>
+          </svg>
+          <span>Download Business Development &amp; Success Stories Portfolio</span>
+        </a>
+      </div>
+    )}
   </div>
 
   <div class="story-modal-backdrop" id="story-modal" aria-hidden="true">
@@ -171,11 +342,23 @@ const stories = (t.items || []).map((item) => ({
 
 <script is:inline set:html={`
   window.__SUCCESS_STORIES__ = ${JSON.stringify(stories).replace(/</g, '\\u003c')};
+  window.__MEDICAL_CENTER_TABLE__ = ${JSON.stringify(medicalCenterTable).replace(/</g, '\\u003c')};
+  window.__FRANCHISE_TABLE__ = ${JSON.stringify(franchiseTable).replace(/</g, '\\u003c')};
+  window.__HUMANITARIAN_APP_TABLE__ = ${JSON.stringify(humanitarianAppTable).replace(/</g, '\\u003c')};
+  window.__TECHNICAL_PROBLEM_TABLE__ = ${JSON.stringify(technicalProblemTable).replace(/</g, '\\u003c')};
+  window.__TRAINING_CENTER_TABLE__ = ${JSON.stringify(trainingCenterTable).replace(/</g, '\\u003c')};
+  window.__SUCCESS_STORIES_LANG__ = ${JSON.stringify(lang)};
 `}></script>
 
 <script>
   (function () {
     const storyData = window.__SUCCESS_STORIES__ || [];
+    const medicalCenterTable = window.__MEDICAL_CENTER_TABLE__ || [];
+    const franchiseTable = window.__FRANCHISE_TABLE__ || [];
+    const humanitarianAppTable = window.__HUMANITARIAN_APP_TABLE__ || [];
+    const technicalProblemTable = window.__TECHNICAL_PROBLEM_TABLE__ || [];
+    const trainingCenterTable = window.__TRAINING_CENTER_TABLE__ || [];
+    const storyLang = window.__SUCCESS_STORIES_LANG__ || 'en';
     const modal = document.getElementById('story-modal');
     const modalTitle = document.getElementById('story-modal-title');
     const modalId = document.getElementById('story-modal-id');
@@ -214,6 +397,23 @@ const stories = (t.items || []).map((item) => ({
         .replace(/'/g, '&#039;');
     }
 
+    function formatMedicalCenterTable(rows) {
+      const tableRows = rows.map((row) => `
+        <tr>
+          <th scope="row">${escapeHtml(row.label || '')}</th>
+          <td>${escapeHtml(row.value || '')}</td>
+        </tr>
+      `).join('');
+
+      return `
+        <div class="story-table-wrap">
+          <table class="story-table">
+            <tbody>${tableRows}</tbody>
+          </table>
+        </div>
+      `;
+    }
+
     function openModal(index) {
       const story = storyData[index];
       if (!story || !modal) return;
@@ -224,7 +424,12 @@ const stories = (t.items || []).map((item) => ({
         hero.src = story.image || '';
         hero.dataset.hero = story.alt || story.title || '';
       }
-      modalBody.innerHTML = formatStory(story.description || story.excerpt || '');
+      const table = storyLang === 'en'
+        ? index === 0 ? medicalCenterTable : index === 1 ? franchiseTable : index === 2 ? humanitarianAppTable : index === 3 ? technicalProblemTable : index === 4 ? trainingCenterTable : []
+        : [];
+      modalBody.innerHTML = table.length > 0
+        ? formatMedicalCenterTable(table)
+        : formatStory(story.description || story.excerpt || '');
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';

@@ -130,7 +130,7 @@
   }
 
   // Scroll spy
-  const sectionIds = ['home', 'executive-roles', 'services', 'about', 'books', 'success', 'contact'];
+  const sectionIds = ['home', 'executive-roles', 'ventures', 'services', 'about', 'books', 'success', 'contact'];
   const navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
   const sections = sectionIds
     .map((id) => document.getElementById(id))

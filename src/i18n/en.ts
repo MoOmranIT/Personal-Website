@@ -78,9 +78,9 @@ export const en = {
   services: {
     section1: {
       id: '01',
-      title: 'Development',
+      title: 'Business Development',
       heading: 'Grow Your Business',
-      description: 'We deliver specialized training for business development to elevate performance and achieve sustainable growth. Our focus is on strengthening managerial and marketing capabilities to secure the success of your projects in both local and global markets.',
+      description: 'As a Dubai business development consultant, I deliver specialized training and hands-on business development programs to elevate performance and build sustainable growth-strengthening managerial and marketing capabilities to secure success in both local and global markets.',
       points: [
         'Executive management & leadership development',
         'Digital marketing & brand positioning',
@@ -92,7 +92,7 @@ export const en = {
       id: '02',
       title: 'Transformation',
       heading: 'Rise Like a Phoenix',
-      description: 'We analyze complex institutional challenges and design tailor-made strategic solutions to secure the continuity of your business. Don\'t miss the opportunity or waste another minute — the time to act is now.',
+      description: 'I analyze complex institutional challenges and design tailor-made strategic solutions to secure the continuity of your business, turning institutional crises into a clear, actionable path forward.',
       points: [
         'Crisis management & institutional turnaround',
         'Custom strategic roadmaps',
@@ -208,7 +208,7 @@ export const en = {
       },
       {
         id: 'Case Study 04',
-        title: 'How Did a Technical Problem Turn into a New Revenue-Generating Company?',
+        title: 'How a Technical Problem Became a Revenue-Generating Company',
         headline: 'The non-organic growth story at the Saudi German Hospital',
         excerpt: 'The story of turning an internal software department of 5 programmers into an independent revenue-generating company, with non-organic growth in the medical sector.',
         description: 'The non-organic growth story at the Saudi German Hospital\n\nEvery successful project begins with a question... and sometimes with a crisis.\n\nOne day I received a call from a friend, a physician who is a member of the board of directors of the Saudi German Hospital. His voice carried a mix of frustration and achievement.\n\nHe told me: "After months of struggling with the big software companies that did not truly understand our needs in the hospital, we decided to create an internal software department of 5 programmers. After 6 months of effort, we had an excellent internal ERP system that met everything we needed."\n\nThen he asked me: "And now... what do we do with the team? We are thinking of rewarding them and letting them go. What do you think?"\n\nAt that point I realized this was not just an operational problem... it was a rare opportunity for non-organic growth!\n\n## The Idea That Flipped the Equation\n\nI asked to meet the board members and presented them with a completely different vision: instead of thinking about letting the team go, why not redefine their mission? Why not turn this department into an independent company offering an ERP system dedicated to the medical sector?\n\nI explained to them the concept known in business development as "non-organic growth", where companies grow through horizontal expansion or by creating new internal entities that become self-standing sources of income.\n\nI walked them through the market size in numbers: there are 22,000 medical centers and more than 1,000 hospitals in the UAE, and there is no real ERP precisely dedicated to their specialized needs.\n\nThen I emphasized: "You do not only own a software department... you own real medical operational expertise embedded in an intelligent technical system. And that is what other technology companies do not have."\n\n## From an Idea to a Company\n\nThe proposal was approved. Not a single programmer was let go. Instead, the team was turned into a technology company affiliated with the hospital, and with a smart marketing plan they began marketing the system to other medical centers and hospitals.\n\nAnd the results? Excellent revenue, an in-house technical center of expertise within the organization, and a completely new source of income.\n\n## The Thinking Continues\n\nToday, the hospital management is discussing the idea of turning the kitchen department into an independent business unit offering carefully prepared healthy meals, with professional packaging design and monthly subscription delivery services.\n\n## The Lesson\n\nDo not treat "departments" as a burden... treat them as assets that can be developed. Every talented team can become a company. And every operational problem may hide behind it an opportunity for unconventional growth.',
@@ -216,7 +216,7 @@ export const en = {
       },
       {
         id: 'Case Study 05',
-        title: 'From Collapse to Stability',
+        title: 'From Collapse to Stability: Reviving High Innovation Training Center',
         image: '/images/story-collapse-to-stability.jpg',
         headline: 'The revival story of the High Innovation Training Center',
         excerpt: 'The story of rescuing a training center that was on the verge of collapse and turning it into a successful academy generating revenues exceeding AED 105,000 in just 3 months.',

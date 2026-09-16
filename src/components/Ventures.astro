@@ -1,0 +1,258 @@
+---
+const products = [
+  {
+    name: 'Kaveo',
+    index: '01',
+    description: 'AI platform designed for personal branding and LinkedIn content creation',
+    className: 'delay-1'
+  },
+  {
+    name: 'AIRIS',
+    index: '02',
+    description: 'certification programs and regional training courses',
+    className: 'delay-2'
+  },
+  {
+    name: 'HOLORISER',
+    index: '03',
+    description: '3D holographic displays, drone light shows, and projection mapping',
+    className: 'delay-3'
+  },
+  {
+    name: 'MotorK',
+    index: '04',
+    description: 'automotive retail SaaS platform that leverages AI',
+    className: 'delay-4'
+  }
+];
+---
+
+<section id="ventures" class="relative overflow-hidden bg-slate-50" aria-labelledby="ventures-heading">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24">
+    <div class="text-center mb-14 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">Innovation Portfolio</span>
+      <h2 id="ventures-heading" class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        Ventures, Products and Innovation
+      </h2>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center mb-14 reveal delay-1">
+      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-5 leading-tight">
+        One Connected Ecosystem, Not a List Of Separate Jobs
+      </h3>
+      <div class="space-y-4 text-lg leading-relaxed text-slate-600">
+        <p>I lead the AI Brains ecosystem, a connected portfolio of products and ventures built and advised under a single innovation umbrella.</p>
+        <p>Each product applies the same strategic and business development thinking to a different part of the market, working together rather than as unrelated projects.</p>
+      </div>
+    </div>
+
+    <div class="ventures-ecosystem relative max-w-5xl mx-auto">
+      <div aria-hidden="true" class="ventures-orbit ventures-orbit-outer"></div>
+      <div aria-hidden="true" class="ventures-orbit ventures-orbit-inner"></div>
+      <div class="ventures-core reveal-scale" aria-label="AI Brains connected innovation ecosystem">
+        <span aria-hidden="true" class="ventures-core-mark">AI</span>
+        <span class="ventures-core-label">AI Brains</span>
+        <span class="ventures-core-caption">Connected innovation</span>
+      </div>
+
+      <div class="ventures-products-grid grid gap-5 relative z-10">
+        {products.map((product, i) => (
+          <article class={`ventures-product reveal ${product.className} ${i % 2 === 0 ? 'sm:translate-y-8' : 'sm:-translate-y-8'}`}>
+            <div class="ventures-product-topline" aria-hidden="true"></div>
+            <div class="flex items-start justify-between gap-4">
+              <span class="ventures-product-index">{product.index}</span>
+              <span aria-hidden="true" class="ventures-product-node"></span>
+            </div>
+            <h4 class="ventures-product-name">{product.name}</h4>
+            <p class="ventures-product-caption">{product.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ventures-ecosystem {
+    min-height: 31rem;
+    display: grid;
+    align-items: center;
+  }
+
+  .ventures-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 7rem;
+    row-gap: 2.25rem;
+  }
+
+  .ventures-orbit {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border: 1px solid rgba(197, 156, 7, .22);
+    border-radius: 9999px;
+    pointer-events: none;
+    transform: translate(-50%, -50%) rotate(-10deg);
+  }
+
+  .ventures-orbit-outer {
+    width: min(92%, 42rem);
+    height: 15rem;
+  }
+
+  .ventures-orbit-inner {
+    width: min(72%, 31rem);
+    height: 10rem;
+    border-color: rgba(11, 28, 57, .14);
+    transform: translate(-50%, -50%) rotate(18deg);
+  }
+
+  .ventures-core {
+    position: absolute;
+    z-index: 20;
+    left: 50%;
+    top: 50%;
+    width: 8.25rem;
+    height: 8.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .2rem;
+    border: 1px solid rgba(197, 156, 7, .55);
+    border-radius: 9999px;
+    background: var(--navy);
+    color: white;
+    box-shadow: 0 20px 45px -18px rgba(11, 28, 57, .55), inset 0 0 0 7px rgba(255, 255, 255, .06);
+    transform: translate(-50%, -50%);
+  }
+
+  .ventures-core-mark {
+    color: var(--gold);
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+  }
+
+  .ventures-core-label {
+    font-size: .9rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+
+  .ventures-core-caption {
+    max-width: 6.6rem;
+    color: rgba(255, 255, 255, .72);
+    font-size: .52rem;
+    letter-spacing: .08em;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .ventures-product {
+    position: relative;
+    min-height: 10rem;
+    padding: 1.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(11, 28, 57, .08);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, .94);
+    box-shadow: 0 10px 30px -24px rgba(11, 28, 57, .8);
+    transition: transform .45s var(--ease-out-expo), box-shadow .45s var(--ease-out-expo), border-color .45s;
+  }
+
+  .ventures-product:hover,
+  .ventures-product:focus-within {
+    border-color: rgba(197, 156, 7, .62);
+    box-shadow: 0 24px 42px -24px rgba(11, 28, 57, .62);
+    transform: translateY(-.5rem) !important;
+  }
+
+  .ventures-product:active {
+    transform: translateY(-.25rem) scale(.99) !important;
+  }
+
+  .ventures-product-topline {
+    position: absolute;
+    top: 0;
+    left: 1.5rem;
+    right: 1.5rem;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: .4;
+    transition: opacity .35s;
+  }
+
+  .ventures-product:hover .ventures-product-topline,
+  .ventures-product:focus-within .ventures-product-topline {
+    opacity: 1;
+  }
+
+  .ventures-product-index {
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+  }
+
+  .ventures-product-node {
+    width: .65rem;
+    height: .65rem;
+    border: 2px solid var(--gold);
+    border-radius: 9999px;
+    box-shadow: 0 0 0 5px rgba(197, 156, 7, .1);
+    transition: transform .35s var(--ease-out-expo), background-color .35s;
+  }
+
+  .ventures-product:hover .ventures-product-node,
+  .ventures-product:focus-within .ventures-product-node {
+    background: var(--gold);
+    transform: scale(1.25);
+  }
+
+  .ventures-product-name {
+    margin-top: 1.3rem;
+    color: var(--navy);
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    font-weight: 800;
+    letter-spacing: -.03em;
+  }
+
+  .ventures-product-caption {
+    max-width: 24rem;
+    margin-top: .5rem;
+    color: #64748b;
+    font-size: .9rem;
+    line-height: 1.5;
+    letter-spacing: .02em;
+  }
+
+  @media (max-width: 639px) {
+    .ventures-ecosystem {
+      min-height: auto;
+    }
+
+    .ventures-products-grid {
+      grid-template-columns: 1fr;
+      row-gap: 1.25rem;
+    }
+
+    .ventures-orbit,
+    .ventures-core {
+      display: none;
+    }
+
+    .ventures-product {
+      min-height: 9rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ventures-product:hover,
+    .ventures-product:focus-within,
+    .ventures-product:active {
+      transform: none !important;
+    }
+  }
+</style>

@@ -24,7 +24,10 @@ const otherLang = currentLang === 'ar' ? '/' : '/ar/';
 const otherLangLabel = currentLang === 'ar' ? 'English' : 'العربية';
 const navLinks = [
   { href: currentLang === 'ar' ? '/ar/#home' : '#home', label: translations.home || 'Home', id: 'home' },
-  ...(currentLang !== 'ar' ? [{ href: '#executive-roles', label: 'Current Executive & Advisory Roles', id: 'executive-roles' }] : []),
+  ...(currentLang !== 'ar' ? [
+    { href: '#executive-roles', label: 'Current Executive & Advisory Roles', id: 'executive-roles' },
+    { href: '#ventures', label: 'Ventures', id: 'ventures' }
+  ] : []),
   { href: currentLang === 'ar' ? '/ar/#services' : '#services', label: currentLang === 'ar' ? 'خدماتنا' : 'Services', id: 'services' },
   { href: currentLang === 'ar' ? '/ar/#about' : '#about', label: translations.about || 'About Me', id: 'about' },
   { href: currentLang === 'ar' ? '/ar/#books' : '#books', label: translations.books || 'My Books', id: 'books' },
