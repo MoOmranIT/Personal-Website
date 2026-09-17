@@ -26,7 +26,7 @@ npm run build
 npm start
 ```
 
-This runs the Node.js server with the bundled `/api/contact` endpoint.
+This runs the Node.js production server.
 
 ## Preview production build
 
@@ -42,26 +42,10 @@ Edit `src/scripts/siteConfig.ts` to update:
 - Contact details (email, phone, WhatsApp)
 - Social media links
 
-### Contact form backend
-The contact form submits to the built-in `/api/contact` API route.
-
-Configure the following environment variables in `.env`:
-
-```env
-CONTACT_TO_EMAIL=info@dr-khaledalmohamad.com
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=user@example.com
-SMTP_PASS=your_smtp_password
-```
-
-See `.env.example` for the full list of required variables.
-
 ## Placeholders
 
 The following values are placeholders and should be replaced with real production data:
 - LinkedIn, Instagram, Twitter URLs
-- SMTP credentials in `.env`
 
 ## Testing
 
@@ -90,7 +74,7 @@ All images are served locally from `public/images/`.
 - `src/components/About.astro` — About Dr. Khaled
 - `src/components/Books.astro` — Published books (data in `src/data/books.ts`)
 - `src/components/SuccessStories.astro` — Success stories with flip cards
-- `src/components/Contact.astro` — Contact form and info
+- `src/components/Contact.astro` — Contact section with direct links (WhatsApp, email, phone, office)
 - `src/components/Header.astro` — Site header with navigation
 - `src/components/Footer.astro` — Site footer
 - `src/components/BackToTop.astro` — Back to top button
@@ -104,9 +88,8 @@ All images are served locally from `public/images/`.
 
 ## Tech Stack
 
-- Astro 5.x
+- Astro 7.x
 - @astrojs/node
 - Tailwind CSS 3.x
-- Nodemailer
 - TypeScript
 - Playwright (E2E tests)

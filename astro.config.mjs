@@ -3,7 +3,7 @@ import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://www.drkhaledalmohamad.com/',
+  site: 'https://dr-khaledalmohamad.com/',
   output: 'server',
   integrations: [sitemap({
     i18n: {

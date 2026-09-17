@@ -20,7 +20,7 @@ export const en = {
     heading: 'Turning Business Strategy Into',
     headingHighlight: 'Sustainable Growth',
     description: 'I work at the intersection of strategy, growth, marketing, and leadership, helping organizations turn business challenges into clear strategies, stronger opportunities, and measurable results.<br />My experience spans executive leadership, strategic advisory, business development, training, and venture building across the UAE and beyond.',
-    ctaPrimary: 'Book a Strategic Consulting',
+    ctaPrimary: 'Book a Strategic Consultation',
     ctaSecondary: 'Explore My Executive Profile',
     stat1Label: 'Years Experience',
     stat2Label: 'Professionals Trained',
@@ -43,9 +43,9 @@ export const en = {
           description: 'Leading strategy and operations for the consultancy’s marketing and business growth engagements'
         },
         {
-          title: 'Business development consultant',
-          organization: 'AI Brains- Ajman',
-          description: 'Directing strategy and growth for AI Brains venture ecosystem and its product portfolio (Kaveo, AIRIS, HOLORISER, Morork).'
+          title: 'Business Development Consultant',
+          organization: 'AI Brains-Ajman',
+          description: 'Directing strategy and growth for AI Brains venture ecosystem and its product portfolio (Kaveo, AIRIS, HOLORISER, MotorK).'
         },
         {
           title: 'General Manager',
@@ -69,7 +69,7 @@ export const en = {
         },
         {
           title: 'Business Development Consultant',
-          organization: 'Enmacon-Damascous',
+          organization: 'Enmacon-Damascus',
           description: 'Business development advisory guiding growth and market strategy.'
         }
       ]

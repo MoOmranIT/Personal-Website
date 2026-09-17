@@ -2,10 +2,9 @@
 
 ## Prerequisites
 
-- Node.js >= 18.17.0
-- npm >= 9.x
+- Node.js >= 22.12.0 (Astro 7 requirement)
+- npm >= 9.6.5
 - A hosting provider that supports Node.js server applications (e.g., VPS, AWS EC2, Render, Fly.io, DigitalOcean App Platform)
-- SMTP provider credentials (Gmail, Outlook, SendGrid, Mailgun, Postmark, etc.)
 
 ## Installation
 
@@ -21,31 +20,13 @@ npm run build
 
 This creates a `dist/` directory containing:
 - `dist/client/` — static assets and pre-rendered HTML
-- `dist/server/` — server entrypoint and bundled API routes
+- `dist/server/` — server entrypoint
 
 ## Environment Variables
 
-Create a `.env` file in the project root with the following variables:
+No environment variables are required. The site uses direct contact links (WhatsApp, email, phone, office) configured in `src/scripts/siteConfig.ts`.
 
-```env
-CONTACT_TO_EMAIL=info@dr-khaledalmohamad.com
-SMTP_HOST=smtp.example.com
-SMTP_PORT=587
-SMTP_USER=user@example.com
-SMTP_PASS=your_smtp_password
-PUBLIC_CONTACT_API_URL=/api/contact
-```
-
-### Variable Descriptions
-
-| Variable | Purpose | Example |
-|----------|---------|---------|
-| `CONTACT_TO_EMAIL` | Recipient address for contact form submissions | `info@dr-khaledalmohamad.com` |
-| `SMTP_HOST` | SMTP server hostname | `smtp.gmail.com` |
-| `SMTP_PORT` | SMTP port (use `587` for TLS, `465` for SSL) | `587` |
-| `SMTP_USER` | SMTP username / email | `user@example.com` |
-| `SMTP_PASS` | SMTP password or app-specific password | `your_app_password` |
-| `PUBLIC_CONTACT_API_URL` | Public API URL override (optional, defaults to `/api/contact`) | `/api/contact` |
+The hosting platform sets `PORT` automatically; do not override it.
 
 ## Production Start
 
@@ -69,7 +50,7 @@ pm2 startup
 The site is configured with the canonical URL:
 
 ```
-https://www.dr-khaledalmohamad.com/
+https://dr-khaledalmohamad.com/
 ```
 
 Configure your DNS and hosting platform to:
@@ -115,20 +96,15 @@ This project is compatible with **GoDaddy Node.js Hosting** (cPanel/Plesk-based)
    *(Note: since the project is `type: "module"`, use a `.mjs` startup file or set `"type": "module"` in a `package.json` inside `dist/`).*
 
 4. **Set environment variables** via the cPanel "Setup Node.js App" panel or `.env` file:
-   - `CONTACT_TO_EMAIL`
-   - `SMTP_HOST`
-   - `SMTP_PORT`
-   - `SMTP_USER`
-   - `SMTP_PASS`
    - `PORT` (GoDaddy sets this automatically; do not override)
 
 5. **Restart** the Node.js application from the cPanel panel.
 
 ### Node.js Version
 
-- Minimum: **Node.js 18.17.0**
-- Recommended: **Node.js 20.x LTS** (20.18.0+)
-- The project uses ESM (`"type": "module"`) and requires Node.js ≥ 18.
+- Minimum: **Node.js 22.12.0** (Astro 7 requirement)
+- Recommended: **Node.js 22.x LTS** (22.12.0+)
+- The project uses ESM (`"type": "module"`) and requires Node.js ≥ 22.12.
 
 ### GoDaddy-Specific Notes
 
@@ -139,38 +115,6 @@ This project is compatible with **GoDaddy Node.js Hosting** (cPanel/Plesk-based)
   ```bash
   pm2 start dist/server/entry.mjs --name "dr-khaled-website" --env production
   ```
-
-## Contact Form Backend
-
-The contact form submits to `/api/contact` (server-side API route).
-
-### Verification
-
-Test the API locally:
-
-```bash
-curl -X POST http://localhost:4321/api/contact \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test","email":"test@example.com","message":"Hello","website":""}'
-```
-
-Expected responses:
-- `200 OK` — `{ "ok": true }` (when SMTP is configured)
-- `400 Bad Request` — validation error details
-- `404/405` — invalid method
-- `429 Too Many Requests` — rate limit exceeded
-- `500` — SMTP misconfiguration or server error
-
-### SMTP Notes
-
-- Ensure your SMTP provider allows connections from your server IP.
-- For Gmail/Google Workspace, use an App Password if 2FA is enabled.
-- Some providers require enabling "Less secure app access" or using OAuth2.
-- Test SMTP connectivity before deploying:
-
-```bash
-node -e "const nodemailer=require('nodemailer');const t=nodemailer.createTransport({host:'your-smtp-host',port:587,auth:{user:'your-user',pass:'your-pass'}});t.verify().then(()=>console.log('SMTP OK')).catch(e=>console.error('SMTP FAIL',e.message));"
-```
 
 ## Security Headers
 
@@ -186,15 +130,13 @@ Additional headers (e.g., HSTS, CSP) should be configured at the hosting/proxy l
 
 - `.env` is gitignored and must never be committed.
 - `.env.example` documents required variables without secrets.
-- Never commit SMTP passwords or API keys.
+- Never commit secrets or API keys.
 
 ## Updating Contact Information
 
-Edit `src/scripts/siteConfig.ts` to update contact details. The contact form recipient is controlled by `CONTACT_TO_EMAIL` in `.env`.
+Edit `src/scripts/siteConfig.ts` to update contact details (email, phone, WhatsApp, office address).
 
 ## Troubleshooting
 
-- **API returns 500 "Server configuration error":** `CONTACT_TO_EMAIL` is not set.
-- **API returns 500 "Failed to send email":** Check SMTP credentials and network connectivity.
-- **Build fails:** Ensure Node.js version is >= 18.17.0 and dependencies are installed.
-- **Site loads but API 404s:** Ensure the server is started with `npm start`, not just serving static files from `dist/client/`.
+- **Build fails:** Ensure Node.js version is >= 22.12.0 and dependencies are installed.
+- **Site loads but pages 404:** Ensure the server is started with `npm start`, not just serving static files from `dist/client/`.
