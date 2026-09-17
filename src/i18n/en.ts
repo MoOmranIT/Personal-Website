@@ -13,7 +13,10 @@ export const en = {
     books: 'My Books',
     contact: 'Contact Me for Advice',
     menuOpen: 'Open Menu',
-    menuClose: 'Close Menu'
+    menuClose: 'Close Menu',
+    expertise: 'Expertise',
+    proofInsights: 'Proof & Insights',
+    credentials: 'Stanford / Credentials'
   },
   hero: {
     badge: 'Executive Leader. Advisor. Trainer. Author',

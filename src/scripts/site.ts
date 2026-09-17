@@ -15,14 +15,91 @@
     return true;
   }
 
+  function closeAllDropdowns() {
+    document.querySelectorAll('.nav-dropdown.open').forEach((el) => {
+      el.classList.remove('open');
+      const trigger = el.querySelector('button[data-dropdown]');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  function closeAllAccordions() {
+    document.querySelectorAll('.mobile-accordion.open').forEach((el) => {
+      el.classList.remove('open');
+      const header = el.querySelector('button[data-accordion]');
+      if (header) header.setAttribute('aria-expanded', 'false');
+    });
+  }
+
   document.addEventListener('click', function (e) {
     const target = e.target as Element | null;
     const anchor = target?.closest ? target.closest('a[href^="#"]') : null;
-    if (!anchor) return;
-    if (scrollToHash(anchor.getAttribute('href') || '')) {
-      e.preventDefault();
-      closeMenu();
+    if (anchor) {
+      if (scrollToHash(anchor.getAttribute('href') || '')) {
+        e.preventDefault();
+        closeMenu();
+        closeAllDropdowns();
+        closeAllAccordions();
+      }
     }
+  });
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', function (e) {
+    const target = e.target as Element | null;
+    if (!target) return;
+    if (target.closest('.nav-dropdown')) return;
+    closeAllDropdowns();
+  });
+
+  // Desktop dropdown triggers
+  document.querySelectorAll('button[data-dropdown]').forEach((btn) => {
+    btn.addEventListener('click', function () {
+      const dropdown = btn.closest('.nav-dropdown');
+      if (!dropdown) return;
+      const isOpen = dropdown.classList.contains('open');
+      closeAllDropdowns();
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const dropdown = btn.closest('.nav-dropdown');
+        if (dropdown) {
+          dropdown.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        btn.focus();
+      }
+    });
+  });
+
+  // Mobile accordion triggers
+  document.querySelectorAll('button[data-accordion]').forEach((btn) => {
+    btn.addEventListener('click', function () {
+      const accordion = btn.closest('.mobile-accordion');
+      if (!accordion) return;
+      const isOpen = accordion.classList.contains('open');
+      closeAllAccordions();
+      if (!isOpen) {
+        accordion.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const accordion = btn.closest('.mobile-accordion');
+        if (accordion) {
+          accordion.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+        btn.focus();
+      }
+    });
   });
 
   // Modal focus trap (applied on open)
@@ -49,7 +126,6 @@
       }
     }
     modal.addEventListener('keydown', handleTab);
-    // Return cleanup
     return () => modal.removeEventListener('keydown', handleTab);
   }
 
@@ -130,8 +206,8 @@
   }
 
   // Scroll spy
-  const sectionIds = ['home', 'executive-roles', 'ventures', 'services', 'about', 'books', 'success', 'contact'];
-  const navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link'));
+  const sectionIds = ['home', 'executive-roles', 'ventures', 'services', 'about', 'books', 'success', 'contact', 'stanford'];
+  const navLinks = Array.prototype.slice.call(document.querySelectorAll('#site-header nav a'));
   const sections = sectionIds
     .map((id) => document.getElementById(id))
     .filter((section): section is HTMLElement => section !== null);
@@ -190,12 +266,40 @@
     });
   }
 
-  // Close mobile menu with Escape (regardless of focus)
+  // Close mobile menu / dropdowns / accordions with Escape (regardless of focus)
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && menuOpen) {
+    if (e.key !== 'Escape') return;
+
+    if (menuOpen) {
       closeMenu();
+      closeAllDropdowns();
+      closeAllAccordions();
       menuToggle?.focus();
+      return;
     }
+
+    const activeElement = document.activeElement;
+
+    // If focus is inside an open dropdown panel, restore focus to its trigger.
+    const openDropdown = activeElement?.closest?.('.nav-dropdown.open');
+    if (openDropdown) {
+      closeAllDropdowns();
+      const trigger = openDropdown.querySelector('button[data-dropdown]') as HTMLElement | null;
+      trigger?.focus();
+      return;
+    }
+
+    // Same for an open mobile accordion panel.
+    const openAccordion = activeElement?.closest?.('.mobile-accordion.open');
+    if (openAccordion) {
+      closeAllAccordions();
+      const trigger = openAccordion.querySelector('button[data-accordion]') as HTMLElement | null;
+      trigger?.focus();
+      return;
+    }
+
+    closeAllDropdowns();
+    closeAllAccordions();
   });
 
   // Close mobile menu when clicking outside it
@@ -206,6 +310,19 @@
     if (mobileMenu && target && mobileMenu.contains(target)) return;
     closeMenu();
   });
+
+  // Reset state when crossing xl breakpoint
+  function handleResize() {
+    const isDesktop = window.innerWidth >= 1280;
+    if (isDesktop && menuOpen) {
+      closeMenu();
+    }
+    if (isDesktop) {
+      closeAllDropdowns();
+      closeAllAccordions();
+    }
+  }
+  window.addEventListener('resize', handleResize);
 
   // Flip cards
   document.querySelectorAll('.flip-card').forEach((el) => {
