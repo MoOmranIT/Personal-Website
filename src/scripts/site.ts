@@ -169,7 +169,10 @@
     { threshold: 0.5 }
   );
 
-  document.querySelectorAll('.counter-num').forEach((el) => counterObserver.observe(el));
+  document.querySelectorAll('.counter-num').forEach((el) => {
+    if ((el as HTMLElement).dataset.trainingCounter || (el as HTMLElement).dataset.trainingPrefix) return;
+    counterObserver.observe(el);
+  });
 
   // Header state + scroll progress + back to top
   const header = document.getElementById('site-header');
@@ -238,10 +241,9 @@
 
   function applyMenuState() {
     if (!mobileMenu || !menuToggle) return;
-    mobileMenu.classList.toggle('max-h-80', menuOpen);
-    mobileMenu.classList.toggle('opacity-100', menuOpen);
     mobileMenu.classList.toggle('max-h-0', !menuOpen);
     mobileMenu.classList.toggle('opacity-0', !menuOpen);
+    mobileMenu.classList.toggle('mobile-menu-open', menuOpen);
     menuToggle.setAttribute('aria-expanded', String(menuOpen));
 
     const bars = menuToggle.querySelectorAll('span');

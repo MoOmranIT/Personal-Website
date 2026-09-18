@@ -96,6 +96,12 @@
     outline: 2px solid var(--gold);
     outline-offset: 3px;
   }
+
+  #mobile-menu.mobile-menu-open {
+    max-height: calc(100vh - 5rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
 }
 
 @layer components {

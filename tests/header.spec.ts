@@ -149,4 +149,58 @@ test.describe('Header navigation', () => {
       }
     }
   });
+
+  test('mobile menu opens with scroll and reaches last items', async ({ page }) => {
+    const viewports = [
+      [320, 568],
+      [360, 640],
+      [375, 667],
+      [390, 664],
+      [430, 740]
+    ];
+    for (const [w, h] of viewports) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.goto('/');
+      await page.locator('#menu-toggle').click();
+      await expect(page.locator('#mobile-menu')).toHaveClass(/mobile-menu-open/);
+
+      const menu = page.locator('#mobile-menu');
+      const menuHeight = await menu.evaluate((el) => el.getBoundingClientRect().height);
+      expect(menuHeight).toBeGreaterThan(0);
+      expect(menuHeight).toBeLessThanOrEqual(h);
+
+      await expect(page.locator('#accordion-expertise a[href="#training"]')).toBeAttached();
+      await page.locator('button[data-accordion="accordion-proof"]').click();
+      await page.locator('#accordion-proof a[href="#success"]').scrollIntoViewIfNeeded();
+      await expect(page.locator('#accordion-proof a[href="#success"]')).toBeVisible();
+      await expect(page.locator('#mobile-menu .sm\\:hidden a[href="#contact"]')).toBeVisible();
+    }
+  });
+
+  test('mobile header stays within bounds on small screens', async ({ page }) => {
+    const viewports = [
+      [320, 568],
+      [360, 640],
+      [375, 667],
+      [390, 664],
+      [430, 740]
+    ];
+    for (const [w, h] of viewports) {
+      await page.setViewportSize({ width: w, height: h });
+      await page.goto('/');
+
+      const header = page.locator('#site-header');
+      const headerBox = await header.boundingBox();
+      expect(headerBox).not.toBeNull();
+      expect(headerBox!.x).toBeGreaterThanOrEqual(0);
+      expect(headerBox!.width).toBeLessThanOrEqual(w + 1);
+
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(1);
+
+      await expect(page.locator('#site-header .group')).toBeVisible();
+      await expect(page.locator('#menu-toggle')).toBeVisible();
+      await expect(page.locator('#site-header a[href$="/ar/"]')).toBeVisible();
+    }
+  });
 });

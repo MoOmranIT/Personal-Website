@@ -69,7 +69,7 @@ test.describe('Interaction QA', () => {
     const toggle = page.locator('#menu-toggle');
     await toggle.click();
     await expect(page.locator('#menu-toggle')).toHaveAttribute('aria-expanded', 'true');
-    await expect(page.locator('#mobile-menu')).toHaveClass(/opacity-100/);
+    await expect(page.locator('#mobile-menu')).toHaveClass(/mobile-menu-open/);
     await page.keyboard.press('Escape');
     await expect(page.locator('#menu-toggle')).toHaveAttribute('aria-expanded', 'false');
   });

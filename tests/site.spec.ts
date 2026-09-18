@@ -45,4 +45,59 @@ test.describe('Bilingual pages', () => {
     const download = await downloadPromise;
     expect(download.suggestedFilename()).toBe('Dr-Khaled-Al-Mohammad-Training-Profile.pdf');
   });
+
+  test('training counters start at final values and animate on viewport entry', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+
+    const counters = page.locator('#training .counter-num');
+    await expect(counters).toHaveCount(3);
+    await expect(counters.nth(0)).toHaveText('+18');
+    await expect(counters.nth(1)).toHaveText('+3000');
+    await expect(counters.nth(2)).toHaveText('+22');
+
+    await expect(counters.nth(0)).toHaveAttribute('data-training-counter', '18');
+    await expect(counters.nth(1)).toHaveAttribute('data-training-counter', '3000');
+    await expect(counters.nth(2)).toHaveAttribute('data-training-counter', '22');
+
+    await counters.nth(0).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await expect(counters.nth(0)).toHaveText('+18');
+
+    await counters.nth(1).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await expect(counters.nth(1)).toHaveText('+3000');
+  });
+
+  test('training counters respect reduced motion', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+
+    const counters = page.locator('#training .counter-num');
+    await expect(counters).toHaveCount(3);
+    await expect(counters.nth(0)).toHaveText('+18');
+    await expect(counters.nth(1)).toHaveText('+3000');
+    await expect(counters.nth(2)).toHaveText('+22');
+
+    await counters.nth(0).scrollIntoViewIfNeeded();
+    await page.waitForTimeout(300);
+    await expect(counters.nth(0)).toHaveText('+18');
+  });
+
+  test('MotorK copy uses approved wording', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#ventures')).toBeAttached();
+    const motorKCard = page.locator('#ventures .ventures-product').filter({ hasText: 'MotorK' });
+    await expect(motorKCard).toBeAttached();
+    await expect(motorKCard.locator('.ventures-product-caption')).toHaveText('AI-powered mobile app that helps you understand your car and maintenance costs before you pay.');
+  });
+
+  test('success stories render exactly 5 cards and first card spans wider on desktop', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    const cards = page.locator('#success .flip-card');
+    await expect(cards).toHaveCount(5);
+    await expect(cards.first()).toHaveClass(/sm:col-span-2/);
+  });
 });
