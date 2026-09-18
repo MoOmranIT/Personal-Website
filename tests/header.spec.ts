@@ -55,6 +55,15 @@ test.describe('Header navigation', () => {
     await expect(accordion).toHaveAttribute('aria-expanded', 'false');
   });
 
+  test('mobile expertise accordion contains training link', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/');
+    await page.locator('#menu-toggle').click();
+    const accordion = page.locator('button[data-accordion="accordion-expertise"]');
+    await accordion.click();
+    await expect(page.locator('#accordion-expertise a[href="#training"]')).toBeAttached();
+  });
+
   test('mobile accordion closes with Escape', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');
@@ -75,12 +84,27 @@ test.describe('Header navigation', () => {
     }
   });
 
+  test('no duplicate Ventures or About Me in desktop nav', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/');
+    const venturesCount = await page.locator('#site-header nav[aria-label="Primary"] a[href="#ventures"]').count();
+    const aboutCount = await page.locator('#site-header nav[aria-label="Primary"] a[href="#about"]').count();
+    expect(venturesCount).toBe(1);
+    expect(aboutCount).toBe(1);
+  });
+
+  test('training section anchor exists', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#training')).toBeAttached();
+  });
+
   test('dropdown links exist', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.goto('/');
     await page.locator('button[data-dropdown="dropdown-expertise"]').click();
     await expect(page.locator('#dropdown-expertise a[href="#executive-roles"]')).toBeAttached();
     await expect(page.locator('#dropdown-expertise a[href="#services"]')).toBeAttached();
+    await expect(page.locator('#dropdown-expertise a[href="#training"]')).toBeAttached();
     await page.locator('button[data-dropdown="dropdown-proof"]').click();
     await expect(page.locator('#dropdown-proof a[href="#stanford"]')).toBeAttached();
     await expect(page.locator('#dropdown-proof a[href="#books"]')).toBeAttached();

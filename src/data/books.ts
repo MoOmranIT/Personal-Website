@@ -16,7 +16,7 @@ export const books: Book[] = [
     id: "business-developer",
     en: {
       title: "The Business Developer’s Mindset",
-      image: "/images/books/business-developers-mindset-en.png",
+      image: "/images/books/business-developers-mindset-en.webp",
       alt: "The Business Developer’s Mindset book cover",
       amazonUrl:
         "https://www.amazon.com/Business-Developers-Mindset-Strategies-Organizations-ebook/dp/B0GZJ8XSL7/ref=sr_1_2?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.%2BKhaled%2B%2BAlmohamad&s=digital-text&sr=1-2&text=Dr.%2BKhaled%2B%2BAlmohamad",
@@ -33,7 +33,7 @@ export const books: Book[] = [
     id: "customer-effect",
     en: {
       title: "The Customer Effect",
-      image: "/images/books/customer-effect-en.png",
+      image: "/images/books/customer-effect-en.webp",
       alt: "The Customer Effect book cover",
       amazonUrl:
         "https://www.amazon.com/dp/B0GZB21XYD/ref=sr_1_1?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.+Khaled++Almohamad&s=digital-text&sr=1-1&text=Dr.+Khaled++Almohamad",
@@ -50,7 +50,7 @@ export const books: Book[] = [
     id: "why-people-buy",
     en: {
       title: "Why People Buy?",
-      image: "/images/books/why-people-buy-en.png",
+      image: "/images/books/why-people-buy-en.webp",
       alt: "Why People Buy? book cover",
       amazonUrl:
         "https://www.amazon.com/dp/B0GXGRYL19/ref=sr_1_5?dib=eyJ2IjoiMSJ9.bR5OSQM4xDW6J3AIItx9orDkccXTPkABjFb2w-KnqH5D2HYyva-84ir_qDa1zT9B2ykrhVM3nofF-PAWLC_ebx6fLsyURNT-xAVAaCnneNo.HbyaJg1spt8TvEdlE0-PlukazzWJP_ea_dM2tXgUUUI&dib_tag=se&qid=1778309556&refinements=p_27%3ADr.+Khaled++Almohamad&s=digital-text&sr=1-5&text=Dr.+Khaled++Almohamad",

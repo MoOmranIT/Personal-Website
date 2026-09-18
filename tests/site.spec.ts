@@ -4,7 +4,7 @@ test.describe('Bilingual pages', () => {
   test('English homepage renders main sections', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Dr\. Khaled Al Mohammad/i);
-    for (const id of ['home', 'services', 'about', 'books', 'success', 'contact']) {
+    for (const id of ['home', 'services', 'training', 'about', 'books', 'success', 'contact']) {
       await expect(page.locator(`#${id}`)).toBeAttached();
     }
   });
@@ -29,5 +29,20 @@ test.describe('Bilingual pages', () => {
   test('footer year is current', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#year')).toHaveText(String(new Date().getFullYear()));
+  });
+
+  test('training profile CTA downloads the supplied PDF', async ({ page, request }) => {
+    await page.goto('/');
+    const cta = page.locator('#training a[download="Dr-Khaled-Al-Mohammad-Training-Profile.pdf"]');
+    await expect(cta).toHaveAttribute('href', '/downloads/dr-khaled-al-mohammad-training-profile.pdf');
+
+    const response = await request.get('/downloads/dr-khaled-al-mohammad-training-profile.pdf');
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain('application/pdf');
+
+    const downloadPromise = page.waitForEvent('download');
+    await cta.click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toBe('Dr-Khaled-Al-Mohammad-Training-Profile.pdf');
   });
 });

@@ -7,9 +7,11 @@ const LOCALES = [
 
 const VIEWPORTS = [
   { w: 320, h: 812 },
+  { w: 360, h: 800 },
   { w: 375, h: 812 },
   { w: 390, h: 844 },
   { w: 414, h: 896 },
+  { w: 430, h: 932 },
   { w: 640, h: 900 },
   { w: 768, h: 1024 },
   { w: 1024, h: 768 },
@@ -42,6 +44,9 @@ test.describe('Responsive + console QA across viewports', () => {
         await expect(page.locator('html')).toHaveAttribute('dir', locale.dir);
         for (const id of ['home', 'services', 'about', 'books', 'success', 'contact']) {
           await expect(page.locator(`#${id}`)).toBeAttached();
+        }
+        if (locale.label === 'EN') {
+          await expect(page.locator('#training')).toBeAttached();
         }
 
         // No horizontal scroll (document width should not exceed viewport)
@@ -106,13 +111,61 @@ test.describe('Interaction QA', () => {
     await expect(wa).toHaveAttribute('rel', /noopener/);
   });
 
-  test('images load (hero, about/audience, story covers)', async ({ page }) => {
+  test('targeted images decode successfully', async ({ page }) => {
+    const failedLocal: string[] = [];
+    page.on('response', (res) => {
+      if (res.url().startsWith('http://localhost:4321') && res.status() >= 400) {
+        failedLocal.push(`${res.status()} ${res.url()}`);
+      }
+    });
+
     await page.goto('/');
-    const imgs = ['images/heroo', 'images/audience.jpg', 'images/story-100k-downloads'];
-    for (const needle of imgs) {
-      const img = page.locator(`img[src*="${needle}"]`).first();
-      await expect(img).toBeAttached();
+    const images = page.locator('img[src^="/images/"]');
+    const imageCount = await images.count();
+    expect(imageCount).toBeGreaterThan(0);
+
+    for (let index = 0; index < imageCount; index += 1) {
+      const img = images.nth(index);
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate((element) => ({
+        complete: element.complete,
+        naturalWidth: element.naturalWidth,
+        naturalHeight: element.naturalHeight
+      }))).toEqual({ complete: true, naturalWidth: expect.any(Number), naturalHeight: expect.any(Number) });
+      await expect.poll(() => img.evaluate((element) => element.naturalWidth)).toBeGreaterThan(0);
+      await expect.poll(() => img.evaluate((element) => element.naturalHeight)).toBeGreaterThan(0);
     }
+
+    expect(failedLocal, `failed local requests: ${failedLocal.join(', ')}`).toEqual([]);
+  });
+
+  test('training gallery images load successfully', async ({ page }) => {
+    const failedLocal: string[] = [];
+    page.on('response', (res) => {
+      if (res.url().startsWith('http://localhost:4321') && res.status() >= 400) {
+        failedLocal.push(`${res.status()} ${res.url()}`);
+      }
+    });
+
+    await page.goto('/');
+    const images = page.locator('#training .training-gallery img');
+    await expect(images).toHaveCount(4);
+
+    for (let index = 0; index < await images.count(); index += 1) {
+      const img = images.nth(index);
+      await expect(img).toHaveAttribute('loading', 'lazy');
+      await expect(img).toHaveAttribute('decoding', 'async');
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate((element) => ({
+        complete: element.complete,
+        naturalWidth: element.naturalWidth,
+        naturalHeight: element.naturalHeight
+      }))).toEqual({ complete: true, naturalWidth: expect.any(Number), naturalHeight: expect.any(Number) });
+      await expect.poll(() => img.evaluate((element) => element.naturalWidth)).toBeGreaterThan(0);
+      await expect.poll(() => img.evaluate((element) => element.naturalHeight)).toBeGreaterThan(0);
+    }
+
+    expect(failedLocal, `failed local requests: ${failedLocal.join(', ')}`).toEqual([]);
   });
 });
 

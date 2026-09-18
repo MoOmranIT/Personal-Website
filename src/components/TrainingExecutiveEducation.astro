@@ -1,0 +1,253 @@
+---
+interface Props {
+  translations?: {
+    training?: {
+      eyebrow?: string;
+      heading?: string;
+      description?: string;
+      topics?: { title?: string; description?: string }[];
+      formats?: { title?: string; description?: string }[];
+      trackRecord?: { stat1?: string; stat2?: string; stat3?: string };
+      cta?: string;
+    };
+  };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.training || {};
+
+const eyebrow = t.eyebrow || 'Executive Education, Dubai';
+const heading = t.heading || 'Training & Executive Education';
+const description = t.description || 'Executive programs, corporate training, and workshops on strategy, business development, and growth, delivered across the UAE by a Dubai business development consultant with 18+ years in the field.';
+
+const topics = t.topics || [
+  { title: 'Strategy', description: 'Strategic positioning & go-to-market planning.' },
+  { title: 'Business Development', description: 'Business development systems & pipeline design.' },
+  { title: 'Marketing', description: 'Brand positioning & marketing fundamentals' },
+  { title: 'Leadership', description: 'Executive decision-making under growth · Growth leadership & team performance' }
+];
+
+const formats = t.formats || [
+  {
+    title: 'Executive Programs',
+    description: 'Multi-session programs for senior leaders and founders on strategy, growth, and positioning, delivered in Dubai and across UAE.'
+  },
+  {
+    title: 'Corporate Training',
+    description: 'In-house training for business development and marketing teams, built around the company\u2019s actual pipeline and market.'
+  },
+  {
+    title: 'Workshops',
+    description: 'Focused half or full day sessions on a single discipline: positioning or growth planning.'
+  }
+];
+
+const trackRecord = t.trackRecord || {
+  stat1: '+18 Years delivering executive training',
+  stat2: '+3000 Professional trained',
+  stat3: '+22 Organizations trained across the UAE'
+};
+
+const ctaText = t.cta || 'Download Training Profile';
+
+const galleryImages = [
+  { src: 'training-classroom-session.webp', width: 1080, height: 574, alt: 'Dr. Khaled addressing participants seated in a training classroom' },
+  { src: 'training-whiteboard-session.webp', width: 852, height: 1280, alt: 'Dr. Khaled explaining ideas on a glass board during a training session' },
+  { src: 'training-group-discussion.webp', width: 800, height: 450, alt: 'Participants exchanging ideas during a group training discussion' },
+  { src: 'training-presenter.webp', width: 702, height: 708, alt: 'Dr. Khaled presenting beside a projection screen and whiteboard' }
+];
+---
+
+<section id="training" class="py-24 bg-white relative overflow-hidden">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
+        {eyebrow}
+      </span>
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        {heading}
+      </h2>
+      <p class="text-slate-500 max-w-2xl mx-auto mt-6 text-lg leading-relaxed">
+        {description}
+      </p>
+    </div>
+
+    <div class="mb-20">
+      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
+        Topic I cover
+      </h3>
+      <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        {topics.map((topic, i) => (
+          <div class={`reveal delay-${i + 1} bg-slate-50 ring-1 ring-slate-100 rounded-2xl p-6 sm:p-8 lift-card`}>
+            <h4 class="text-xl font-bold text-navy mb-2">{topic.title}</h4>
+            <p class="text-slate-600 leading-relaxed">{topic.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mb-20">
+      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
+        Training Formats
+      </h3>
+      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        {formats.map((format, i) => (
+          <div class={`reveal delay-${i + 1} card-premium bg-white ring-1 ring-slate-100 rounded-3xl p-8 relative overflow-hidden`}>
+            <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></span>
+            <h4 class="text-xl font-bold text-navy mb-3">{format.title}</h4>
+            <p class="text-slate-600 leading-relaxed">{format.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="mb-20">
+      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
+        Inside the Room
+      </h3>
+      <div class="training-gallery" aria-label="Training session gallery">
+        <div class="training-gallery-grid max-w-5xl mx-auto">
+          {galleryImages.map((image, i) => (
+            <figure class={`training-gallery-item reveal delay-${i + 1}`}>
+              <img
+                src={`/images/training/${image.src}`}
+                alt={image.alt}
+                width={image.width}
+                height={image.height}
+                loading="lazy"
+                decoding="async"
+                class="block w-full h-auto rounded-2xl ring-1 ring-slate-100 shadow-sm"
+              />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-14">
+      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-10 text-center reveal">
+        Track Record
+      </h3>
+      <div class="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
+        <div class="reveal delay-1">
+          <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-prefix="+">+18</p>
+          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat1.replace('+18 ', '')}</p>
+        </div>
+        <div class="reveal delay-2">
+          <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-prefix="+">+3000</p>
+          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat2.replace('+3000 ', '')}</p>
+        </div>
+        <div class="reveal delay-3">
+          <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-prefix="+">+22</p>
+          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat3.replace('+22 ', '')}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center reveal">
+      <a
+        href="/downloads/dr-khaled-al-mohammad-training-profile.pdf"
+        download="Dr-Khaled-Al-Mohammad-Training-Profile.pdf"
+        class="btn-navy btn-sheen inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-base shadow-lg"
+      >
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3v12"></path>
+          <path d="m7 10 5 5 5-5"></path>
+          <path d="M5 21h14"></path>
+        </svg>
+        {ctaText}
+      </a>
+    </div>
+
+    <script>
+      (function () {
+        if (window.__TRAINING_COUNTERS_RUN__) return;
+        window.__TRAINING_COUNTERS_RUN__ = true;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) return;
+
+        const counters = document.querySelectorAll('[data-training-prefix]');
+        if (!counters.length) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              observer.unobserve(entry.target);
+              const el = entry.target as HTMLElement;
+              const target = parseInt(el.dataset.trainingCounter || '0', 10);
+              const prefix = el.dataset.trainingPrefix || '';
+              const finalText = el.textContent || '';
+              const duration = 1800;
+              const startTime = performance.now();
+
+              el.setAttribute('aria-label', finalText);
+              el.textContent = prefix + '0';
+
+              function tick(now: number) {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(eased * target);
+                el.textContent = prefix + current.toLocaleString();
+                if (progress < 1) {
+                  requestAnimationFrame(tick);
+                } else {
+                  el.textContent = finalText;
+                }
+              }
+
+              requestAnimationFrame(tick);
+            });
+          },
+          { threshold: 0.5 }
+        );
+
+        counters.forEach((c) => observer.observe(c));
+      })();
+    </script>
+  </div>
+</section>
+
+<style>
+  .training-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .training-gallery-item {
+    margin: 0;
+  }
+
+  .training-gallery-item:first-child {
+    grid-column: span 2;
+  }
+
+  .training-gallery-item:nth-child(2) {
+    grid-row: span 2;
+  }
+
+  .training-gallery-item img {
+    transition: transform 300ms ease, box-shadow 300ms ease;
+  }
+
+  .training-gallery-item:hover img {
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 0 16px 30px rgba(15, 35, 60, 0.12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .training-gallery-item img {
+      transition: none;
+    }
+
+    .training-gallery-item:hover img {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+</style>

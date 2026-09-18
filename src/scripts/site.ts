@@ -206,7 +206,7 @@
   }
 
   // Scroll spy
-  const sectionIds = ['home', 'executive-roles', 'ventures', 'services', 'about', 'books', 'success', 'contact', 'stanford'];
+  const sectionIds = ['home', 'executive-roles', 'ventures', 'services', 'training', 'about', 'books', 'success', 'contact', 'stanford'];
   const navLinks = Array.prototype.slice.call(document.querySelectorAll('#site-header nav a'));
   const sections = sectionIds
     .map((id) => document.getElementById(id))

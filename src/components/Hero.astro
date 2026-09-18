@@ -1,6 +1,5 @@
 ---
 const heroImage = '/images/heroo.webp';
-const heroFallback = '/images/heroo.jpg';
 
 interface Props {
   translations?: {
@@ -66,19 +65,16 @@ const stats = [
       <div class="w-full max-w-md mx-auto relative">
         <div aria-hidden="true" class="absolute -inset-3 rounded-[2.6rem] border border-[#c59c07]/25 pointer-events-none"></div>
         <div aria-hidden="true" class="absolute -inset-1 rounded-[2.5rem] bg-navy-soft/10 pointer-events-none"></div>
-        <picture>
-          <source srcset={heroImage} type="image/webp" />
-          <img
-            src={heroFallback}
-            alt="Dr. Khaled Al Mohammad, Business Consultant in Dubai"
-            width="800"
-            height="800"
-            class="relative rounded-[2.5rem] w-full max-w-md mx-auto aspect-square object-cover object-top shadow-2xl parallax-img"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-          />
-        </picture>
+        <img
+          src={heroImage}
+          alt="Dr. Khaled Al Mohammad, Business Consultant in Dubai"
+          width="800"
+          height="800"
+          class="relative rounded-[2.5rem] w-full max-w-md mx-auto aspect-square object-cover object-top shadow-2xl parallax-img"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
       </div>
       {lang === 'ar' && (
         <div class={`absolute -bottom-6 ${cardPosition} bg-white rounded-2xl shadow-xl px-6 py-4 hidden sm:block lift-card`}>

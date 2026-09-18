@@ -29,13 +29,12 @@ const otherLangLabel = isAr ? 'English' : 'العربية';
 
 const enSimpleLinks = [
   { href: '#home', label: translations.home || 'Home', id: 'home' },
-  { href: '#ventures', label: 'Ventures', id: 'ventures' },
-  { href: '#about', label: translations.about || 'About Me', id: 'about' },
 ];
 
 const enExpertiseItems = [
   { href: '#executive-roles', label: 'Current Executive & Advisory Roles', id: 'executive-roles' },
   { href: '#services', label: 'Services', id: 'services' },
+  { href: '#training', label: 'Training & Executive Education', id: 'training' },
 ];
 
 const enProofItems = [
@@ -102,6 +101,7 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
           >
             <a href={enExpertiseItems[0].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[0].label}</a>
             <a href={enExpertiseItems[1].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[1].label}</a>
+            <a href={enExpertiseItems[2].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[2].label}</a>
           </div>
         </div>
         <a href="#ventures" data-active="false" class="nav-link hover:text-navy transition-colors">Ventures</a>
@@ -185,6 +185,7 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
             <div id="accordion-expertise" class="accordion-panel max-h-0 overflow-hidden transition-all duration-300">
               <a href="#executive-roles" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Current Executive & Advisory Roles</a>
               <a href="#services" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Services</a>
+              <a href="#training" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Training & Executive Education</a>
             </div>
           </div>
           <a href="#ventures" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Ventures</a>

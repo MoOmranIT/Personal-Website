@@ -523,7 +523,7 @@
 
   /* Mobile accordion */
   .mobile-accordion.open .accordion-panel {
-    max-height: 300px;
+    max-height: 400px;
   }
   .mobile-accordion.open .accordion-chevron {
     transform: rotate(180deg);
