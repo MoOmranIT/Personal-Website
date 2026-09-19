@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
       <nav class="space-y-3" aria-label={lang === 'ar' ? 'الروابط السريعة' : 'Quick Links'}>
         <h3 class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-5">{lang === 'ar' ? 'روابط سريعة' : 'Quick Links'}</h3>
         <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.home || (lang === 'ar' ? 'الرئيسية' : 'Home')}</a>
-        <a href={lang === 'ar' ? '/ar/#expertise' : '#expertise'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.expertise || (lang === 'ar' ? 'الخبرات' : 'Expertise')}</a>
+        <a href={lang === 'ar' ? '/ar/#services' : '#services'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.expertise || (lang === 'ar' ? 'الخبرات' : 'Expertise')}</a>
         <a href={lang === 'ar' ? '/ar/#ventures' : '#ventures'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.ventures || (lang === 'ar' ? 'المشاريع' : 'Ventures')}</a>
         <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.about || (lang === 'ar' ? 'من أنا' : 'About Me')}</a>
         <a href={lang === 'ar' ? '/ar/#success' : '#success'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.proofInsights || (lang === 'ar' ? 'قصص النجاح' : 'Proof & Insights')}</a>

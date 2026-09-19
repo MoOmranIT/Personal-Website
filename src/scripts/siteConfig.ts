@@ -1,7 +1,8 @@
 export const siteConfig = {
   name: 'Dr. Khaled Al Mohammad',
   title: 'Dr. Khaled Al Mohammad | Business Consultant in Dubai — Strategy, Marketing & Growth',
-  description: 'Dr. Khaled Al Mohammad is a Dubai-based Business Consultant with 18+ years of experience in business development, digital marketing and strategic growth. PhD in Marketing, author of 6+ books, trainer of 3,000+ professionals. Book your consultation today.',
+      description: 'Dr. Khaled Al Mohammad is a Dubai-based Business Consultant with 18+ years of experience in business development, strategic marketing and strategic growth. PhD in Marketing, author of 6+ books, trainer of 6,250+ professionals. Book your consultation today.',
+
   ogDescription: '18+ years of experience in business consulting, strategic marketing and growth development. Book your consultation with Dr. Khaled Al Mohammad today.',
   twitterDescription: 'Strategic business consulting, marketing expertise and growth solutions. 18+ years of experience across the Gulf.',
   url: 'https://dr-khaledalmohamad.com/',
@@ -26,7 +27,8 @@ export const siteConfig = {
   seo: {
     en: {
       title: 'Dr. Khaled Al Mohammad | Business Consultant in Dubai — Strategy, Marketing & Growth',
-      description: 'Dr. Khaled Al Mohammad is a Dubai-based Business Consultant with 18+ years of experience in business development, digital marketing and strategic growth. PhD in Marketing, author of 6+ books, trainer of 3,000+ professionals. Book your consultation today.',
+  description: 'Dr. Khaled Al Mohammad is a Dubai-based Business Consultant with 18+ years of experience in business development, strategic marketing and strategic growth. PhD in Marketing, author of 6+ books, trainer of 6,250+ professionals. Book your consultation today.',
+
       ogDescription: '18+ years of experience in business consulting, strategic marketing and growth development. Book your consultation with Dr. Khaled Al Mohammad today.',
       twitterDescription: 'Strategic business consulting, marketing expertise and growth solutions. 18+ years of experience across the Gulf.',
       locale: 'en_US'
