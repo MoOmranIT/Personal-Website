@@ -47,6 +47,7 @@ test.describe('Responsive + console QA across viewports', () => {
         }
         if (locale.label === 'EN') {
           await expect(page.locator('#training')).toBeAttached();
+          await expect(page.locator('#video-testimonials')).toBeAttached();
         }
 
         // No horizontal scroll (document width should not exceed viewport)
@@ -149,7 +150,7 @@ test.describe('Interaction QA', () => {
 
     await page.goto('/');
     const images = page.locator('#training .training-gallery img');
-    await expect(images).toHaveCount(4);
+    await expect(images).toHaveCount(5);
 
     for (let index = 0; index < await images.count(); index += 1) {
       const img = images.nth(index);

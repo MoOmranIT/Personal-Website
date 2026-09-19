@@ -109,6 +109,7 @@ test.describe('Header navigation', () => {
     await expect(page.locator('#dropdown-proof a[href="#stanford"]')).toBeAttached();
     await expect(page.locator('#dropdown-proof a[href="#books"]')).toBeAttached();
     await expect(page.locator('#dropdown-proof a[href="#success"]')).toBeAttached();
+    await expect(page.locator('#dropdown-proof a[href="#video-testimonials"]')).toBeAttached();
   });
 
   test('Escape inside a dropdown link closes it and restores focus to the trigger', async ({ page }) => {

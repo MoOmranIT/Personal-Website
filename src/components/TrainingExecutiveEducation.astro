@@ -45,13 +45,14 @@ const formats = t.formats || [
 
 const trackRecord = t.trackRecord || {
   stat1: '+18 Years delivering executive training',
-  stat2: '+3000 Professional trained',
+  stat2: '+6250 Professional trained',
   stat3: '+22 Organizations trained across the UAE'
 };
 
 const ctaText = t.cta || 'Download Training Profile';
 
 const galleryImages = [
+  { src: 'training-featured-room.webp', width: 1280, height: 774, alt: 'Training session inside the room' },
   { src: 'training-classroom-session.webp', width: 1080, height: 574, alt: 'Dr. Khaled addressing participants seated in a training classroom' },
   { src: 'training-whiteboard-session.webp', width: 852, height: 1280, alt: 'Dr. Khaled explaining ideas on a glass board during a training session' },
   { src: 'training-group-discussion.webp', width: 800, height: 450, alt: 'Participants exchanging ideas during a group training discussion' },
@@ -106,10 +107,20 @@ const galleryImages = [
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
         Inside the Room
       </h3>
-      <div class="training-gallery" aria-label="Training session gallery">
-        <div class="training-gallery-grid max-w-5xl mx-auto">
-          {galleryImages.map((image, i) => (
-            <figure class={`training-gallery-item reveal delay-${i + 1}`}>
+      <div class="training-gallery max-w-5xl mx-auto">
+        <figure class="training-gallery-featured reveal">
+          <img
+            src="/images/training/training-featured-room.webp"
+            alt="Training session inside the room"
+            width="1280"
+            height="774"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+        <div class="training-gallery-grid">
+          {galleryImages.slice(1).map((image, i) => (
+            <figure class={`training-gallery-item${i === 1 ? ' training-gallery-item--portrait-subject' : ''} reveal delay-${i + 1}`}>
               <img
                 src={`/images/training/${image.src}`}
                 alt={image.alt}
@@ -117,7 +128,6 @@ const galleryImages = [
                 height={image.height}
                 loading="lazy"
                 decoding="async"
-                class="block w-full h-auto rounded-2xl ring-1 ring-slate-100 shadow-sm"
               />
             </figure>
           ))}
@@ -135,7 +145,7 @@ const galleryImages = [
           <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat1.replace('+18 ', '')}</p>
         </div>
         <div class="reveal delay-2">
-          <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-counter="3000" data-training-prefix="+">+3000</p>
+          <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-counter="6250" data-training-prefix="+">+6250</p>
           <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat2.replace('+3000 ', '')}</p>
         </div>
         <div class="reveal delay-3">
@@ -147,8 +157,8 @@ const galleryImages = [
 
     <div class="text-center reveal">
       <a
-        href="/downloads/dr-khaled-al-mohammad-training-profile.pdf"
-        download="Dr-Khaled-Al-Mohammad-Training-Profile.pdf"
+        href="/downloads/dr-khaled-al-mohammad-executive-training-profile.pdf"
+        download="Dr-Khaled-Al-Mohammad-Executive-Training-Profile.pdf"
         class="btn-navy btn-sheen inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-base shadow-lg"
       >
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -211,43 +221,77 @@ const galleryImages = [
   </div>
 </section>
 
-<style>
-  .training-gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-    align-items: start;
-  }
+  <style>
+    .training-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
 
-  .training-gallery-item {
-    margin: 0;
-  }
+    .training-gallery-featured {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #f8f7f3;
+      box-shadow: 0 0 0 1px rgba(197, 156, 7, 0.42), 0 18px 45px rgba(7, 24, 43, 0.10);
+    }
 
-  .training-gallery-item:first-child {
-    grid-column: span 2;
-  }
+    .training-gallery-featured img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
 
-  .training-gallery-item:nth-child(2) {
-    grid-row: span 2;
-  }
+    .training-gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.125rem;
+    }
 
-  .training-gallery-item img {
-    transition: transform 300ms ease, box-shadow 300ms ease;
-  }
+    .training-gallery-item {
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #f8f7f3;
+      box-shadow: 0 10px 28px rgba(7, 24, 43, 0.08);
+    }
 
-  .training-gallery-item:hover img {
-    transform: translateY(-3px) scale(1.01);
-    box-shadow: 0 16px 30px rgba(15, 35, 60, 0.12);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
     .training-gallery-item img {
-      transition: none;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+
+    .training-gallery-item--portrait-subject img {
+      object-position: center top;
     }
 
     .training-gallery-item:hover img {
-      transform: none;
-      box-shadow: none;
+      transform: scale(1.012);
+      box-shadow: 0 16px 30px rgba(15, 35, 60, 0.12);
     }
-  }
-</style>
+
+    @media (min-width: 640px) {
+      .training-gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1.125rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .training-gallery-item img {
+        transition: none;
+      }
+
+      .training-gallery-item:hover img {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  </style>

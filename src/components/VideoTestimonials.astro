@@ -1,0 +1,327 @@
+---
+const videos = [
+  {
+    src: '/videos/testimonials/video-testimonial-01.mp4',
+    poster: '/images/video-testimonials/video-testimonial-01.webp',
+    label: 'Play video testimonial'
+  },
+  {
+    src: '/videos/testimonials/video-testimonial-02.mp4',
+    poster: '/images/video-testimonials/video-testimonial-02.webp',
+    label: 'Play video testimonial'
+  },
+  {
+    src: '/videos/testimonials/video-testimonial-03.mp4',
+    poster: '/images/video-testimonials/video-testimonial-03.webp',
+    label: 'Play video testimonial'
+  },
+  {
+    src: '/videos/testimonials/video-testimonial-04.mp4',
+    poster: '/images/video-testimonials/video-testimonial-04.webp',
+    label: 'Play video testimonial'
+  }
+];
+---
+
+<section id="video-testimonials" class="bg-[#f8f7f3] py-28 sm:py-32">
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-8">
+    <div class="text-center mb-14 sm:mb-16 reveal">
+      <span class="text-xs uppercase tracking-[.3em] text-gold mb-3 block">
+        Video Testimonials
+      </span>
+      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+        Voices of Impact
+      </h2>
+      <span class="block mt-5 h-px w-16 bg-gold/70 mx-auto"></span>
+    </div>
+
+    <div class="video-testimonials-grid max-w-6xl mx-auto">
+      {videos.map((video, i) => (
+        <button
+          type="button"
+          class={`video-testimonial-tile${i < 2 ? ' video-testimonial-tile--portrait' : ''}${i >= 2 ? ' video-testimonial-tile--natural' : ''} reveal delay-${i + 1}`}
+          data-video-src={video.src}
+          data-video-poster={video.poster}
+          aria-label={video.label}
+        >
+          <img
+            src={video.poster}
+            alt=""
+            width="1920"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="video-play-button" aria-hidden="true"></span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="video-modal-backdrop" id="video-modal" aria-hidden="true">
+    <div class="video-modal" role="dialog" aria-modal="true" aria-label="Video testimonial player">
+      <button
+        type="button"
+        id="video-modal-close"
+        class="video-modal-close"
+        aria-label="Close video"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <video
+        id="video-modal-player"
+        controls
+        preload="none"
+        class="video-modal-player"
+        aria-label="Video testimonial"
+      ></video>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const triggers = document.querySelectorAll('.video-testimonial-tile');
+      const backdrop = document.getElementById('video-modal');
+      const player = document.getElementById('video-modal-player');
+      const closeBtn = document.getElementById('video-modal-close');
+      if (!backdrop || !player || !closeBtn || !triggers.length) return;
+
+      let lastTrigger: HTMLButtonElement | null = null;
+
+      function openModal(trigger: HTMLButtonElement) {
+        lastTrigger = trigger;
+        const src = trigger.getAttribute('data-video-src') || '';
+        const poster = trigger.getAttribute('data-video-poster') || '';
+        player.src = src;
+        player.poster = poster;
+        player.load();
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        closeBtn.focus();
+        player.play().catch(() => {});
+      }
+
+      function closeModal() {
+        player.pause();
+        player.removeAttribute('src');
+        player.load();
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        lastTrigger?.focus();
+      }
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => openModal(trigger as HTMLButtonElement));
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', (event) => {
+        if (event.target === backdrop) closeModal();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && backdrop.classList.contains('open')) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
+</section>
+
+<style>
+  .video-testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .video-testimonial-tile {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(11, 28, 57, 0.08);
+    background: #fff;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    line-height: 0;
+    aspect-ratio: 4 / 3;
+    box-shadow: 0 12px 32px rgba(7, 24, 43, 0.09);
+    transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  }
+
+  .video-testimonial-tile img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 350ms ease;
+  }
+
+  .video-testimonial-tile--portrait img {
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .video-testimonial-tile.video-testimonial-tile--natural img {
+    object-fit: contain;
+    object-position: center center;
+  }
+
+  .video-testimonial-tile:nth-child(3) img {
+    object-position: center 46%;
+  }
+
+  .video-testimonial-tile:nth-child(4) img {
+    object-position: center 47%;
+  }
+
+  .video-testimonial-tile:hover {
+    transform: translateY(-3px);
+    border-color: rgba(197, 156, 7, 0.38);
+    box-shadow: 0 18px 42px rgba(7, 24, 43, 0.13);
+  }
+
+  .video-testimonial-tile:hover img {
+    transform: scale(1.012);
+  }
+
+  .video-testimonial-tile:focus-visible {
+    outline: 3px solid rgba(197, 156, 7, 0.72);
+    outline-offset: 4px;
+  }
+
+  .video-play-button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.75rem;
+    height: 3.75rem;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    background: rgba(11, 28, 57, 0.62);
+    border: 1px solid rgba(245, 230, 183, 0.9);
+    box-shadow: 0 10px 26px rgba(7, 24, 43, 0.24), inset 0 0 0 1px rgba(197, 156, 7, 0.55);
+    pointer-events: none;
+    z-index: 2;
+    transition: transform 240ms ease, background-color 240ms ease;
+  }
+
+  .video-testimonial-tile:hover .video-play-button {
+    transform: translate(-50%, -50%) scale(1.04);
+    background: rgba(11, 28, 57, 0.72);
+  }
+
+  .video-play-button::after {
+    content: '';
+    position: absolute;
+    left: 54%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-top: 0.58rem solid transparent;
+    border-bottom: 0.58rem solid transparent;
+    border-left: 0.92rem solid #f5e6b7;
+  }
+
+  .video-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(3, 7, 12, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.25rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+  }
+
+  .video-modal-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .video-modal {
+    position: relative;
+    width: min(960px, 100%);
+    max-height: 85vh;
+    background: #000;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(11, 28, 57, 0.55);
+  }
+
+  .video-modal-player {
+    width: 100%;
+    max-height: 85vh;
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    background: #000;
+  }
+
+  .video-modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .video-modal-close:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+
+  @media (min-width: 640px) {
+    .video-testimonials-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .video-testimonials-grid {
+      gap: 1.75rem;
+    }
+
+    .video-play-button {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    .video-play-button::after {
+      border-top-width: 0.62rem;
+      border-bottom-width: 0.62rem;
+      border-left-width: 1rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-testimonial-tile img {
+      transition: none;
+    }
+
+    .video-testimonial-tile:hover img {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+</style>
