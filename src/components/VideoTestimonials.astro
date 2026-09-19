@@ -9,16 +9,6 @@ const videos = [
     src: '/videos/testimonials/video-testimonial-02.mp4',
     poster: '/images/video-testimonials/video-testimonial-02.webp',
     label: 'Play video testimonial'
-  },
-  {
-    src: '/videos/testimonials/video-testimonial-03.mp4',
-    poster: '/images/video-testimonials/video-testimonial-03.webp',
-    label: 'Play video testimonial'
-  },
-  {
-    src: '/videos/testimonials/video-testimonial-04.mp4',
-    poster: '/images/video-testimonials/video-testimonial-04.webp',
-    label: 'Play video testimonial'
   }
 ];
 ---
@@ -39,7 +29,7 @@ const videos = [
       {videos.map((video, i) => (
         <button
           type="button"
-          class={`video-testimonial-tile${i < 2 ? ' video-testimonial-tile--portrait' : ''}${i >= 2 ? ' video-testimonial-tile--natural' : ''} reveal delay-${i + 1}`}
+          class={`video-testimonial-tile video-testimonial-tile--portrait reveal delay-${i + 1}`}
           data-video-src={video.src}
           data-video-poster={video.poster}
           aria-label={video.label}
@@ -159,27 +149,10 @@ const videos = [
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transition: transform 350ms ease;
-  }
-
-  .video-testimonial-tile--portrait img {
-    object-fit: cover;
-    object-position: center center;
-  }
-
-  .video-testimonial-tile.video-testimonial-tile--natural img {
     object-fit: contain;
-    object-position: center center;
-  }
-
-  .video-testimonial-tile:nth-child(3) img {
-    object-position: center 46%;
-  }
-
-  .video-testimonial-tile:nth-child(4) img {
-    object-position: center 47%;
+    object-position: center;
+    background: #f5f4f0;
+    transition: transform 350ms ease;
   }
 
   .video-testimonial-tile:hover {

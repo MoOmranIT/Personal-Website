@@ -101,15 +101,15 @@ test.describe('Bilingual pages', () => {
     await expect(cards.first()).toHaveClass(/sm:col-span-2/);
   });
 
-  test('video testimonials render 4 posters and open modal on click', async ({ page }) => {
+  test('video testimonials render 2 posters and open modal on click', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('#video-testimonials')).toBeAttached();
     const triggers = page.locator('#video-testimonials .video-testimonial-tile');
-    await expect(triggers).toHaveCount(4);
+    await expect(triggers).toHaveCount(2);
 
     const posters = page.locator('#video-testimonials .video-testimonial-tile img');
-    await expect(posters).toHaveCount(4);
-    for (let i = 0; i < 4; i += 1) {
+    await expect(posters).toHaveCount(2);
+    for (let i = 0; i < 2; i += 1) {
       const img = posters.nth(i);
       await expect(img).toHaveAttribute('loading', 'lazy');
       await expect(img).toHaveAttribute('decoding', 'async');
