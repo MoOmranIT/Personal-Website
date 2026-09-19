@@ -29,7 +29,7 @@ const videos = [
       {videos.map((video, i) => (
         <button
           type="button"
-          class={`video-testimonial-tile video-testimonial-tile--portrait reveal delay-${i + 1}`}
+          class={`video-testimonial-tile video-testimonial-tile--portrait${i === 0 ? ' video-testimonial-tile--left' : ''} reveal delay-${i + 1}`}
           data-video-src={video.src}
           data-video-poster={video.poster}
           aria-label={video.label}
@@ -153,6 +153,11 @@ const videos = [
     object-position: center;
     background: #f5f4f0;
     transition: transform 350ms ease;
+  }
+
+  .video-testimonial-tile--left img {
+    object-fit: cover;
+    object-position: center 34%;
   }
 
   .video-testimonial-tile:hover {
