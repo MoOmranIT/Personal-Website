@@ -6,8 +6,9 @@ interface Props {
       heading?: string;
       subheading?: string;
       paragraphs?: string[];
-      list1?: string[];
-      list2?: string[];
+      roles?: string[];
+      closing?: string;
+      books?: string[];
       cta?: string;
     };
   };
@@ -31,49 +32,40 @@ const t = translations.about || {};
     </div>
     <div class="reveal-scale bg-slate-50 rounded-3xl p-8 sm:p-14 ring-1 ring-slate-100 shadow-sm relative overflow-hidden">
       <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 pointer-events-none"></span>
-      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">
-        {t.subheading || "I'm Dr. Khaled Al Mohammad"}
-      </h3>
       <div class="space-y-6 text-slate-600 text-lg leading-relaxed">
         {(t.paragraphs || [
-          'A PhD holder in Marketing and a Consumer Behavior Specialist since 2016, I work as a <strong class="text-navy">Business Consultant in Dubai</strong> with over 18 years of experience in business development, strategic marketing, and designing both organic and inorganic growth models for companies across diverse industries.',
-          'I have partnered with top-tier organizations across the Gulf and internationally, successfully leading development projects that delivered more than <strong class="text-navy">30% business growth</strong> and performance improvements exceeding <strong class="text-navy">20%</strong>.',
-          'Throughout my career as a Business Consultant in Dubai:',
-          'I am a certified consultant and international trainer with hands-on executive expertise in:',
-          'In addition, as a Business Consultant in Dubai, I have co-founded multiple innovative ventures, several of which have grown into high-revenue independent companies.'
+          'My work sits at the intersection of strategy, growth, and marketing. I hold a PhD in Marketing and have specialized in consumer behavior since 2016, a foundation that shapes every strategy I build today: not general opinions about what should work, but a grounded understanding of why people and markets actually behave the way they do.',
+          'Alongside these roles, I work as a business growth consultant for UAE organizations that need a structured system, not just an outside opinion.',
+          'That thinking is captured in three books, each drawn from real client work rather than theory:'
         ]).map((p, i) => (
           <p set:html={p} />
         ))}
       </div>
-      <div class="grid sm:grid-cols-2 gap-8 mt-10">
-        <div>
-          <h4 class="text-sm uppercase tracking-widest text-navy font-bold mb-4">{lang === 'ar' ? 'أبرز إنجازاتي' : 'Key Achievements'}</h4>
-          <ul class="space-y-3 pl-2">
-            {(t.list1 || [
-              'I have trained over 6,250 professionals in management, marketing, and sales.',
-              'I have contributed to the growth and transformation of hundreds of companies and public and private entities.',
-              'I have helped organizations build high-impact marketing strategies, strengthen customer experience, and achieve measurable commercial results.'
-            ]).map((item) => (
-              <li class="flex gap-3">
-                <span aria-hidden="true" class="mt-1 w-5 h-5 rounded-full bg-gold/15 text-gold flex items-center justify-center text-xs font-bold">✓</span> {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-sm uppercase tracking-widest text-navy font-bold mb-4">{lang === 'ar' ? 'الخبرة التنفذية' : 'Executive Expertise'}</h4>
-          <ul class="space-y-3 pl-2">
-            {(t.list2 || [
-              'Managing and optimizing marketing campaigns',
-              'Designing scalable expansion and growth strategies',
-              'Leading and aligning cross-functional teams'
-            ]).map((item) => (
-              <li class="flex gap-3">
-                <span aria-hidden="true" class="mt-1 w-5 h-5 rounded-full bg-gold/15 text-gold flex items-center justify-center text-xs font-bold">✓</span> {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div class="mt-10">
+        <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">What I Do Today?</h3>
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {(t.roles || [
+            'Chief Executive Officer: Elite Maison Marketing Consultancies',
+            'Founder: AI Brains ecosystem (Kaveo, AIRIS, HOLORISER, MotorK)',
+            'University Lecturer: Abu Dhabi University, Dubai Campus',
+            'Executive Trainer: Strategy & business development programs',
+            'Advisory appointments across UAE organizations'
+          ]).map((role) => (
+            <li class="flex items-start gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-100">
+              <span aria-hidden="true" class="mt-0.5 h-2 w-2 rounded-full bg-gold"></span>
+              <span class="text-slate-700">{role}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="mt-10 flex flex-wrap items-center gap-3">
+        {(t.books || [
+          'The Business Developer\'s Mindset',
+          'The Customer Effect',
+          'Why People Buy'
+        ]).map((book) => (
+          <span class="rounded-full border border-navy/10 bg-white px-4 py-1.5 text-sm font-medium text-navy">{book}</span>
+        ))}
       </div>
       <div class="mt-10 flex justify-center">
         <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-9 py-4 rounded-full font-semibold text-base">
