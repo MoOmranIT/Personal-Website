@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import ScrollProgress from '../../components/ScrollProgress.astro';
 import Hero from '../../components/Hero.astro';
+import CurrentExecutiveRoles from '../../components/CurrentExecutiveRoles.astro';
 import Services from '../../components/Services.astro';
 import Audience from '../../components/Audience.astro';
 import About from '../../components/About.astro';
@@ -32,6 +33,7 @@ import { ar } from '../../i18n/ar';
   <Header translations={ar.nav} currentLang="ar" />
   <main id="main" class="relative">
     <Hero translations={ar} lang="ar" />
+    <CurrentExecutiveRoles translations={ar} lang="ar" />
     <Services translations={ar} lang="ar" />
     <Audience translations={ar} lang="ar" />
     <About translations={ar} lang="ar" />
