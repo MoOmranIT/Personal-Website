@@ -1,5 +1,27 @@
 ---
-const products = [
+interface VentureProduct {
+  name: string;
+  index: string;
+  description: string;
+  className?: string;
+}
+
+interface Props {
+  translations?: {
+    ventures?: {
+      eyebrow?: string;
+      heading?: string;
+      subheading?: string;
+      paragraphs?: string[];
+      coreLabel?: string;
+      coreCaption?: string;
+      products?: VentureProduct[];
+    };
+  };
+  lang?: string;
+}
+
+const defaultProducts = [
   {
     name: 'Kaveo',
     index: '01',
@@ -25,46 +47,62 @@ const products = [
     className: 'delay-4'
   }
 ];
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.ventures || {};
+const products = t.products || defaultProducts;
+const paragraphs = t.paragraphs || [
+  'I lead the AI Brains ecosystem, a connected portfolio of products and ventures built and advised under a single innovation umbrella.',
+  'Each product applies the same strategic and business development thinking to a different part of the market, working together rather than as unrelated projects.'
+];
 ---
 
-<section id="ventures" class="relative overflow-hidden bg-slate-50" aria-labelledby="ventures-heading">
+<section id="ventures" class:list={['relative overflow-hidden bg-slate-50', { 'ventures-section--ar': lang === 'ar' }]} aria-labelledby="ventures-heading">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24">
     <div class="text-center mb-14 reveal">
-      <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">Innovation Portfolio</span>
-      <h2 id="ventures-heading" class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        Ventures, Products and Innovation
-      </h2>
+      <span class:list={['text-xs uppercase text-slate-400 mb-3 block', { 'ventures-eyebrow--ar': lang === 'ar', 'tracking-[.3em]': lang !== 'ar' }]}>{t.eyebrow || 'Innovation Portfolio'}</span>
+      {lang === 'ar' ? (
+        <span class="ventures-heading-wrap--ar inline-block relative">
+          <h2 id="ventures-heading" class="text-4xl sm:text-5xl font-bold text-navy">
+            {t.heading || 'Ventures, Products and Innovation'}
+          </h2>
+          <span aria-hidden="true" class="block h-1 mt-2 rounded-[2px] bg-[linear-gradient(90deg,var(--gold),var(--navy))]"></span>
+        </span>
+      ) : (
+        <h2 id="ventures-heading" class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+          {t.heading || 'Ventures, Products and Innovation'}
+        </h2>
+      )}
     </div>
 
     <div class="max-w-4xl mx-auto text-center mb-14 reveal delay-1">
-      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-5 leading-tight">
-        One Connected Ecosystem, Not a List Of Separate Jobs
+      <h3 class:list={['text-2xl sm:text-3xl font-bold text-navy mb-5 leading-tight', { 'ventures-subheading--ar': lang === 'ar' }]}>
+        {t.subheading || 'One Connected Ecosystem, Not a List Of Separate Jobs'}
       </h3>
-      <div class="space-y-4 text-lg leading-relaxed text-slate-600">
-        <p>I lead the AI Brains ecosystem, a connected portfolio of products and ventures built and advised under a single innovation umbrella.</p>
-        <p>Each product applies the same strategic and business development thinking to a different part of the market, working together rather than as unrelated projects.</p>
+      <div class:list={['space-y-4 text-lg text-slate-600', { 'ventures-copy--ar': lang === 'ar', 'leading-relaxed': lang !== 'ar' }]}>
+        {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </div>
 
     <div class="ventures-ecosystem relative max-w-5xl mx-auto">
       <div aria-hidden="true" class="ventures-orbit ventures-orbit-outer"></div>
       <div aria-hidden="true" class="ventures-orbit ventures-orbit-inner"></div>
-      <div class="ventures-core reveal-scale" aria-label="AI Brains connected innovation ecosystem">
+      <div class="ventures-core reveal-scale" aria-label={`${t.coreLabel || 'AI Brains'} ${t.coreCaption || 'Connected innovation'}`}>
         <span aria-hidden="true" class="ventures-core-mark">AI</span>
-        <span class="ventures-core-label">AI Brains</span>
-        <span class="ventures-core-caption">Connected innovation</span>
+        <span class="ventures-core-label">{t.coreLabel || 'AI Brains'}</span>
+        <span class:list={['ventures-core-caption', { 'ventures-core-caption--ar': lang === 'ar' }]}>{t.coreCaption || 'Connected innovation'}</span>
       </div>
 
       <div class="ventures-products-grid grid gap-5 relative z-10">
         {products.map((product, i) => (
-          <article class={`ventures-product reveal ${product.className} ${i % 2 === 0 ? 'sm:translate-y-8' : 'sm:-translate-y-8'}`}>
+          <article class={`ventures-product reveal ${product.className || `delay-${i + 1}`} ${i % 2 === 0 ? 'sm:translate-y-8' : 'sm:-translate-y-8'}`}>
             <div class="ventures-product-topline" aria-hidden="true"></div>
             <div class="flex items-start justify-between gap-4">
               <span class="ventures-product-index">{product.index}</span>
               <span aria-hidden="true" class="ventures-product-node"></span>
             </div>
             <h4 class="ventures-product-name">{product.name}</h4>
-            <p class="ventures-product-caption">{product.description}</p>
+            <p class:list={['ventures-product-caption', { 'ventures-product-caption--ar': lang === 'ar' }]}>{product.description}</p>
           </article>
         ))}
       </div>
@@ -226,6 +264,49 @@ const products = [
     font-size: .9rem;
     line-height: 1.5;
     letter-spacing: .02em;
+  }
+
+  .ventures-section--ar .ventures-eyebrow--ar {
+    font-weight: 600;
+    letter-spacing: .04em;
+  }
+
+  .ventures-section--ar .ventures-copy--ar {
+    max-width: 42rem;
+    margin-inline: auto;
+    line-height: 1.82;
+  }
+
+  .ventures-section--ar .ventures-subheading--ar {
+    line-height: 1.35;
+  }
+
+  .ventures-section--ar .ventures-product {
+    direction: rtl;
+    text-align: right;
+  }
+
+  .ventures-section--ar .ventures-product-name {
+    direction: ltr;
+    text-align: right;
+  }
+
+  .ventures-section--ar .ventures-product-caption--ar {
+    font-size: .96rem;
+    line-height: 1.68;
+  }
+
+  .ventures-section--ar .ventures-core-caption--ar {
+    max-width: 7rem;
+    font-size: .62rem;
+    line-height: 1.4;
+    text-transform: none;
+  }
+
+  @media (min-width: 640px) {
+    .ventures-section--ar .ventures-products-grid {
+      row-gap: 2.25rem;
+    }
   }
 
   @media (max-width: 639px) {

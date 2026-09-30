@@ -7,6 +7,10 @@ interface Props {
       description?: string;
       topics?: { title?: string; description?: string }[];
       formats?: { title?: string; description?: string }[];
+      topicsHeading?: string;
+      formatsHeading?: string;
+      galleryHeading?: string;
+      trackRecordHeading?: string;
       trackRecord?: { stat1?: string; stat2?: string; stat3?: string };
       cta?: string;
     };
@@ -20,6 +24,10 @@ const t = translations.training || {};
 const eyebrow = t.eyebrow || 'Executive Education, Dubai';
 const heading = t.heading || 'Training & Executive Education';
 const description = t.description || 'Executive programs, corporate training, and workshops on strategy, business development, and growth, delivered across the UAE by a Dubai business development consultant with 18+ years in the field.';
+const topicsHeading = t.topicsHeading || 'Topic I cover';
+const formatsHeading = t.formatsHeading || 'Training Formats';
+const galleryHeading = t.galleryHeading || 'Inside the Room';
+const trackRecordHeading = t.trackRecordHeading || 'Track Record';
 
 const topics = t.topics || [
   { title: 'Strategy', description: 'Strategic positioning & go-to-market planning.' },
@@ -48,6 +56,17 @@ const trackRecord = t.trackRecord || {
   stat2: '+6250 Professional trained',
   stat3: '+22 Organizations trained across the UAE'
 };
+const trackRecordLabels = lang === 'ar'
+  ? {
+      stat1: trackRecord.stat1.replace('+18', '').trim(),
+      stat2: trackRecord.stat2.replace('+6250', '').trim(),
+      stat3: trackRecord.stat3.replace('+22', '').trim()
+    }
+  : {
+      stat1: trackRecord.stat1.replace('+18 ', ''),
+      stat2: trackRecord.stat2.replace('+6250 ', ''),
+      stat3: trackRecord.stat3.replace('+22 ', '')
+    };
 
 const ctaText = t.cta || 'Download Training Profile';
 
@@ -60,27 +79,34 @@ const galleryImages = [
 ];
 ---
 
-<section id="training" class="py-24 bg-white relative overflow-hidden">
+<section id="training" class:list={['py-24 bg-white relative overflow-hidden', { 'training-section--ar': lang === 'ar' }]}>
   <div class="max-w-7xl mx-auto px-5 sm:px-8">
     <div class="text-center mb-16 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
         {eyebrow}
       </span>
-      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        {heading}
-      </h2>
+       {lang === 'ar' ? (
+         <span class="training-heading-wrap--ar inline-block">
+           <h2 class="text-4xl sm:text-5xl font-bold text-navy">{heading}</h2>
+           <span aria-hidden="true" class="block h-1 mt-2 rounded-[2px] bg-[linear-gradient(90deg,var(--gold),var(--navy))]"></span>
+         </span>
+       ) : (
+         <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+           {heading}
+         </h2>
+       )}
       <p class="text-slate-500 max-w-2xl mx-auto mt-6 text-lg leading-relaxed">
         {description}
       </p>
     </div>
 
     <div class="mb-20">
-      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        Topic I cover
+       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
+         {topicsHeading}
       </h3>
       <div class="grid sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {topics.map((topic, i) => (
-          <div class={`reveal delay-${i + 1} bg-slate-50 ring-1 ring-slate-100 rounded-2xl p-6 sm:p-8 lift-card`}>
+           <div class={`reveal delay-${i + 1} bg-slate-50 ring-1 ring-slate-100 rounded-2xl p-6 sm:p-8 lift-card${lang === 'ar' ? ' training-card--ar' : ''}`}>
             <h4 class="text-xl font-bold text-navy mb-2">{topic.title}</h4>
             <p class="text-slate-600 leading-relaxed">{topic.description}</p>
           </div>
@@ -89,12 +115,12 @@ const galleryImages = [
     </div>
 
     <div class="mb-20">
-      <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        Training Formats
+       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
+         {formatsHeading}
       </h3>
       <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
         {formats.map((format, i) => (
-          <div class={`reveal delay-${i + 1} card-premium bg-white ring-1 ring-slate-100 rounded-3xl p-8 relative overflow-hidden`}>
+           <div class={`reveal delay-${i + 1} card-premium bg-white ring-1 ring-slate-100 rounded-3xl p-8 relative overflow-hidden${lang === 'ar' ? ' training-card--ar' : ''}`}>
             <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></span>
             <h4 class="text-xl font-bold text-navy mb-3">{format.title}</h4>
             <p class="text-slate-600 leading-relaxed">{format.description}</p>
@@ -105,7 +131,7 @@ const galleryImages = [
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        Inside the Room
+        {galleryHeading}
       </h3>
       <div class="training-gallery max-w-5xl mx-auto">
         <figure class="training-gallery-featured reveal">
@@ -137,21 +163,21 @@ const galleryImages = [
 
     <div class="mb-14">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-10 text-center reveal">
-        Track Record
+        {trackRecordHeading}
       </h3>
       <div class="grid sm:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
         <div class="reveal delay-1">
           <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-counter="18" data-training-prefix="+">+18</p>
-          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat1.replace('+18 ', '')}</p>
+           <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecordLabels.stat1}</p>
         </div>
         <div class="reveal delay-2">
           <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-counter="6250" data-training-prefix="+">+6250</p>
-          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat2.replace('+6250 ', '')}
+           <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecordLabels.stat2}
 </p>
         </div>
         <div class="reveal delay-3">
           <p class="text-4xl sm:text-5xl font-bold text-navy counter-num" data-training-counter="22" data-training-prefix="+">+22</p>
-          <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecord.stat3.replace('+22 ', '')}</p>
+           <p class="text-slate-500 mt-3 text-sm sm:text-base">{trackRecordLabels.stat3}</p>
         </div>
       </div>
     </div>
@@ -223,6 +249,11 @@ const galleryImages = [
 </section>
 
   <style>
+    .training-section--ar .training-card--ar {
+      border-color: rgba(226, 232, 240, 0.8);
+      box-shadow: 0 2px 8px rgba(7, 24, 43, 0.05);
+    }
+
     .training-gallery {
       display: flex;
       flex-direction: column;
