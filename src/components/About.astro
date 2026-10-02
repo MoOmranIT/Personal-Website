@@ -7,6 +7,7 @@ interface Props {
       subheading?: string;
       paragraphs?: string[];
       roles?: string[];
+      rolesHeading?: string;
       closing?: string;
       books?: string[];
       cta?: string;
@@ -42,7 +43,7 @@ const t = translations.about || {};
         ))}
       </div>
       <div class="mt-10">
-        <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">What I Do Today?</h3>
+        <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-6">{t.rolesHeading || 'What I Do Today?'}</h3>
         <ul class="grid gap-4 sm:grid-cols-2">
           {(t.roles || [
             'Chief Executive Officer: Elite Maison Marketing Consultancies',
@@ -58,7 +59,7 @@ const t = translations.about || {};
           ))}
         </ul>
       </div>
-      <div class="mt-10 flex flex-wrap items-center gap-3">
+      {lang !== 'ar' && <div class="mt-10 flex flex-wrap items-center gap-3">
         {(t.books || [
           'The Business Developer\'s Mindset',
           'The Customer Effect',
@@ -66,7 +67,7 @@ const t = translations.about || {};
         ]).map((book) => (
           <span class="rounded-full border border-navy/10 bg-white px-4 py-1.5 text-sm font-medium text-navy">{book}</span>
         ))}
-      </div>
+      </div>}
       <div class="mt-10 flex justify-center">
         <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="btn-navy btn-sheen px-9 py-4 rounded-full font-semibold text-base">
           {t.cta || 'Work With Me'}
