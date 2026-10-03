@@ -1,5 +1,33 @@
 ---
-const executiveRoles = [
+interface Role {
+  position?: string;
+  organization?: string;
+  description: string;
+  label?: string;
+}
+
+interface PortfolioTranslations {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  executive?: { sectionHeading?: string; roles?: Role[] };
+  advisory?: { sectionHeading?: string; roles?: { organization: string; position: string }[] };
+  ventures?: { sectionHeading?: string; paragraph?: string; cta?: string };
+  training?: { sectionHeading?: string; paragraph?: string; statLabel?: string; cta?: string };
+  businessDevelopment?: { sectionHeading?: string; paragraph?: string; stats?: { number: string; label: string }[]; cta?: string };
+  books?: { sectionHeading?: string; items?: { title: string; idea: string }[]; cta?: string };
+}
+
+interface Props {
+  translations?: { professionalPortfolio?: PortfolioTranslations };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const isAr = lang === 'ar';
+const t = translations.professionalPortfolio || {};
+
+const defaultExecutiveRoles: Role[] = [
   {
     position: 'Chief Executive Officer',
     organization: 'Elite Maison Marketing Consultancies',
@@ -12,7 +40,7 @@ const executiveRoles = [
   }
 ];
 
-const advisoryRoles = [
+const defaultAdvisoryRoles = [
   {
     organization: 'ManageMARK- Dubai',
     position: 'Marketing Consultant and Management Trainer.'
@@ -46,7 +74,7 @@ const venturesItems = [
   'MotorK'
 ];
 
-const books = [
+const defaultBooks = [
   {
     title: 'The Customer Effect',
     idea: 'Behind every customer, 3600 potential customers.'
@@ -60,26 +88,41 @@ const books = [
     idea: 'The hidden psychology of buying decisions.'
   }
 ];
+const executiveRoles = t.executive?.roles || defaultExecutiveRoles;
+const advisoryRoles = t.advisory?.roles || defaultAdvisoryRoles;
+const books = t.books?.items || defaultBooks;
+const arrow = isAr ? '←' : '→';
+const innovationCta = t.ventures?.cta || 'See the full ecosystem';
+const trainingCta = t.training?.cta || 'View the Training page';
+const businessCta = t.businessDevelopment?.cta || 'See All Success Stories';
+const booksCta = t.books?.cta || 'Explore the books';
 ---
 
 <section id="professional-portfolio" class="relative bg-white">
   <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24">
     <div class="text-center mb-16 reveal">
       <span class="text-xs uppercase tracking-[.3em] text-gold mb-3 block">
-        Professional Portfolio
+        {t.eyebrow || 'Professional Portfolio'}
       </span>
-      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        One source, My Complete Professional Background
-      </h2>
+      {isAr ? (
+        <span class="professional-portfolio-heading--ar inline-block">
+          <h2 class="text-4xl sm:text-5xl font-bold text-navy">{t.heading || 'One source, My Complete Professional Background'}</h2>
+          <span aria-hidden="true" class="block h-1 mt-2 rounded-[2px] bg-[linear-gradient(90deg,var(--gold),var(--navy))]"></span>
+        </span>
+      ) : (
+        <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+          {t.heading || 'One source, My Complete Professional Background'}
+        </h2>
+      )}
       <span class="block mt-5 h-px w-16 bg-gold/70 mx-auto"></span>
       <p class="text-slate-500 max-w-2xl mx-auto mt-6 text-base sm:text-lg leading-relaxed">
-        Everything I lead, advise, build, and publish in one place, for anyone who needs the full picture quickly.
+        {t.description || 'Everything I lead, advise, build, and publish in one place, for anyone who needs the full picture quickly.'}
       </p>
     </div>
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        1. Executive Leadership
+        {t.executive?.sectionHeading || '1. Executive Leadership'}
       </h3>
       <div class="grid md:grid-cols-2 gap-6">
         {executiveRoles.map((role, i) => (
@@ -87,9 +130,7 @@ const books = [
             <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-t-3xl"></span>
             <div class="leading-relaxed text-slate-600">
               <p>
-                <strong class="font-semibold text-navy">{role.position}</strong>
-                <span aria-hidden="true"> | </span>
-                <span>{role.organization}</span>
+                  {role.label ? <span class="font-semibold text-navy">{role.label}</span> : <><strong class="font-semibold text-navy">{role.position}</strong><span aria-hidden="true"> | </span><bdi>{role.organization}</bdi></>}
               </p>
               <p class="mt-1">{role.description}</p>
             </div>
@@ -100,7 +141,7 @@ const books = [
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        2. Advisory Roles
+        {t.advisory?.sectionHeading || '2. Advisory Roles'}
       </h3>
       <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {advisoryRoles.map((role, i) => (
@@ -108,7 +149,7 @@ const books = [
             <span aria-hidden="true" class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold/70 via-gold/90 to-gold/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-t-3xl"></span>
             <div class="leading-relaxed text-slate-600">
               <p>
-                <strong class="font-semibold text-navy block text-base sm:text-lg mb-1">{role.organization}</strong>
+                <strong class="font-semibold text-navy block text-base sm:text-lg mb-1"><bdi>{role.organization}</bdi></strong>
                 <span class="text-slate-500 text-sm sm:text-base">{role.position}</span>
               </p>
             </div>
@@ -119,14 +160,14 @@ const books = [
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        3. Ventures and Products
+        {t.ventures?.sectionHeading || '3. Ventures and Products'}
       </h3>
       <div class="reveal card-premium relative overflow-hidden rounded-3xl bg-slate-50 ring-1 ring-slate-100 p-8 sm:p-12">
         <div aria-hidden="true" class="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full border border-gold/20"></div>
         <div aria-hidden="true" class="pointer-events-none absolute -left-16 -bottom-16 h-72 w-72 rounded-full border border-gold/10"></div>
         <div class="relative">
           <p class="text-slate-600 leading-relaxed text-base sm:text-lg max-w-4xl">
-            I lead the AI Brains ecosystem- a connected portfolio of products and ventures built and advised under a single innovation umbrella: Kaveo, AIRIS, HOLORISER, and MotorK, each applying the same strategic and business development thinking to a different part of the market.
+            {t.ventures?.paragraph || 'I lead the AI Brains ecosystem- a connected portfolio of products and ventures built and advised under a single innovation umbrella: Kaveo, AIRIS, HOLORISER, and MotorK, each applying the same strategic and business development thinking to a different part of the market.'}
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             {venturesItems.map((item) => (
@@ -138,8 +179,8 @@ const books = [
               href="#ventures"
               class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy/90"
             >
-              See the full ecosystem
-              <span aria-hidden="true">→</span>
+              {innovationCta}
+              <span aria-hidden="true">{arrow}</span>
             </a>
           </div>
         </div>
@@ -148,16 +189,16 @@ const books = [
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        4. Training Profile
+        {t.training?.sectionHeading || '4. Training Profile'}
       </h3>
       <div class="reveal card-premium relative rounded-3xl bg-slate-50 ring-1 ring-slate-100 p-8 sm:p-12">
         <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div class="text-slate-600 leading-relaxed text-base sm:text-lg max-w-3xl">
-            I’ve delivered executive programs, corporate training, and workshops on strategy, business development, and growth across the UAE for over 18 years, training +6250 professionals.
+            {t.training?.paragraph || 'I’ve delivered executive programs, corporate training, and workshops on strategy, business development, and growth across the UAE for over 18 years, training +6250 professionals.'}
           </div>
           <div class="shrink-0 text-center md:text-right">
             <span class="block text-4xl font-bold text-navy">+6250</span>
-            <span class="block text-sm text-slate-500">Professionals trained</span>
+            <span class="block text-sm text-slate-500">{t.training?.statLabel || 'Professionals trained'}</span>
           </div>
         </div>
         <div class="mt-8">
@@ -165,8 +206,8 @@ const books = [
             href="#training"
             class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy/90"
           >
-            View the Training page
-            <span aria-hidden="true">→</span>
+            {trainingCta}
+            <span aria-hidden="true">{arrow}</span>
           </a>
         </div>
       </div>
@@ -174,24 +215,22 @@ const books = [
 
     <div class="mb-20">
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        5. Business Development Portfolio
+        {t.businessDevelopment?.sectionHeading || '5. Business Development Portfolio'}
       </h3>
       <div class="reveal card-premium relative rounded-3xl bg-slate-50 ring-1 ring-slate-100 p-8 sm:p-12">
         <div class="grid gap-6 md:grid-cols-2">
           <div>
             <p class="text-slate-600 leading-relaxed text-base sm:text-lg">
-              Real business development and marketing results, from a single-chair dental clinic that grew into a 15 doctor medical center, to a cafe that became a 9 branch franchise across the UAE.
+              {t.businessDevelopment?.paragraph || 'Real business development and marketing results, from a single-chair dental clinic that grew into a 15 doctor medical center, to a cafe that became a 9 branch franchise across the UAE.'}
             </p>
           </div>
           <div class="flex flex-col gap-4">
-            <div class="rounded-2xl bg-white p-5 ring-1 ring-slate-100">
-              <span class="block text-3xl font-bold text-navy">15</span>
-              <span class="block text-sm text-slate-500">doctor medical center</span>
-            </div>
-            <div class="rounded-2xl bg-white p-5 ring-1 ring-slate-100">
-              <span class="block text-3xl font-bold text-navy">9</span>
-              <span class="block text-sm text-slate-500">branch franchise across the UAE</span>
-            </div>
+            {(t.businessDevelopment?.stats || [{ number: '15', label: 'doctor medical center' }, { number: '9', label: 'branch franchise across the UAE' }]).map((stat) => (
+              <div class="rounded-2xl bg-white p-5 ring-1 ring-slate-100">
+                <span class="block text-3xl font-bold text-navy">{stat.number}</span>
+                <span class="block text-sm text-slate-500">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
         <div class="mt-8">
@@ -199,9 +238,8 @@ const books = [
             href="#success"
             class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy/90"
           >
-              See All Success Stories
-
-            <span aria-hidden="true">→</span>
+              {businessCta}
+            <span aria-hidden="true">{arrow}</span>
           </a>
         </div>
       </div>
@@ -209,7 +247,7 @@ const books = [
 
     <div>
       <h3 class="text-2xl sm:text-3xl font-bold text-navy mb-8 text-center reveal">
-        6. Books & Publications
+        {t.books?.sectionHeading || '6. Books & Publications'}
       </h3>
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {books.map((book, i) => (
@@ -227,10 +265,16 @@ const books = [
           href="#books"
           class="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-navy/90"
         >
-          Explore the books
-          <span aria-hidden="true">→</span>
+          {booksCta}
+          <span aria-hidden="true">{arrow}</span>
         </a>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .professional-portfolio-heading--ar {
+    direction: rtl;
+  }
+</style>

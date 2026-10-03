@@ -287,8 +287,7 @@ const trainingCenterTable = [
         </div>
       ))}
     </div>
-    {lang === 'en' && (
-      <div class="mt-14 text-center reveal">
+    <div class="mt-14 text-center reveal">
         <a
           href="/downloads/dr-khaled-al-mohammad-business-profile.pdf"
           download="Dr-Khaled-Al-Mohammad-Business-Profile.pdf"
@@ -299,10 +298,9 @@ const trainingCenterTable = [
             <path d="m7 10 5 5 5-5"></path>
             <path d="M5 21h14"></path>
           </svg>
-          <span>Download Business Profile</span>
+          <span>{lang === 'ar' ? 'حمل محفظة الأعمال' : 'Download Business Profile'}</span>
         </a>
-      </div>
-    )}
+    </div>
   </div>
 
   <div class="story-modal-backdrop" id="story-modal" aria-hidden="true">

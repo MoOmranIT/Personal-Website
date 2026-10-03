@@ -1,27 +1,41 @@
 ---
+interface Props {
+  translations?: { videoTestimonials?: { eyebrow?: string; heading?: string } };
+  lang?: string;
+}
+
+const { translations = {}, lang = 'en' } = Astro.props;
+const t = translations.videoTestimonials || {};
+const isAr = lang === 'ar';
+
 const videos = [
   {
     src: '/videos/testimonials/video-testimonial-01.mp4',
     poster: '/images/video-testimonials/video-testimonial-01.webp',
-    label: 'Play video testimonial'
+    label: isAr ? 'تشغيل شهادة مصوّرة' : 'Play video testimonial'
   },
   {
     src: '/videos/testimonials/video-testimonial-02.mp4',
     poster: '/images/video-testimonials/video-testimonial-02.webp',
-    label: 'Play video testimonial'
+    label: isAr ? 'تشغيل شهادة مصوّرة' : 'Play video testimonial'
   }
 ];
 ---
 
-<section id="video-testimonials" class="bg-[#f8f7f3] py-28 sm:py-32">
+<section id="video-testimonials" class:list={['bg-[#f8f7f3] py-28 sm:py-32', { 'video-testimonials--ar': isAr }]}>
   <div class="max-w-[1200px] mx-auto px-5 sm:px-8">
     <div class="text-center mb-14 sm:mb-16 reveal">
-      <span class="text-xs uppercase tracking-[.3em] text-gold mb-3 block">
-        Video Testimonials
+      <span class:list={['text-xs uppercase text-gold mb-3 block', { 'tracking-[.3em]': !isAr, 'video-testimonials-eyebrow--ar': isAr }]}>
+        {t.eyebrow || 'Video Testimonials'}
       </span>
-      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        Voices of Impact
-      </h2>
+      {isAr ? (
+        <span class="video-testimonials-heading--ar inline-block">
+          <h2 class="text-4xl sm:text-5xl font-bold text-navy">{t.heading || 'Voices of Impact'}</h2>
+          <span aria-hidden="true" class="block h-1 mt-2 rounded-[2px] bg-[linear-gradient(90deg,var(--gold),var(--navy))]"></span>
+        </span>
+      ) : (
+        <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">{t.heading || 'Voices of Impact'}</h2>
+      )}
       <span class="block mt-5 h-px w-16 bg-gold/70 mx-auto"></span>
     </div>
 
@@ -49,12 +63,12 @@ const videos = [
   </div>
 
   <div class="video-modal-backdrop" id="video-modal" aria-hidden="true">
-    <div class="video-modal" role="dialog" aria-modal="true" aria-label="Video testimonial player">
+    <div class="video-modal" role="dialog" aria-modal="true" aria-label={isAr ? 'مشغل الشهادة المصوّرة' : 'Video testimonial player'}>
       <button
         type="button"
         id="video-modal-close"
         class="video-modal-close"
-        aria-label="Close video"
+        aria-label={isAr ? 'إغلاق الفيديو' : 'Close video'}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -66,7 +80,7 @@ const videos = [
         controls
         preload="none"
         class="video-modal-player"
-        aria-label="Video testimonial"
+        aria-label={isAr ? 'مشغل الشهادة المصوّرة' : 'Video testimonial'}
       ></video>
     </div>
   </div>
@@ -127,6 +141,11 @@ const videos = [
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.25rem;
+  }
+
+  .video-testimonials--ar .video-testimonials-eyebrow--ar {
+    font-weight: 600;
+    letter-spacing: .04em;
   }
 
   .video-testimonial-tile {

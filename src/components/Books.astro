@@ -33,9 +33,16 @@ const ctaText = t.cta || (isAr ? 'اشترِ من Amazon ↗' : 'Buy on Amazon �
       <span class="text-xs uppercase tracking-[.3em] text-slate-400 mb-3 block">
         {t.badge || 'Published Work'}
       </span>
-      <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
-        {t.heading || 'My Books'}
-      </h2>
+      {lang === 'ar' ? (
+        <span class="books-heading-wrap--ar inline-block">
+          <h2 class="text-4xl sm:text-5xl font-bold text-navy">{t.heading || 'My Books'}</h2>
+          <span aria-hidden="true" class="block h-1 mt-2 rounded-[2px] bg-[linear-gradient(90deg,var(--gold),var(--navy))]"></span>
+        </span>
+      ) : (
+        <h2 class="text-4xl sm:text-5xl font-bold text-navy title-underline inline-block">
+          {t.heading || 'My Books'}
+        </h2>
+      )}
       <p class="text-slate-500 max-w-2xl mx-auto mt-6">
         {t.description || 'Three essential reads on business development, customer experience, and consumer psychology — available in English and Arabic.'}
       </p>
