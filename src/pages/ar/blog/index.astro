@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import BlogLanding from '../../../components/blog/BlogLanding.astro';
+import { siteConfig } from '../../../scripts/siteConfig';
+import { ar } from '../../../i18n/ar';
+
+const articles = (await getCollection('blog', ({ data }) => data.lang === 'ar' && !data.draft));
+---
+
+<BaseLayout
+  title="مقالات ورؤى | د. خالد المحمد"
+  description="مقالات ورؤى في تطوير الأعمال، الاستراتيجية، التسويق، القيادة والنمو المستدام."
+  ogDescription="مقالات ورؤى في تطوير الأعمال، الاستراتيجية، التسويق، القيادة والنمو المستدام."
+  twitterDescription="مقالات ورؤى في تطوير الأعمال، الاستراتيجية، التسويق، القيادة والنمو المستدام."
+  lang="ar"
+  dir="rtl"
+  robots="noindex, follow"
+  canonical={`${siteConfig.url}ar/blog/`}
+  translations={{ en: { href: `${siteConfig.url}blog/` }, ar: { href: `${siteConfig.url}ar/blog/` } }}
+>
+  <Header translations={ar.nav} currentLang="ar" blogHref="/ar/blog/" isBlog />
+  <BlogLanding articles={articles} lang="ar" />
+  <Footer translations={ar} lang="ar" isBlog />
+</BaseLayout>

@@ -27,11 +27,14 @@ interface Props {
     };
   };
   lang?: string;
+  isBlog?: boolean;
 }
 
-const { translations = {}, lang = 'en' } = Astro.props;
+const { translations = {}, lang = 'en', isBlog = false } = Astro.props;
 const t = translations.footer || {};
 const year = new Date().getFullYear();
+const sectionHref = (section: string) => isBlog ? (lang === 'ar' ? `/ar/#${section}` : `/#${section}`) : (lang === 'ar' ? `/ar/#${section}` : `#${section}`);
+const blogHref = lang === 'ar' ? '/ar/blog/' : '/blog/';
 ---
 
 <footer class="navy-grad text-white relative overflow-hidden">
@@ -56,12 +59,13 @@ const year = new Date().getFullYear();
 
       <nav class="space-y-3" aria-label={lang === 'ar' ? 'الروابط السريعة' : 'Quick Links'}>
         <h3 class="text-white/70 text-xs uppercase tracking-widest font-semibold mb-5">{lang === 'ar' ? 'روابط سريعة' : 'Quick Links'}</h3>
-        <a href={lang === 'ar' ? '/ar/#home' : '#home'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.home || (lang === 'ar' ? 'الرئيسية' : 'Home')}</a>
-        <a href={lang === 'ar' ? '/ar/#services' : '#services'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.expertise || (lang === 'ar' ? 'الخبرات' : 'Expertise')}</a>
-        <a href={lang === 'ar' ? '/ar/#ventures' : '#ventures'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.ventures || (lang === 'ar' ? 'المشاريع' : 'Ventures')}</a>
-        <a href={lang === 'ar' ? '/ar/#about' : '#about'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.about || (lang === 'ar' ? 'من أنا' : 'About Me')}</a>
-        <a href={lang === 'ar' ? '/ar/#success' : '#success'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.proofInsights || (lang === 'ar' ? 'قصص النجاح' : 'Proof & Insights')}</a>
-        <a href={lang === 'ar' ? '/ar/#contact' : '#contact'} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.contact || (lang === 'ar' ? 'تواصل' : 'Contact')}</a>
+        <a href={sectionHref('home')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.home || (lang === 'ar' ? 'الرئيسية' : 'Home')}</a>
+        <a href={sectionHref('services')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.expertise || (lang === 'ar' ? 'الخبرات' : 'Expertise')}</a>
+        <a href={sectionHref('ventures')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.ventures || (lang === 'ar' ? 'المشاريع' : 'Ventures')}</a>
+        <a href={sectionHref('about')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.about || (lang === 'ar' ? 'من أنا' : 'About Me')}</a>
+        <a href={sectionHref('success')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.proofInsights || (lang === 'ar' ? 'قصص النجاح' : 'Proof & Insights')}</a>
+        <a href={blogHref} class="block text-white/80 text-sm hover:text-gold transition-colors">{lang === 'ar' ? 'المدونة' : 'Blog'}</a>
+        <a href={sectionHref('contact')} class="block text-white/80 text-sm hover:text-gold transition-colors">{t.nav?.contact || (lang === 'ar' ? 'تواصل' : 'Contact')}</a>
       </nav>
 
       <div class="space-y-3">

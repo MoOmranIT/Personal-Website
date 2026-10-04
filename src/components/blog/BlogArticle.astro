@@ -1,0 +1,68 @@
+---
+interface Props {
+  article: any;
+  body: any;
+  lang: 'en' | 'ar';
+  counterpart?: any;
+}
+
+const { article, body: Body, lang, counterpart } = Astro.props;
+const isAr = lang === 'ar';
+const href = isAr ? '/ar/blog/' : '/blog/';
+const date = new Intl.DateTimeFormat(isAr ? 'ar' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' }).format(article.data.publishedAt);
+const titleSuffix = isAr ? 'د. خالد المحمد' : 'Dr. Khaled Al Mohammad';
+const counterpartHref = counterpart ? `${counterpart.data.lang === 'ar' ? '/ar/blog' : '/blog'}/${counterpart.data.slug}/` : href;
+---
+
+<article class:list={['blog-article-page', { 'blog-article-page--ar': isAr }]} dir={isAr ? 'rtl' : 'ltr'}>
+  <div class="max-w-5xl mx-auto px-5 sm:px-8 py-24 sm:py-28">
+    <a class="blog-back-link" href={href}>{isAr ? 'العودة إلى المقالات →' : '← Back to Articles'}</a>
+    <header class="blog-article-header">
+      <span class="blog-article-category">{article.data.category}</span>
+      <time datetime={article.data.publishedAt.toISOString()}>{date}</time>
+      <h1>{article.data.title}</h1>
+      <p class="blog-article-excerpt">{article.data.excerpt}</p>
+      <img class="blog-article-hero" src={article.data.image} alt={article.data.imageAlt} width="1400" height="850" loading="eager" decoding="async" />
+    </header>
+
+    <div class="blog-article-body">
+      <Body />
+    </div>
+
+    <div class="blog-article-footer">
+      <div>
+        <span>{isAr ? 'استكشف المزيد من المقالات' : 'Continue exploring insights'}</span>
+        {counterpart && <a class="blog-language-link" href={counterpartHref}>{isAr ? 'English' : 'العربية'}</a>}
+      </div>
+      <a class="blog-article-back" href={href}>{isAr ? 'العودة إلى جميع المقالات ←' : 'Back to All Articles →'}</a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .blog-article-page { min-height:100vh; background:#f8f7f3; color:#0b1c39; }
+  .blog-back-link { display:inline-flex; color:#0b1c39; font-size:.9rem; font-weight:700; }
+  .blog-back-link:hover, .blog-article-back:hover { color:#c59c07; }
+  .blog-article-header { max-width:64rem; margin:3.5rem auto 0; text-align:center; }
+  .blog-article-category { color:#c59c07; font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+  .blog-article-header time { display:block; margin-top:.8rem; color:#94a3b8; font-size:.85rem; }
+  .blog-article-header h1 { margin:1rem auto 0; max-width:58rem; color:#0b1c39; font-size:clamp(2.2rem,5vw,4rem); font-weight:700; line-height:1.1; }
+  .blog-article-excerpt { max-width:44rem; margin:1.5rem auto 0; color:#64748b; font-size:1.15rem; line-height:1.7; }
+  .blog-article-hero { width:100%; aspect-ratio:16/9; margin-top:3rem; border-radius:1.5rem; object-fit:cover; box-shadow:0 24px 60px -42px rgba(11,28,57,.65); }
+  .blog-article-body { max-width:48rem; margin:4rem auto 0; color:#334155; font-size:1.08rem; line-height:1.85; }
+  .blog-article-body :global(p) { margin-top:1.5rem; }
+  .blog-article-body :global(p:first-child) { margin-top:0; }
+  .blog-article-body :global(h2) { margin-top:3.25rem; color:#0b1c39; font-size:1.8rem; line-height:1.25; }
+  .blog-article-body :global(h3) { margin-top:2.5rem; color:#0b1c39; font-size:1.35rem; }
+  .blog-article-body :global(ul), .blog-article-body :global(ol) { margin-top:1.25rem; padding-inline-start:1.5rem; }
+  .blog-article-body :global(li) { margin-top:.55rem; }
+  .blog-article-body :global(blockquote) { margin:2rem 0; border-inline-start:3px solid #c59c07; padding-inline-start:1.25rem; color:#0b1c39; font-style:italic; }
+  .blog-article-body :global(a) { color:#0b1c39; text-decoration:underline; text-decoration-color:#c59c07; text-underline-offset:3px; }
+  .blog-article-body :global(hr) { margin:3rem 0; border:0; border-top:1px solid rgba(11,28,57,.12); }
+  .blog-article-footer { display:flex; justify-content:space-between; gap:2rem; align-items:center; max-width:48rem; margin:4rem auto 0; padding-top:2rem; border-top:1px solid rgba(11,28,57,.12); color:#64748b; font-size:.95rem; }
+  .blog-language-link { display:inline-flex; margin-inline-start:1rem; color:#c59c07; font-weight:700; }
+  .blog-article-back { color:#0b1c39; font-weight:700; }
+  .blog-article-page--ar .blog-article-body { line-height:1.95; }
+  @media (max-width:639px) { .blog-article-header { margin-top:2.5rem; } .blog-article-hero { margin-top:2rem; border-radius:1rem; } .blog-article-body { margin-top:2.75rem; font-size:1rem; } .blog-article-footer { flex-direction:column; align-items:flex-start; } }
+  @media (prefers-reduced-motion:reduce) { .blog-article-page * { scroll-behavior:auto; } }
+</style>

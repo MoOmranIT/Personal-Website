@@ -110,6 +110,7 @@ test.describe('Header navigation', () => {
     await expect(page.locator('#dropdown-proof a[href="#books"]')).toBeAttached();
     await expect(page.locator('#dropdown-proof a[href="#success"]')).toBeAttached();
     await expect(page.locator('#dropdown-proof a[href="#video-testimonials"]')).toBeAttached();
+    await expect(page.locator('#dropdown-proof a[href="#professional-portfolio"]')).toBeAttached();
   });
 
   test('Escape inside a dropdown link closes it and restores focus to the trigger', async ({ page }) => {
@@ -203,5 +204,16 @@ test.describe('Header navigation', () => {
       await expect(page.locator('#menu-toggle')).toBeVisible();
       await expect(page.locator('#site-header a[href$="/ar/"]')).toBeVisible();
     }
+  });
+
+  test('Arabic desktop Blog link is top-level and not inside Proof dropdown', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto('/ar/blog/');
+    const blogLink = page.locator('header nav[aria-label="Primary"] a[href="/ar/blog/"]');
+    await expect(blogLink).toHaveText('المدونة');
+    await expect(blogLink).toHaveAttribute('aria-current', 'page');
+    await expect(blogLink).not.toHaveClass(/hidden/);
+    await expect(page.locator('header nav[aria-label="Primary"] > a[href="/ar/blog/"]')).toHaveCount(1);
+    await expect(page.locator('#dropdown-proof a[href="/ar/blog/"]')).toHaveCount(0);
   });
 });

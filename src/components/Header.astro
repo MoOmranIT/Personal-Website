@@ -15,17 +15,25 @@ interface Props {
     credentials?: string;
   };
   currentLang?: string;
+  languageSwitcherHref?: string;
+  blogHref?: string;
+  isBlog?: boolean;
 }
 
 const {
   translations = {},
-  currentLang = 'en'
+  currentLang = 'en',
+  languageSwitcherHref,
+  blogHref,
+  isBlog = false
 } = Astro.props;
 const lang = currentLang;
 const isAr = lang === 'ar';
 
-const otherLang = isAr ? '/' : '/ar/';
+const otherLang = languageSwitcherHref || (isAr ? '/' : '/ar/');
 const otherLangLabel = isAr ? 'English' : 'العربية';
+const homePrefix = isBlog ? (isAr ? '/ar/' : '/') : '';
+const navHref = (href: string) => `${homePrefix}${href}`;
 
 const enSimpleLinks = [
   { href: '#home', label: translations.home || 'Home', id: 'home' },
@@ -80,7 +88,7 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
 
     {isAr ? (
       <nav class="hidden xl:flex items-center gap-6 xl:gap-8 font-medium text-sm text-slate-700" aria-label="Primary">
-        <a href="/ar/#home" data-active="false" class="nav-link hover:text-navy transition-colors">الرئيسية</a>
+        <a href={navHref('#home')} data-active="false" class="nav-link hover:text-navy transition-colors">الرئيسية</a>
         <div class="nav-dropdown relative">
           <button type="button" class="nav-link hover:text-navy transition-colors flex items-center gap-1" aria-expanded="false" aria-controls="dropdown-expertise" data-dropdown="dropdown-expertise">
             الخبرات
@@ -90,17 +98,18 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
             {arExpertiseItems.map((link) => <a href={link.href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{link.label}</a>)}
           </div>
         </div>
-        <a href="/ar/#ventures" data-active="false" class="nav-link hover:text-navy transition-colors">المشاريع</a>
-        <a href="/ar/#about" data-active="false" class="nav-link hover:text-navy transition-colors">من أنا</a>
+        <a href={navHref('#ventures')} data-active="false" class="nav-link hover:text-navy transition-colors">المشاريع</a>
+        <a href={navHref('#about')} data-active="false" class="nav-link hover:text-navy transition-colors">من أنا</a>
         <div class="nav-dropdown relative">
           <button type="button" class="nav-link hover:text-navy transition-colors flex items-center gap-1" aria-expanded="false" aria-controls="dropdown-proof" data-dropdown="dropdown-proof">
             الإنجازات والرؤى
-            <svg class="w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-.02-1.06z" clip-rule="evenodd" /></svg>
+            <svg class="w-3.5 h-3.5 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg>
           </button>
           <div id="dropdown-proof" class="dropdown-panel absolute top-full right-0 mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-lg opacity-0 -translate-y-1 pointer-events-none transition-all duration-200 ease-out z-50">
             {arProofItems.map((link) => <a href={link.href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{link.label}</a>)}
           </div>
         </div>
+        <a href={blogHref || '/ar/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" class="nav-link hover:text-navy transition-colors">{isAr ? 'المدونة' : 'Blog'}</a>
       </nav>
     ) : (
       <nav class="hidden xl:flex items-center gap-6 xl:gap-8 font-medium text-sm text-slate-700" aria-label="Primary">
@@ -124,13 +133,11 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
             id="dropdown-expertise"
             class="dropdown-panel absolute top-full left-0 mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-lg opacity-0 -translate-y-1 pointer-events-none transition-all duration-200 ease-out z-50"
           >
-            <a href={enExpertiseItems[0].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[0].label}</a>
-            <a href={enExpertiseItems[1].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[1].label}</a>
-            <a href={enExpertiseItems[2].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enExpertiseItems[2].label}</a>
+            {enExpertiseItems.map((item) => <a href={navHref(item.href)} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{item.label}</a>)}
           </div>
         </div>
-        <a href="#ventures" data-active="false" class="nav-link hover:text-navy transition-colors">Ventures</a>
-        <a href="#about" data-active="false" class="nav-link hover:text-navy transition-colors">About Me</a>
+        <a href={navHref('#ventures')} data-active="false" class="nav-link hover:text-navy transition-colors">Ventures</a>
+        <a href={navHref('#about')} data-active="false" class="nav-link hover:text-navy transition-colors">About Me</a>
         <div class="nav-dropdown relative">
           <button
             type="button"
@@ -148,12 +155,12 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
             id="dropdown-proof"
             class="dropdown-panel absolute top-full left-0 mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-lg opacity-0 -translate-y-1 pointer-events-none transition-all duration-200 ease-out z-50"
           >
-            <a href={enProofItems[0].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enProofItems[0].label}</a>
-            <a href={enProofItems[1].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enProofItems[1].label}</a>
-            <a href={enProofItems[2].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enProofItems[2].label}</a>
-            <a href={enProofItems[3].href} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{enProofItems[3].label}</a>
+            {enProofItems.map((item) => (
+              <a href={navHref(item.href)} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{item.label}</a>
+            ))}
           </div>
         </div>
+        <a href={blogHref || '/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" class="nav-link hover:text-navy transition-colors">Blog</a>
       </nav>
     )}
 
@@ -198,13 +205,14 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
           <a href="/ar/#ventures" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">المشاريع</a>
           <a href="/ar/#about" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">من أنا</a>
           <div class="mobile-accordion">
-            <button type="button" class="w-full flex items-center justify-between py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors text-left" aria-expanded="false" aria-controls="accordion-proof" data-accordion="accordion-proof"><span>الإنجازات والرؤى</span><svg class="w-4 h-4 transition-transform duration-300 accordion-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-.02-1.06z" clip-rule="evenodd" /></svg></button>
+            <button type="button" class="w-full flex items-center justify-between py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors text-left" aria-expanded="false" aria-controls="accordion-proof" data-accordion="accordion-proof"><span>الإنجازات والرؤى</span><svg class="w-4 h-4 transition-transform duration-300 accordion-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" /></svg></button>
             <div id="accordion-proof" class="accordion-panel max-h-0 overflow-hidden transition-all duration-300">{arProofItems.map((link) => <a href={link.href} class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">{link.label}</a>)}</div>
           </div>
+          <a href={blogHref || '/ar/blog/'} aria-current={isBlog ? 'page' : undefined} class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">{isAr ? 'المدونة' : 'Blog'}</a>
         </>
       ) : (
         <>
-          <a href="#home" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Home</a>
+          <a href={navHref('#home')} class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Home</a>
           <div class="mobile-accordion">
             <button
               type="button"
@@ -215,17 +223,17 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
             >
               <span>{translations.expertise || 'Expertise'}</span>
               <svg class="w-4 h-4 transition-transform duration-300 accordion-chevron" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+               <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
               </svg>
             </button>
             <div id="accordion-expertise" class="accordion-panel max-h-0 overflow-hidden transition-all duration-300">
-              <a href="#executive-roles" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Current Executive & Advisory Roles</a>
-              <a href="#services" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Services</a>
-              <a href="#training" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Training & Executive Education</a>
+              <a href={navHref('#executive-roles')} class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Current Executive & Advisory Roles</a>
+              <a href={navHref('#services')} class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Services</a>
+              <a href={navHref('#training')} class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Training & Executive Education</a>
             </div>
           </div>
-          <a href="#ventures" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Ventures</a>
-          <a href="#about" class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">About Me</a>
+          <a href={navHref('#ventures')} class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Ventures</a>
+          <a href={navHref('#about')} class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">About Me</a>
           <div class="mobile-accordion">
             <button
               type="button"
@@ -240,14 +248,11 @@ const contactHref = isAr ? '/ar/#contact' : '#contact';
               </svg>
             </button>
              <div id="accordion-proof" class="accordion-panel max-h-0 overflow-hidden transition-all duration-300">
-               <a href="#stanford" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Stanford / Credentials</a>
-               <a href="#books" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">My Books</a>
-               <a href="#success" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Success Stories</a>
-               <a href="#video-testimonials" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Video Testimonials</a>
-               <a href="#professional-portfolio" class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">Professional Portfolio</a>
+               {enProofItems.map((item) => <a href={navHref(item.href)} class="block py-2.5 pl-6 pr-3 text-sm text-slate-600 hover:text-navy hover:bg-navy/5 transition-colors">{item.label}</a>)}
              </div>
 
           </div>
+          <a href={blogHref || '/blog/'} aria-current={isBlog ? 'page' : undefined} class="block py-3 px-3 rounded-lg hover:text-navy hover:bg-navy/5 transition-colors">Blog</a>
         </>
       )}
       <div class="pt-3 mt-2 border-t border-slate-100 sm:hidden">

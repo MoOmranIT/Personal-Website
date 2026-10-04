@@ -1,6 +1,73 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Bilingual pages', () => {
+  test('blog landing pages render localized collections', async ({ page }) => {
+    await page.goto('/blog/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('[data-featured-slide]')).toHaveCount(3);
+    await expect(page.locator('[data-featured-indicator]')).toHaveCount(3);
+    await expect(page.locator('.blog-card')).toHaveCount(4);
+    await expect(page.locator('#blog-grid-heading')).toHaveText('Browse Our Articles');
+    await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveText('Blog');
+    await expect(page.locator('footer a[href="/blog/"]')).toHaveText('Blog');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow/);
+
+    await page.goto('/ar/blog/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+    await expect(page.locator('[data-featured-slide]')).toHaveCount(3);
+    await expect(page.locator('[data-featured-indicator]')).toHaveCount(3);
+    await expect(page.locator('.blog-card')).toHaveCount(3);
+    await expect(page.locator('#blog-grid-heading')).toHaveText('تصفح المقالات');
+    await expect(page.locator('header nav[aria-label="Primary"] a[href="/ar/blog/"]')).toHaveText('المدونة');
+    await expect(page.locator('footer a[href="/ar/blog/"]')).toHaveText('المدونة');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow/);
+  });
+
+  test('blog featured slider rotates and supports manual indicators', async ({ page }) => {
+    await page.goto('/blog/');
+    await page.locator('[data-featured-indicator="0"]').click();
+    await expect(page.locator('[data-featured-slide="0"]')).toHaveClass(/is-active/);
+    await page.locator('[data-featured-indicator="1"]').click();
+    await expect(page.locator('[data-featured-slide="1"]')).toHaveClass(/is-active/);
+    await page.waitForTimeout(5200);
+    await expect(page.locator('[data-featured-slide="1"]')).toHaveClass(/is-active/);
+  });
+
+  test('blog respects reduced motion without auto rotation', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/ar/blog/');
+    await expect(page.locator('[data-featured-slide="0"]')).toHaveClass(/is-active/);
+    await page.waitForTimeout(5200);
+    await expect(page.locator('[data-featured-slide="0"]')).toHaveClass(/is-active/);
+  });
+
+  test('blog article routes render localized content and counterpart links', async ({ page }) => {
+    await page.goto('/blog/growth-starts-with-strategic-questions-en/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('.blog-article-page h1')).toHaveText('Growth That Starts With the Right Strategic Questions');
+    await expect(page.locator('.blog-article-body')).toContainText('Growth');
+    await expect(page.locator('.blog-article-hero')).toHaveAttribute('alt', 'Business growth strategy and market planning');
+    await expect(page.locator('a.blog-back-link')).toHaveAttribute('href', '/blog/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /blog\/growth-starts-with-strategic-questions-en\//);
+    await expect(page.locator('a.blog-language-link')).toHaveAttribute('href', '/ar/blog/growth-starts-with-strategic-questions-ar/');
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveAttribute('href', /ar\/blog\/growth-starts-with-strategic-questions-ar\//);
+    await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveText('Blog');
+    await expect(page.locator('footer a[href="/blog/"]')).toHaveText('Blog');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow/);
+
+    await page.goto('/ar/blog/growth-starts-with-strategic-questions-ar/');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'ar');
+    await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
+    await expect(page.locator('.blog-article-page h1')).toHaveText('النمو يبدأ من الأسئلة الاستراتيجية الصحيحة');
+    await expect(page.locator('a.blog-back-link')).toHaveAttribute('href', '/ar/blog/');
+    await expect(page.locator('a.blog-language-link')).toHaveAttribute('href', '/blog/growth-starts-with-strategic-questions-en/');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /blog\/growth-starts-with-strategic-questions-en\//);
+    await expect(page.locator('header nav[aria-label="Primary"] a[href="/ar/blog/"]')).toHaveText('المدونة');
+    await expect(page.locator('footer a[href="/ar/blog/"]')).toHaveText('المدونة');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow/);
+  });
+
   test('English homepage renders main sections', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Dr\. Khaled Al Mohammad/i);

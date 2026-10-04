@@ -12,6 +12,13 @@ export default defineConfig({
         en: 'en',
         ar: 'ar'
       }
+    },
+    filter: (url) => {
+      const excluded = url.includes('/blog/');
+      if (excluded) {
+        // TODO: re-enable Blog URLs in sitemap when production articles are added
+      }
+      return !excluded;
     }
   })],
   adapter: node({ mode: 'standalone' })

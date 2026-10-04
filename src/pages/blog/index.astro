@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogLanding from '../../components/blog/BlogLanding.astro';
+import { siteConfig } from '../../scripts/siteConfig';
+import { en } from '../../i18n/en';
+
+const articles = (await getCollection('blog', ({ data }) => data.lang === 'en' && !data.draft));
+---
+
+<BaseLayout
+  title="Insights & Articles | Dr. Khaled Al Mohammad"
+  description="Insights on business development, strategy, marketing, leadership, and sustainable growth."
+  ogDescription="Insights on business development, strategy, marketing, leadership, and sustainable growth."
+  twitterDescription="Insights on business development, strategy, marketing, leadership, and sustainable growth."
+  lang="en"
+  dir="ltr"
+  robots="noindex, follow"
+  canonical={`${siteConfig.url}blog/`}
+  translations={{ en: { href: `${siteConfig.url}blog/` }, ar: { href: `${siteConfig.url}ar/blog/` } }}
+>
+  <Header translations={en.nav} currentLang="en" blogHref="/blog/" isBlog />
+  <BlogLanding articles={articles} lang="en" />
+  <Footer translations={en} lang="en" isBlog />
+</BaseLayout>

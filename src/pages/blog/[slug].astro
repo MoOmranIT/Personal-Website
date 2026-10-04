@@ -1,0 +1,38 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import BlogArticle from '../../components/blog/BlogArticle.astro';
+import { siteConfig } from '../../scripts/siteConfig';
+import { en } from '../../i18n/en';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => data.lang === 'en' && !data.draft);
+  const all = await getCollection('blog', ({ data }) => !data.draft);
+  return posts.map((article) => ({ params: { slug: article.data.slug }, props: { article, counterpart: all.find((item) => item.data.translationKey === article.data.translationKey && item.data.lang === 'ar') } }));
+}
+
+const { article, counterpart } = Astro.props;
+const { Content } = await render(article);
+const canonical = `${siteConfig.url}blog/${article.data.slug}/`;
+---
+
+<BaseLayout
+  title={`${article.data.title} | Dr. Khaled Al Mohammad`}
+  description={article.data.excerpt}
+  ogDescription={article.data.excerpt}
+  twitterDescription={article.data.excerpt}
+  image={article.data.image}
+  lang="en"
+  dir="ltr"
+  robots="noindex, follow"
+  canonical={canonical}
+  translations={counterpart ? { en: { href: canonical }, ar: { href: `${siteConfig.url}ar/blog/${counterpart.data.slug}/` } } : { en: { href: canonical } }}
+>
+  <Header translations={en.nav} currentLang="en" languageSwitcherHref={counterpart ? `/ar/blog/${counterpart.data.slug}/` : '/ar/blog/'} />
+  <BlogArticle article={article} body={Content} counterpart={counterpart} lang="en" />
+  <Footer translations={en} lang="en" isBlog />
+</BaseLayout>

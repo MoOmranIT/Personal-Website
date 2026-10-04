@@ -1,0 +1,118 @@
+---
+interface Props {
+  articles: any[];
+  lang: 'en' | 'ar';
+  labels: {
+    read: string;
+    indicator: string;
+  };
+}
+
+const { articles, lang, labels } = Astro.props;
+---
+
+<section class="blog-featured" data-featured-slider data-lang={lang} aria-label={lang === 'ar' ? 'المقالات المميزة' : 'Featured articles'}>
+  <div class="blog-featured-slides">
+    {articles.map((article, index) => (
+      <article class:list={['blog-featured-slide', { 'is-active': index === 0 }]} data-featured-slide={index} aria-hidden={index === 0 ? 'false' : 'true'}>
+        <div class="blog-featured-copy">
+          <span class="blog-category">{article.data.category}</span>
+          <h2>{article.data.title}</h2>
+          <p>{article.data.excerpt}</p>
+          <a class="blog-visual-cta" href={`${lang === 'ar' ? '/ar/blog' : '/blog'}/${article.data.slug}/`}>{labels.read} <span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></a>
+        </div>
+        <div class="blog-featured-media">
+          <img src={article.data.image} alt={article.data.imageAlt} width="1200" height="750" loading={index === 0 ? 'eager' : 'lazy'} decoding="async" />
+        </div>
+      </article>
+    ))}
+  </div>
+  <div class="blog-featured-indicators" role="tablist" aria-label={lang === 'ar' ? 'المقالات المميزة' : 'Featured article slides'}>
+    {articles.map((article, index) => (
+      <button type="button" role="tab" aria-selected={index === 0 ? 'true' : 'false'} aria-label={`${labels.indicator} ${index + 1}`} data-featured-indicator={index} class:is-active={index === 0}></button>
+    ))}
+  </div>
+</section>
+
+<script>
+  const sliders = document.querySelectorAll<HTMLElement>('[data-featured-slider]');
+  sliders.forEach((slider) => {
+    const slides = [...slider.querySelectorAll<HTMLElement>('[data-featured-slide]')];
+    const indicators = [...slider.querySelectorAll<HTMLButtonElement>('[data-featured-indicator]')];
+    if (slides.length < 2) return;
+    let active = 0;
+    let timer: ReturnType<typeof setInterval> | undefined;
+    let paused = false;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const show = (index: number) => {
+      active = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const selected = i === active;
+        slide.classList.toggle('is-active', selected);
+        slide.setAttribute('aria-hidden', selected ? 'false' : 'true');
+      });
+      indicators.forEach((indicator, i) => {
+        const selected = i === active;
+        indicator.classList.toggle('is-active', selected);
+        indicator.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+    };
+
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = undefined;
+    };
+    const start = () => {
+      stop();
+      if (!reduced && !paused && document.visibilityState === 'visible') {
+        timer = setInterval(() => show(active + 1), 5000);
+      }
+    };
+
+    indicators.forEach((indicator, index) => indicator.addEventListener('click', () => { show(index); start(); }));
+    slider.addEventListener('mouseenter', () => { paused = true; stop(); });
+    slider.addEventListener('mouseleave', () => { paused = false; start(); });
+    slider.addEventListener('focusin', () => { paused = true; stop(); });
+    slider.addEventListener('focusout', (event) => {
+      if (!slider.contains(event.relatedTarget as Node | null)) { paused = false; start(); }
+    });
+    document.addEventListener('visibilitychange', start);
+    start();
+  });
+</script>
+
+<style>
+  .blog-featured { position: relative; }
+  .blog-featured-slides { position: relative; min-height: 26rem; }
+  .blog-featured-slide { position: absolute; inset: 0; display: grid; grid-template-columns: .9fr 1.1fr; overflow: hidden; border: 1px solid rgba(11,28,57,.08); border-radius: 1.75rem; background: #fff; box-shadow: 0 24px 70px -42px rgba(11,28,57,.6); opacity: 0; pointer-events: none; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease; }
+  .blog-featured-slide.is-active { position: relative; opacity: 1; pointer-events: auto; transform: translateY(0); }
+  .blog-featured-copy { display: flex; flex-direction: column; justify-content: center; padding: clamp(2rem,5vw,4.5rem); background: linear-gradient(135deg, #0b1c39 0%, #132b51 100%); color: #fff; }
+  .blog-category { color: #e2bd35; font-size: .7rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+  .blog-featured-copy h2 { max-width: 34rem; margin-top: 1rem; color: #fff; font-size: clamp(1.9rem,3.5vw,3.4rem); font-weight: 700; line-height: 1.08; }
+  .blog-featured-copy p { max-width: 34rem; margin-top: 1.25rem; color: rgba(255,255,255,.74); font-size: 1rem; line-height: 1.7; }
+  .blog-visual-cta { align-self: flex-start; margin-top: 2rem; color: #f2d86d; font-size: .9rem; font-weight: 700; }
+  .blog-featured-media { min-height: 100%; background: #e9e6dd; }
+  .blog-featured-media img { width: 100%; height: 100%; min-height: 26rem; object-fit: cover; }
+  .blog-featured-indicators { display: flex; justify-content: center; gap: .55rem; margin-top: 1.25rem; }
+  .blog-featured-indicators button { width: 2.6rem; height: .25rem; border: 0; border-radius: 999px; background: rgba(11,28,57,.2); cursor: pointer; transition: background .2s ease, width .2s ease; }
+  .blog-featured-indicators button.is-active { width: 4rem; background: #c59c07; }
+  .blog-featured-indicators button:focus-visible { outline: 2px solid #c59c07; outline-offset: 4px; }
+
+  [dir='rtl'] .blog-featured { direction: rtl; }
+  [dir='rtl'] .blog-featured-copy { text-align: right; }
+  [dir='rtl'] .blog-visual-cta { align-self: flex-start; }
+
+  @media (max-width: 767px) {
+    .blog-featured-slides { min-height: 38rem; }
+    .blog-featured-slide { grid-template-columns: 1fr; grid-template-rows: 15rem 1fr; }
+    .blog-featured-media { order: -1; }
+    .blog-featured-media img { min-height: 15rem; }
+    .blog-featured-copy { padding: 2rem 1.5rem 2.25rem; }
+    .blog-featured-copy h2 { font-size: 2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blog-featured-slide, .blog-featured-indicators button { transition: none; }
+  }
+</style>
