@@ -14,11 +14,8 @@ export default defineConfig({
       }
     },
     filter: (url) => {
-      const excluded = url.includes('/blog/');
-      if (excluded) {
-        // TODO: re-enable Blog URLs in sitemap when production articles are added
-      }
-      return !excluded;
+      // Keep Blog URLs out of the sitemap until the production SEO set is expanded.
+      return !url.includes('/blog/');
     }
   })],
   adapter: node({ mode: 'standalone' })

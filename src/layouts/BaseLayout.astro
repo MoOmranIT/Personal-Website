@@ -35,6 +35,7 @@ const {
 
 const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
 const alternateLocale = lang === 'ar' ? siteConfig.seo.en.locale : siteConfig.seo.ar.locale;
+const socialImage = image.startsWith('http') ? image : `${siteConfig.url}${image.replace(/^\//, '')}`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -173,12 +174,12 @@ const jsonLd = {
     <meta property="og:locale" content={currentLocale} />
     <meta property="og:locale:alternate" content={alternateLocale} />
     <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
-    <meta property="og:image" content={image} />
+    <meta property="og:image" content={socialImage} />
     <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={twitterDescription} />
-    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image" content={socialImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

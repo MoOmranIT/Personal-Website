@@ -9,6 +9,7 @@ publishedAt: 2026-10-04
 image: "/images/blog1.webp"
 imageAlt: "AI Brains receiving recognition at the Quality, Innovation and Artificial Intelligence Conference"
 featured: false
+indexable: true
 draft: false
 ---
 

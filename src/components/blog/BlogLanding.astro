@@ -15,14 +15,11 @@ const labels = lang === 'ar'
 ---
 
 <main id="main" class="blog-page" dir={lang === 'ar' ? 'rtl' : 'ltr'}>
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-24 sm:py-28">
-    <div class="text-center mb-12 reveal">
-      <span class="blog-page-eyebrow">{lang === 'ar' ? 'مقالات ورؤى' : 'INSIGHTS & ARTICLES'}</span>
-    </div>
+  <div class="blog-landing-shell">
     <FeaturedBlogSlider articles={featured} lang={lang} labels={labels} />
 
     <section class="blog-grid-section" aria-labelledby="blog-grid-heading">
-      <div class="flex items-end justify-between gap-6 mb-8 mt-24 sm:mt-28">
+      <div class="blog-grid-heading-row">
         <div>
           <span class="blog-grid-eyebrow">{lang === 'ar' ? 'استكشف المعرفة' : 'LATEST THINKING'}</span>
           <h1 id="blog-grid-heading">{lang === 'ar' ? 'تصفح المقالات' : 'Browse Our Articles'}</h1>
@@ -35,7 +32,6 @@ const labels = lang === 'ar'
             <div class="blog-card-body">
               <span class="blog-card-category">{article.data.category}</span>
               <h2>{article.data.title}</h2>
-              <p>{article.data.excerpt}</p>
               <a class="blog-card-cta" href={`${lang === 'ar' ? '/ar/blog' : '/blog'}/${article.data.slug}/`}>{labels.more} <span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></a>
             </div>
           </article>
@@ -46,23 +42,35 @@ const labels = lang === 'ar'
 </main>
 
 <style>
-  .blog-page { min-height: 100vh; background: #f8f7f3; color: #0b1c39; }
-  .blog-page-eyebrow, .blog-grid-eyebrow { display:block; color:#c59c07; font-size:.7rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; }
-  .blog-grid-section h1 { margin-top:.7rem; color:#0b1c39; font-size:clamp(2rem,4vw,3.4rem); font-weight:700; line-height:1.1; }
-  .blog-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1.5rem; }
-  .blog-card { display:flex; min-width:0; flex-direction:column; overflow:hidden; border:1px solid rgba(11,28,57,.08); border-radius:1.25rem; background:#fff; box-shadow:0 16px 40px -32px rgba(11,28,57,.65); transition:transform .3s ease, box-shadow .3s ease; }
-  .blog-card:hover { transform:translateY(-4px); box-shadow:0 24px 50px -32px rgba(11,28,57,.7); }
-  .blog-card-media { aspect-ratio:16/10; overflow:hidden; background:#e9e6dd; }
-  .blog-card-media img { width:100%; height:100%; object-fit:cover; transition:transform .4s ease; }
-  .blog-card:hover .blog-card-media img { transform:scale(1.02); }
-  .blog-card-body { display:flex; flex:1; flex-direction:column; padding:1.5rem; }
-  .blog-card-category { color:#c59c07; font-size:.68rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
-  .blog-card-body h2 { margin-top:.75rem; color:#0b1c39; font-size:1.2rem; font-weight:700; line-height:1.25; }
-  .blog-card-body p { margin-top:.7rem; color:#64748b; font-size:.92rem; line-height:1.6; }
-  .blog-card-cta { margin-top:auto; padding-top:1.5rem; color:#0b1c39; font-size:.85rem; font-weight:700; }
-  [dir='rtl'] .blog-page { direction:rtl; }
-  [dir='rtl'] .blog-card-body { text-align:right; }
-  @media (max-width: 1023px) { .blog-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (max-width: 639px) { .blog-grid { grid-template-columns:1fr; gap:1rem; } .blog-grid-section h1 { font-size:2.2rem; } }
-  @media (prefers-reduced-motion: reduce) { .blog-card, .blog-card-media img { transition:none; } }
+  .blog-page { min-height: 100vh; background: #f7fafc; color: #0b1c39; }
+  .blog-landing-shell { width: min(100% - 3rem, 1720px); margin: 0 auto; padding: 7rem 0 4.5rem; }
+  .blog-grid-section { width: min(100%, 1280px); margin: clamp(3rem, 4vw, 4rem) auto 0; }
+  .blog-grid-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
+  .blog-grid-eyebrow { display: block; color: #b28700; font-size: .7rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; }
+  .blog-grid-section h1 { margin-top: .7rem; color: #0b1c39; font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 700; line-height: 1.1; }
+  .blog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .blog-card { display: flex; min-width: 0; flex-direction: column; overflow: visible; border-radius: 1.15rem; background: transparent; transition: transform .3s ease; }
+  .blog-card:hover { transform: translateY(-3px); }
+  .blog-card-media { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 1.15rem; background: #e7edf3; }
+  .blog-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .blog-card:hover .blog-card-media img { transform: scale(1.02); }
+  .blog-card-body { position: relative; z-index: 1; display: flex; flex: 1; flex-direction: column; margin: -1rem .75rem 0; padding: 1.25rem 1.35rem 1.35rem; border: 1px solid rgba(11, 28, 57, .06); border-radius: 1rem; background: #fff; box-shadow: 0 14px 30px -28px rgba(11, 28, 57, .7); }
+  .blog-card-category { color: #b28700; font-size: .66rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .blog-card-body h2 { margin-top: .55rem; color: #0b1c39; font-size: 1.08rem; font-weight: 700; line-height: 1.3; }
+  .blog-card-cta { margin-top: 1.1rem; color: #0b1c39; font-size: .82rem; font-weight: 700; }
+  .blog-card-cta span { color: #b28700; }
+  [dir='rtl'] .blog-page { direction: rtl; }
+  [dir='rtl'] .blog-card-body { text-align: right; }
+  @media (max-width: 1023px) {
+    .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 639px) {
+    .blog-landing-shell { width: min(100% - 2rem, 1720px); padding-top: 6.5rem; }
+    .blog-grid-section { margin-top: 2.75rem; }
+    .blog-grid-heading-row { margin-bottom: 1.5rem; }
+    .blog-grid { grid-template-columns: 1fr; gap: 1.25rem; }
+    .blog-grid-section h1 { font-size: 2.2rem; }
+    .blog-card-body { margin-inline: .5rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .blog-card, .blog-card-media img { transition: none; } }
 </style>

@@ -64,6 +64,42 @@ test.describe('Header navigation', () => {
     await expect(page.locator('#accordion-expertise a[href="#training"]')).toBeAttached();
   });
 
+  test('Blog header section links are absolute homepage URLs in EN and AR', async ({ page }) => {
+    for (const { path, expectedPrefix } of [
+      { path: '/blog/', expectedPrefix: '/' },
+      { path: '/ar/blog/', expectedPrefix: '/ar/' }
+    ]) {
+      await page.goto(path);
+      const sectionLinks = page.locator('#site-header a[href*="#"]');
+      const hrefs = await sectionLinks.evaluateAll((links) => links.map((link) => link.getAttribute('href')));
+      expect(hrefs.filter((href) => href?.includes('#')).every((href) => href?.startsWith(expectedPrefix))).toBe(true);
+      expect(hrefs.some((href) => href === '/blog/#services' || href === '/ar/blog/#services')).toBe(false);
+    }
+  });
+
+  test('Blog section links navigate from landing and article pages', async ({ page }) => {
+    const clickHeaderLink = async (path: string, href: string, expected: string) => {
+      await page.goto(path);
+      const link = page.locator(`#site-header a[href="${href}"]`).first();
+      await expect(link).toBeAttached();
+      await link.evaluate((element: HTMLAnchorElement) => element.click());
+      await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).hash).toBe(expected);
+    };
+
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await clickHeaderLink('/blog/', '/', '/');
+    await clickHeaderLink('/blog/', '/#services', '/#services');
+    await clickHeaderLink('/blog/', '/#about', '/#about');
+    await clickHeaderLink('/blog/', '/#success', '/#success');
+    await clickHeaderLink('/blog/', '/#contact', '/#contact');
+    await clickHeaderLink('/blog/growth-starts-with-strategic-questions-en/', '/#ventures', '/#ventures');
+    await clickHeaderLink('/ar/blog/', '/ar/', '/ar/');
+    await clickHeaderLink('/ar/blog/', '/ar/#services', '/ar/#services');
+    await clickHeaderLink('/ar/blog/', '/ar/#about', '/ar/#about');
+    await clickHeaderLink('/ar/blog/', '/ar/#success', '/ar/#success');
+    await clickHeaderLink('/ar/blog/', '/ar/#contact', '/ar/#contact');
+  });
+
   test('mobile accordion closes with Escape', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/');

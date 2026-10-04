@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://dr-khaledalmohamad.com/sitemap-index.xml
+Sitemap: https://dr-khaledalmohamad.com/blog-sitemap.xml

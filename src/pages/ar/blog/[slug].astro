@@ -18,6 +18,25 @@ export async function getStaticPaths() {
 const { article, counterpart } = Astro.props;
 const { Content } = await render(article);
 const canonical = `${siteConfig.url}ar/blog/${article.data.slug}/`;
+const blogPosting = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: article.data.title,
+  description: article.data.excerpt,
+  image: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`,
+  datePublished: article.data.publishedAt.toISOString().slice(0, 10),
+  author: {
+    '@type': 'Person',
+    name: 'Dr. Khaled Al Mohammad',
+    url: `${siteConfig.url}`
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonical
+  },
+  url: canonical,
+  inLanguage: 'ar'
+};
 ---
 
 <BaseLayout
@@ -28,10 +47,11 @@ const canonical = `${siteConfig.url}ar/blog/${article.data.slug}/`;
   image={article.data.image}
   lang="ar"
   dir="rtl"
-  robots="noindex, follow"
+  robots={article.data.indexable ? 'index, follow' : 'noindex, follow'}
   canonical={canonical}
   translations={counterpart ? { en: { href: `${siteConfig.url}blog/${counterpart.data.slug}/` }, ar: { href: canonical } } : { ar: { href: canonical } }}
 >
+  {article.data.indexable && <script slot="head" type="application/ld+json" set:html={JSON.stringify(blogPosting)} />}
   <Header translations={ar.nav} currentLang="ar" languageSwitcherHref={counterpart ? `/blog/${counterpart.data.slug}/` : '/blog/'} isBlog />
   <BlogArticle article={article} body={Content} counterpart={counterpart} lang="ar" />
   <Footer translations={ar} lang="ar" isBlog />
