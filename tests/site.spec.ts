@@ -6,7 +6,7 @@ test.describe('Bilingual pages', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('[data-featured-slide]')).toHaveCount(3);
     await expect(page.locator('[data-featured-indicator]')).toHaveCount(3);
-    await expect(page.locator('.blog-card')).toHaveCount(4);
+    await expect(page.locator('.blog-card')).toHaveCount(5);
     await expect(page.locator('#blog-grid-heading')).toHaveText('Browse Our Articles');
     await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveText('Blog');
     await expect(page.locator('footer a[href="/blog/"]')).toHaveText('Blog');
@@ -180,8 +180,9 @@ test.describe('Bilingual pages', () => {
     const xml = await response.text();
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    expect(xml.match(/<url>/g)?.length).toBe(2);
+    expect(xml.match(/<url>/g)?.length).toBe(3);
     expect(xml).toContain('https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
+    expect(xml).toContain('https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
     expect(xml).toContain('https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/');
     expect(xml).not.toContain('growth-starts-with-strategic-questions');
     expect(xml).not.toContain('strategy-meets-the-market');

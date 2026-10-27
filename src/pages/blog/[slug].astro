@@ -23,7 +23,7 @@ const blogPosting = {
   '@type': 'BlogPosting',
   headline: article.data.title,
   description: article.data.excerpt,
-  image: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`,
+  ...(article.data.image ? { image: `${siteConfig.url}${article.data.image.replace(/^\//, '')}` } : {}),
   datePublished: article.data.publishedAt.toISOString().slice(0, 10),
   author: {
     '@type': 'Person',

@@ -22,7 +22,7 @@ const counterpartHref = counterpart ? `${counterpart.data.lang === 'ar' ? '/ar/b
       <time datetime={article.data.publishedAt.toISOString()}>{date}</time>
       <h1>{article.data.title}</h1>
       <p class="blog-article-excerpt">{article.data.excerpt}</p>
-      <img class="blog-article-hero" src={article.data.image} alt={article.data.imageAlt} width="1400" height="850" loading="eager" decoding="async" />
+      {article.data.image && <img class="blog-article-hero" src={article.data.image} alt={article.data.imageAlt} width="1400" height="850" loading="eager" decoding="async" />}
     </header>
 
     <div class="blog-article-body">
