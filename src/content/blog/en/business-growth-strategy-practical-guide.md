@@ -12,6 +12,8 @@ draft: false
 image: "/images/business-growth-strategy-practical-guide.webp"
 imageAlt: "Glass presentation board displaying a comprehensive Business Growth Strategy diagram in a modern corporate meeting room."
 imageDescription: "sleek presentation of a Business Growth Strategy diagram displayed on a transparent glass board inside a modern executive boardroom. The flowchart illustrates key strategic pathways for revenue expansion, market presence, and sustainable enterprise growth."
+imageWidth: 1280
+imageHeight: 698
 imageVariants:
   - src: "/images/business-growth-strategy-practical-guide-480.webp"
     width: 480

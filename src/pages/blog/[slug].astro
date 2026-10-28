@@ -23,7 +23,7 @@ const blogPosting = {
   '@type': 'BlogPosting',
   headline: article.data.title,
   description: article.data.excerpt,
-  ...(article.data.image ? { image: article.data.imageDescription ? { '@type': 'ImageObject', url: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`, contentUrl: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`, width: 1280, height: 698, name: article.data.imageAlt, description: article.data.imageDescription } : `${siteConfig.url}${article.data.image.replace(/^\//, '')}` } : {}),
+  ...(article.data.image ? { image: article.data.imageDescription ? { '@type': 'ImageObject', url: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`, contentUrl: `${siteConfig.url}${article.data.image.replace(/^\//, '')}`, ...(article.data.imageWidth ? { width: article.data.imageWidth } : {}), ...(article.data.imageHeight ? { height: article.data.imageHeight } : {}), name: article.data.imageAlt, description: article.data.imageDescription } : `${siteConfig.url}${article.data.image.replace(/^\//, '')}` } : {}),
   datePublished: article.data.publishedAt.toISOString().slice(0, 10),
   author: {
     '@type': 'Person',
