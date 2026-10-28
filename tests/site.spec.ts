@@ -6,7 +6,7 @@ test.describe('Bilingual pages', () => {
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('[data-featured-slide]')).toHaveCount(3);
     await expect(page.locator('[data-featured-indicator]')).toHaveCount(3);
-    await expect(page.locator('.blog-card')).toHaveCount(5);
+    await expect(page.locator('.blog-card')).toHaveCount(6);
     await expect(page.locator('#blog-grid-heading')).toHaveText('Browse Our Articles');
     await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveText('Blog');
     await expect(page.locator('footer a[href="/blog/"]')).toHaveText('Blog');
@@ -180,9 +180,11 @@ test.describe('Bilingual pages', () => {
     const xml = await response.text();
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    expect(xml.match(/<url>/g)?.length).toBe(3);
+    expect(xml.match(/<url>/g)?.length).toBe(4);
     expect(xml).toContain('https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
     expect(xml).toContain('https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
+expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business-growth-strategy-step-by-step/');
+
     expect(xml).toContain('https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/');
     expect(xml).not.toContain('growth-starts-with-strategic-questions');
     expect(xml).not.toContain('strategy-meets-the-market');
@@ -256,6 +258,51 @@ test.describe('Bilingual pages', () => {
     const cardImage = page.locator('.blog-card img[src="/images/business-growth-strategy-practical-guide.webp"]');
     await expect(cardImage).toBeVisible();
   });
+  test('second business growth strategy article is English-only and renders responsive image', async ({ page }) => {
+    await page.goto('/blog/how-to-build-business-growth-strategy-step-by-step/');
+
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('.blog-article-page h1')).toHaveText('How to Build a Business Growth Strategy: A Step-by-Step Guide');
+    await expect(page.locator('.blog-article-body')).toContainText('business growth strategy');
+    await expect(page.locator('.blog-article-body img')).toHaveCount(1);
+    await expect(page.locator('.blog-article-hero')).toHaveCount(0);
+    await expect(page.locator('a.blog-back-link')).toHaveAttribute('href', '/blog/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /blog\/how-to-build-business-growth-strategy-step-by-step\//);
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /blog\/how-to-build-business-growth-strategy-step-by-step\//);
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveCount(0);
+    await expect(page.locator('a.blog-language-link')).toHaveCount(0);
+    await expect(page.locator('a[aria-label="Switch to العربية"]')).toHaveAttribute('href', '/ar/blog/');
+    await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index, follow/);
+
+    const figure = page.locator('.blog-article-body figure.blog-article-inline-image');
+    await expect(figure).toHaveCount(1);
+    const figureImg = figure.locator('img');
+    await expect(figureImg).toHaveAttribute('src', '/images/build-business-growth-strategy-step-by-step.webp');
+    await expect(figureImg).toHaveAttribute('alt', 'An isometric step-by-step workflow diagram outlining the process of Building a Business Growth Strategy in 7 key steps.');
+    const srcset = await figureImg.getAttribute('srcset');
+    expect(srcset).toContain('/images/build-business-growth-strategy-step-by-step-480.webp 480w');
+    expect(srcset).toContain('/images/build-business-growth-strategy-step-by-step-640.webp 640w');
+    expect(srcset).toContain('/images/build-business-growth-strategy-step-by-step-960.webp 960w');
+    expect(srcset).toContain('/images/build-business-growth-strategy-step-by-step-1280.webp 1280w');
+
+    const postingScript = (await page.locator('script[type="application/ld+json"]').allTextContents()).find((content) => content.includes('"@type":"BlogPosting"'));
+    expect(postingScript).toBeTruthy();
+    const posting = JSON.parse(postingScript!);
+    expect(posting.image['@type']).toBe('ImageObject');
+    expect(posting.image.url).toBe('https://dr-khaledalmohamad.com/images/build-business-growth-strategy-step-by-step.webp');
+    expect(posting.image.width).toBe(1280);
+    expect(posting.image.height).toBe(698);
+    expect(posting.image.name).toBe('An isometric step-by-step workflow diagram outlining the process of Building a Business Growth Strategy in 7 key steps.');
+    expect(posting.image.description).toBe('An isometric infographic on a glass display illustrating the 7-step process for Building a Business Growth Strategy to achieve sustainable corporate expansion.');
+
+    await expect(page.locator('.blog-article-body blockquote')).toHaveCount(5);
+
+    await page.goto('/blog/');
+    await expect(page.locator('.blog-card img[src="/images/build-business-growth-strategy-step-by-step.webp"]')).toBeVisible();
+  });
+
+
 
   test('English homepage renders main sections', async ({ page }) => {
     await page.goto('/');
