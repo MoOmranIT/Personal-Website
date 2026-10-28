@@ -28,7 +28,7 @@ const labels = lang === 'ar'
       <div class="blog-grid">
         {regular.map((article) => (
           <article class="blog-card reveal">
-            <div class="blog-card-media">{article.data.image && <img src={article.data.image} alt={article.data.imageAlt} width="800" height="520" loading="lazy" decoding="async" />}</div>
+            <div class="blog-card-media">{article.data.image && <img src={article.data.image} alt={article.data.imageAlt} width="800" height="520" loading="lazy" decoding="async" srcset={article.data.imageVariants?.map((variant: any) => `${variant.src} ${variant.width}w`).join(', ') || undefined} sizes={article.data.imageVariants ? '(max-width: 639px) calc(100vw - 2rem), (max-width: 1023px) calc(50vw - 1.5rem), 420px' : undefined} />}</div>
             <div class="blog-card-body">
               <span class="blog-card-category">{article.data.category}</span>
               <h2>{article.data.title}</h2>

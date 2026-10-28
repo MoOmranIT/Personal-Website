@@ -1,6 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+const imageVariant = z.object({
+  src: z.string(),
+  width: z.number().int().positive()
+});
+
 const blog = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
@@ -13,6 +18,9 @@ const blog = defineCollection({
     publishedAt: z.coerce.date(),
     image: z.string().optional(),
     imageAlt: z.string().optional(),
+    imageDescription: z.string().optional(),
+    imageVariants: z.array(imageVariant).optional(),
+    showHeroImage: z.boolean().optional().default(true),
     featured: z.boolean().default(false),
     featuredOrder: z.number().int().positive().optional(),
     indexable: z.boolean().default(false),

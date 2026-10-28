@@ -208,6 +208,55 @@ test.describe('Bilingual pages', () => {
     }
   });
 
+  test('business growth strategy article integrates responsive image and callouts', async ({ page }) => {
+    await page.goto('/blog/business-growth-strategy-practical-guide/');
+
+    const articleImages = page.locator('.blog-article-body img');
+    await expect(articleImages).toHaveCount(1);
+
+    const figure = page.locator('.blog-article-body figure.blog-article-inline-image');
+    await expect(figure).toHaveCount(1);
+    const figureImg = figure.locator('img');
+    await expect(figureImg).toHaveAttribute('src', '/images/business-growth-strategy-practical-guide.webp');
+    await expect(figureImg).toHaveAttribute('alt', 'Glass presentation board displaying a comprehensive Business Growth Strategy diagram in a modern corporate meeting room.');
+    const srcset = await figureImg.getAttribute('srcset');
+    expect(srcset).toContain('/images/business-growth-strategy-practical-guide-480.webp 480w');
+    expect(srcset).toContain('/images/business-growth-strategy-practical-guide-640.webp 640w');
+    expect(srcset).toContain('/images/business-growth-strategy-practical-guide-960.webp 960w');
+    expect(srcset).toContain('/images/business-growth-strategy-practical-guide-1280.webp 1280w');
+
+    const previousText = await figure.evaluate((el) => el.previousElementSibling?.textContent ?? '');
+    const nextText = await figure.evaluate((el) => el.nextElementSibling?.textContent ?? '');
+    expect(previousText).toContain('The goal is not to grow in every possible direction. It is to identify the most appropriate path to sustainable business growth.');
+    expect(nextText).toContain('Ready to turn growth priorities into measurable results?');
+
+    await figureImg.scrollIntoViewIfNeeded();
+    await expect.poll(() => figureImg.evaluate((el: HTMLImageElement) => el.naturalWidth), { timeout: 10000 }).toBeGreaterThan(0);
+
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://dr-khaledalmohamad.com/images/business-growth-strategy-practical-guide.webp');
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute('content', 'Glass presentation board displaying a comprehensive Business Growth Strategy diagram in a modern corporate meeting room.');
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', 'https://dr-khaledalmohamad.com/images/business-growth-strategy-practical-guide.webp');
+    await expect(page.locator('meta[name="twitter:image:alt"]')).toHaveAttribute('content', 'Glass presentation board displaying a comprehensive Business Growth Strategy diagram in a modern corporate meeting room.');
+
+    const postingScript = (await page.locator('script[type="application/ld+json"]').allTextContents()).find((content) => content.includes('"@type":"BlogPosting"'));
+    expect(postingScript).toBeTruthy();
+    const posting = JSON.parse(postingScript!);
+    expect(posting.image['@type']).toBe('ImageObject');
+    expect(posting.image.url).toBe('https://dr-khaledalmohamad.com/images/business-growth-strategy-practical-guide.webp');
+    expect(posting.image.contentUrl).toBe('https://dr-khaledalmohamad.com/images/business-growth-strategy-practical-guide.webp');
+    expect(posting.image.width).toBe(1280);
+    expect(posting.image.height).toBe(698);
+    expect(posting.image.name).toBe('Glass presentation board displaying a comprehensive Business Growth Strategy diagram in a modern corporate meeting room.');
+    expect(posting.image.description).toBe('sleek presentation of a Business Growth Strategy diagram displayed on a transparent glass board inside a modern executive boardroom. The flowchart illustrates key strategic pathways for revenue expansion, market presence, and sustainable enterprise growth.');
+
+    const blockquotes = page.locator('.blog-article-body blockquote');
+    await expect(blockquotes).toHaveCount(6);
+
+    await page.goto('/blog/');
+    const cardImage = page.locator('.blog-card img[src="/images/business-growth-strategy-practical-guide.webp"]');
+    await expect(cardImage).toBeVisible();
+  });
+
   test('English homepage renders main sections', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Dr\. Khaled Al Mohammad/i);

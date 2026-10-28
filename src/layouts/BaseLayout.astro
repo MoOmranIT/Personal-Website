@@ -8,6 +8,7 @@ interface Props {
   ogDescription?: string;
   twitterDescription?: string;
   image?: string;
+  imageAlt?: string;
   lang?: string;
   dir?: string;
   canonical?: string;
@@ -25,6 +26,7 @@ const {
   ogDescription = siteConfig.ogDescription,
   twitterDescription = siteConfig.twitterDescription,
   image = '/images/og-image.jpg',
+  imageAlt = siteConfig.name + ', Business Consultant in Dubai',
   lang = 'en',
   dir = 'ltr',
   canonical = siteConfig.url,
@@ -175,11 +177,12 @@ const jsonLd = {
     <meta property="og:locale:alternate" content={alternateLocale} />
     <meta property="og:site_name" content={siteConfig.name + ' — Business Consultant'} />
     <meta property="og:image" content={socialImage} />
-    <meta property="og:image:alt" content={siteConfig.name + ', Business Consultant in Dubai'} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={twitterDescription} />
     <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
