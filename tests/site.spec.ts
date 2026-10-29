@@ -404,7 +404,7 @@ test.describe('Bilingual pages', () => {
       { text: 'executive coaching', href: 'https://dr-khaledalmohamad.com/#training' },
       { text: 'real business transformation stories', href: 'https://dr-khaledalmohamad.com/#success' },
       { text: 'strategic advisory and executive training programs', href: 'https://dr-khaledalmohamad.com/#training' },
-      { text: 'Book a strategic consultation', href: 'https://dr-khaledalmohamad.com/?utm_source=chatgpt.com' },
+      { text: 'Book a strategic consultation', href: 'https://dr-khaledalmohamad.com/#contact' },
     ];
 
     await expect(prose.locator('a')).toHaveCount(approvedLinks.length);
@@ -442,6 +442,81 @@ test.describe('Bilingual pages', () => {
 
     const emptyAnchorCount = await prose.locator('a').evaluateAll((anchors) => anchors.filter((anchor) => !anchor.textContent?.trim()).length);
     expect(emptyAnchorCount).toBe(0);
+  });
+
+  test('business growth strategy article 1 semantic structure', async ({ page }) => {
+    for (const width of [375, 768, 1280, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/blog/business-growth-strategy-practical-guide/');
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+      expect(overflow, `overflow at ${width}px`).toBe(false);
+    }
+
+    await page.goto('/blog/business-growth-strategy-practical-guide/');
+    const prose = page.locator('[data-article-prose]');
+    await expect(page.locator('.blog-article-page h1')).toHaveCount(1);
+    await expect(page.locator('.blog-article-page h1')).toHaveText('What Is a Business Growth Strategy: A Practical Guide');
+    await expect(prose.locator('h2', { hasText: 'What Is a Business Growth Strategy?' })).toHaveCount(1);
+    await expect(prose.locator('h3', { hasText: 'What Are the Components of a Business Growth Strategy?' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'Why Is a Business Growth Framework Important?' })).toHaveCount(1);
+    await expect(prose.locator('h3', { hasText: 'How Does Strategic Growth Planning Align Business Goals and Resources?' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'What Are the Main Types of Business Growth Strategies?' })).toHaveCount(1);
+    await expect(prose.locator('h3', { hasText: 'Market Penetration: Growing Within Existing Markets' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'How to Develop Business Growth Planning?' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'Conclusion: Building a Business Growth Strategy That Creates Lasting Value' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'Frequently Asked Questions About Business Growth Strategy' })).toHaveCount(1);
+    await expect(prose.locator('blockquote')).toHaveCount(6);
+
+    await expect(prose.locator('ul')).toHaveCount(10);
+    await expect(prose.locator('ol')).toHaveCount(2);
+    await expect(prose.locator('ul').first().locator('li')).toHaveCount(5);
+    await expect(prose.locator('ol').first().locator('li')).toHaveCount(4);
+    await expect(prose.locator('ol').nth(1).locator('li')).toHaveCount(7);
+
+    const bulletParagraphs = await prose.locator('p').evaluateAll((nodes) =>
+      nodes.filter((node) => node.textContent?.trimStart().startsWith('●')).length,
+    );
+    expect(bulletParagraphs).toBe(0);
+
+    await expect(prose.locator('strong', { hasText: 'Clear business objectives:' })).toHaveCount(1);
+    await expect(prose.locator('ol').nth(1).locator('strong', { hasText: 'Assess Your Current Business Position:' })).toHaveCount(1);
+  });
+
+  test('business growth strategy article 2 semantic structure', async ({ page }) => {
+    for (const width of [375, 768, 1280, 1920]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/blog/how-to-build-business-growth-strategy-step-by-step/');
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+      expect(overflow, `overflow at ${width}px`).toBe(false);
+    }
+
+    await page.goto('/blog/how-to-build-business-growth-strategy-step-by-step/');
+    const prose = page.locator('[data-article-prose]');
+    await expect(page.locator('.blog-article-page h1')).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'How to Build a Business Growth Strategy in 7 Steps?' })).toHaveCount(1);
+    await expect(prose.locator('h3', { hasText: 'Business Performance Assessment: Understanding Your Current Position' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'How to Choose the Right Growth Strategy Framework' })).toHaveCount(1);
+    await expect(prose.locator('h2', { hasText: 'What Should a Business Growth Plan Include?' })).toHaveCount(1);
+    await expect(prose.locator('blockquote')).toHaveCount(5);
+
+    await expect(prose.locator('ul')).toHaveCount(8);
+    await expect(prose.locator('ol')).toHaveCount(4);
+    await expect(prose.locator('ul').first().locator('li')).toHaveCount(5);
+    await expect(prose.locator('ul').nth(3).locator('li')).toHaveCount(6);
+    await expect(prose.locator('ol').first().locator('li')).toHaveCount(6);
+    await expect(prose.locator('ol').nth(1).locator('li')).toHaveCount(3);
+    await expect(prose.locator('ol').nth(2).locator('li')).toHaveCount(5);
+    await expect(prose.locator('ol').nth(3).locator('li')).toHaveCount(4);
+
+    const bulletParagraphs = await prose.locator('p').evaluateAll((nodes) =>
+      nodes.filter((node) => node.textContent?.trimStart().startsWith('●')).length,
+    );
+    expect(bulletParagraphs).toBe(0);
+
+    await expect(prose.locator('ul').first().locator('strong', { hasText: 'Financial performance:' })).toHaveCount(1);
+    await expect(prose.locator('ol').first().locator('strong', { hasText: 'Priority initiatives:' })).toHaveCount(1);
+    await expect(prose.locator('ul').nth(6).locator('strong', { hasText: 'Market penetration:' })).toHaveCount(1);
+    await expect(prose.locator('ul').nth(1).locator('strong')).toHaveCount(0);
   });
 
   test('business growth strategy articles share one article prose callout system', async ({ page }) => {
