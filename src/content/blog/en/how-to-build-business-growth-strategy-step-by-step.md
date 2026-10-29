@@ -40,7 +40,7 @@ In this guide, we will explore how to build a business growth strategy step by s
 
 > Looking for a Clearer Direction for Your Business Growth?
 >
-> Explore Dr. Khaled Al Mohammad's professional profile and strategic advisory resources to discover a more structured approach to business growth.
+> Explore [Dr. Khaled Al Mohammad's professional profile](https://dr-khaledalmohamad.com/) and strategic advisory resources to discover a more structured approach to business growth.
 
 ## How to Build a Business Growth Strategy in 7 Steps?
 
@@ -123,7 +123,7 @@ What do you get from the Market analysis?
 
 A market assessment identifying promising customer segments, competitive dynamics, and opportunities that warrant further evaluation.
 
-> Ready to assess your current performance and unlock your growth potential? Explore how expert business strategy consulting can help you structure your market analysis, align your strategic goals, and turn these foundational steps into a scalable action plan.
+> Ready to assess your current performance and unlock your growth potential? Explore how expert [business strategy consulting](https://dr-khaledalmohamad.com/#contact) can help you structure your market analysis, align your strategic goals, and turn these foundational steps into a scalable action plan.
 
 ### 4. Growth Opportunity Evaluation: Identifying the Best Paths to Expansion
 
@@ -220,7 +220,7 @@ A continuous improvement process that supports evidence-based decisions, better 
 
 > Bridge the Gap Between Planning and Results: Don't let your growth plan stall during execution.
 >
-> Discover tailored strategic advisory and corporate performance services to transform your strategic goals into scalable, long-term commercial success.
+> Discover [tailored strategic advisory and corporate performance services](https://dr-khaledalmohamad.com/#services) to transform your strategic goals into scalable, long-term commercial success.
 ## How to Choose the Right Growth Strategy Framework
 
 The best growth strategy framework depends on a business's growth objectives, market opportunities, and available resources.
@@ -287,7 +287,7 @@ Consider how growth priorities typically differ across three business stages:
 
 > 💡 Make Data-Driven Growth Decisions: Don't rely on guesswork when selecting your expansion path.
 >
-> Discover tailored business development and strategic framework training to evaluate market readiness and structure your business for long-term scalability.
+> Discover [tailored business development and strategic framework training](https://dr-khaledalmohamad.com/#training) to evaluate market readiness and structure your business for long-term scalability.
 
 ## What Should a Business Growth Plan Include?
 
@@ -317,7 +317,7 @@ Businesses that align their ambitions with market evidence and operational capab
 >
 > Connect directly with an experienced executive advisor to review your business model, clarify strategic priorities, and minimize expansion risks.
 >
-> Contact Dr. Khaled Al-Mohamad to schedule a consultation.
+> [Contact Dr. Khaled Al-Mohamad to schedule a consultation.](https://dr-khaledalmohamad.com/#contact)
 
 ## Frequently Asked Questions About Building a Business Growth Strategy
 

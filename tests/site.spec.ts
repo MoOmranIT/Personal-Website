@@ -394,6 +394,56 @@ test.describe('Bilingual pages', () => {
 
 
 
+  test('business growth strategy article 1 restores approved hyperlinks', async ({ page }) => {
+    await page.goto('/blog/business-growth-strategy-practical-guide/');
+    const prose = page.locator('[data-article-prose]');
+    const approvedLinks = [
+      { text: 'Dr. Khaled Al Mohammad’s website', href: 'https://dr-khaledalmohamad.com/#home' },
+      { text: 'business development and strategic advisory services', href: 'https://dr-khaledalmohamad.com/#services' },
+      { text: 'strategic advisory and business development', href: 'https://dr-khaledalmohamad.com/#contact' },
+      { text: 'executive coaching', href: 'https://dr-khaledalmohamad.com/#training' },
+      { text: 'real business transformation stories', href: 'https://dr-khaledalmohamad.com/#success' },
+      { text: 'strategic advisory and executive training programs', href: 'https://dr-khaledalmohamad.com/#training' },
+      { text: 'Book a strategic consultation', href: 'https://dr-khaledalmohamad.com/?utm_source=chatgpt.com' },
+    ];
+
+    await expect(prose.locator('a')).toHaveCount(approvedLinks.length);
+    for (const link of approvedLinks) {
+      const anchor = prose.locator(`a[href="${link.href}"]`).filter({ hasText: link.text });
+      await expect(anchor).toHaveCount(1);
+    }
+
+    const emptyAnchorCount = await prose.locator('a').evaluateAll((anchors) => anchors.filter((anchor) => !anchor.textContent?.trim()).length);
+    expect(emptyAnchorCount).toBe(0);
+
+    const firstLink = prose.locator('a').first();
+    await firstLink.focus();
+    await expect(firstLink).toBeFocused();
+    const linkStyles = await firstLink.evaluate((el) => getComputedStyle(el));
+    expect(linkStyles.textDecorationLine).toContain('underline');
+  });
+
+  test('business growth strategy article 2 restores approved hyperlinks', async ({ page }) => {
+    await page.goto('/blog/how-to-build-business-growth-strategy-step-by-step/');
+    const prose = page.locator('[data-article-prose]');
+    const approvedLinks = [
+      { text: /Dr\. Khaled Al Mohammad['\u2019]s professional profile/, href: 'https://dr-khaledalmohamad.com/' },
+      { text: 'business strategy consulting', href: 'https://dr-khaledalmohamad.com/#contact' },
+      { text: 'tailored strategic advisory and corporate performance services', href: 'https://dr-khaledalmohamad.com/#services' },
+      { text: 'tailored business development and strategic framework training', href: 'https://dr-khaledalmohamad.com/#training' },
+      { text: 'Contact Dr. Khaled Al-Mohamad to schedule a consultation.', href: 'https://dr-khaledalmohamad.com/#contact' },
+    ];
+
+    await expect(prose.locator('a')).toHaveCount(approvedLinks.length);
+    for (const link of approvedLinks) {
+      const anchor = prose.locator(`a[href="${link.href}"]`).filter({ hasText: link.text });
+      await expect(anchor).toHaveCount(1);
+    }
+
+    const emptyAnchorCount = await prose.locator('a').evaluateAll((anchors) => anchors.filter((anchor) => !anchor.textContent?.trim()).length);
+    expect(emptyAnchorCount).toBe(0);
+  });
+
   test('business growth strategy articles share one article prose callout system', async ({ page }) => {
     for (const path of [
       '/blog/business-growth-strategy-practical-guide/',
