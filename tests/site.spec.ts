@@ -298,6 +298,15 @@ expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business
 
     await expect(page.locator('.blog-article-body blockquote')).toHaveCount(5);
 
+    const articleBodyText = await page.locator('.blog-article-body').innerText();
+    expect(articleBodyText.split(/\r?\n/).some((line) => line.trimStart().startsWith('? '))).toBe(false);
+
+    const dataDrivenCallout = page.locator('.blog-article-body blockquote').filter({ hasText: 'Make Data-Driven Growth Decisions' });
+    await expect(dataDrivenCallout).toContainText('💡 Make Data-Driven Growth Decisions:');
+    await expect(dataDrivenCallout).toContainText(/Don['\u2019]t rely on guesswork when selecting your expansion path\./);
+
+    await expect(page.locator('.blog-article-body h3').filter({ hasText: '1. Business Performance Assessment: Understanding Your Current Position' })).toHaveCount(1);
+
     await page.goto('/blog/');
     await expect(page.locator('.blog-card img[src="/images/build-business-growth-strategy-step-by-step.webp"]')).toBeVisible();
   });
