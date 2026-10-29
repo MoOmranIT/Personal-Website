@@ -17,9 +17,10 @@ const articles = (await getCollection('blog', ({ data }) => data.lang === 'en' &
   twitterDescription="Insights on business development, strategy, marketing, leadership, and sustainable growth."
   lang="en"
   dir="ltr"
-  robots="noindex, follow"
+  robots="index, follow"
   canonical={`${siteConfig.url}blog/`}
-  translations={{ en: { href: `${siteConfig.url}blog/` }, ar: { href: `${siteConfig.url}ar/blog/` } }}
+  xDefaultHref={`${siteConfig.url}blog/`}
+  translations={{ en: { href: `${siteConfig.url}blog/` } }}
 >
   <Header translations={en.nav} currentLang="en" blogHref="/blog/" isBlog />
   <BlogLanding articles={articles} lang="en" />

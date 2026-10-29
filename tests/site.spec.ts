@@ -10,7 +10,7 @@ test.describe('Bilingual pages', () => {
     await expect(page.locator('#blog-grid-heading')).toHaveText('Browse Our Articles');
     await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveText('Blog');
     await expect(page.locator('footer a[href="/blog/"]')).toHaveText('Blog');
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow/);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow, max-image-preview:large');
     await expect(page.locator('.blog-card a[href="/blog/ai-brains-scalable-ecosystem-award/"]')).toBeVisible();
     await expect(page.locator('.blog-card img[src="/images/blog1.webp"]')).toBeVisible();
 
@@ -173,23 +173,92 @@ test.describe('Bilingual pages', () => {
     expect(demoPosting.some((content) => content.includes('"@type":"BlogPosting"'))).toBe(false);
   });
 
-  test('selective Blog sitemap exposes only indexable articles', async ({ request }) => {
+  test('selective Blog sitemap exposes indexable landing and articles', async ({ request }) => {
     const response = await request.get('/blog-sitemap.xml');
     expect(response.status()).toBe(200);
     expect(response.headers()['content-type']).toContain('application/xml');
     const xml = await response.text();
     expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
     expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-    expect(xml.match(/<url>/g)?.length).toBe(4);
+    expect(xml.match(/<url>/g)?.length).toBe(5);
+    expect(xml).toContain('https://dr-khaledalmohamad.com/blog/');
     expect(xml).toContain('https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
     expect(xml).toContain('https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
-expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business-growth-strategy-step-by-step/');
-
+    expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business-growth-strategy-step-by-step/');
     expect(xml).toContain('https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/');
     expect(xml).not.toContain('growth-starts-with-strategic-questions');
     expect(xml).not.toContain('strategy-meets-the-market');
-    expect(xml).not.toContain('https://dr-khaledalmohamad.com/blog/</loc>');
     expect(xml).not.toContain('https://dr-khaledalmohamad.com/ar/blog/</loc>');
+    for (const url of [
+      'https://dr-khaledalmohamad.com/blog/',
+      'https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/',
+      'https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/',
+      'https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/',
+      'https://dr-khaledalmohamad.com/blog/how-to-build-business-growth-strategy-step-by-step/',
+    ]) {
+      expect(xml.match(new RegExp(`<loc>${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</loc>`, 'g'))?.length).toBe(1);
+    }
+  });
+
+  test('English blog landing indexing, canonical, and hreflang', async ({ page, request }) => {
+    const response = await page.goto('/blog/');
+    expect(response?.status()).toBe(200);
+    const xRobots = response?.headers()['x-robots-tag'];
+    expect(xRobots ?? '').not.toMatch(/noindex/i);
+
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'index, follow, max-image-preview:large');
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/');
+    const canonicalHref = await page.locator('link[rel="canonical"]').getAttribute('href');
+    expect(canonicalHref).not.toContain('[');
+    expect(canonicalHref).not.toContain(']');
+    expect(canonicalHref).not.toContain('https\\://');
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://dr-khaledalmohamad.com/blog/');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/');
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveCount(0);
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/');
+
+    const sitemapResponse = await request.get('/blog-sitemap.xml');
+    expect(await sitemapResponse.text()).toContain('https://dr-khaledalmohamad.com/blog/');
+  });
+
+  test('Arabic blog landing remains noindex and out of Blog sitemap', async ({ page, request }) => {
+    const response = await page.goto('/ar/blog/');
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow, max-image-preview:large/);
+    const xml = await (await request.get('/blog-sitemap.xml')).text();
+    expect(xml).not.toContain('https://dr-khaledalmohamad.com/ar/blog/</loc>');
+  });
+
+  test('Blog production articles indexing headers and hreflang clusters', async ({ page }) => {
+    const assertNoNoindexHeader = async (path: string) => {
+      const response = await page.goto(path);
+      expect(response?.status()).toBe(200);
+      expect(response?.headers()['x-robots-tag'] ?? '').not.toMatch(/noindex/i);
+    };
+
+    await assertNoNoindexHeader('/blog/business-growth-strategy-practical-guide/');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index, follow, max-image-preview:large/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveCount(0);
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/business-growth-strategy-practical-guide/');
+
+    await assertNoNoindexHeader('/blog/how-to-build-business-growth-strategy-step-by-step/');
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/how-to-build-business-growth-strategy-step-by-step/');
+
+    await page.goto('/blog/ai-brains-scalable-ecosystem-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
+
+    await page.goto('/ar/blog/ai-brains-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/ar/blog/ai-brains-award/');
+    await expect(page.locator('link[rel="alternate"][hreflang="x-default"]')).toHaveAttribute('href', 'https://dr-khaledalmohamad.com/blog/ai-brains-scalable-ecosystem-award/');
+
+    await page.goto('/blog/growth-starts-with-strategic-questions-en/');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex, follow, max-image-preview:large/);
   });
 
   test('robots declares both base and selective Blog sitemaps without blocking Blog', async ({ request }) => {
@@ -253,6 +322,12 @@ expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business
 
     const blockquotes = page.locator('.blog-article-body blockquote');
     await expect(blockquotes).toHaveCount(6);
+    await expect(page.locator('[data-article-prose]')).toHaveCount(1);
+    await expect(page.locator('[data-article-prose] blockquote')).toHaveCount(6);
+
+    await page.setViewportSize({ width: 375, height: 812 });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+    expect(overflow).toBe(false);
 
     await page.goto('/blog/');
     const cardImage = page.locator('.blog-card img[src="/images/business-growth-strategy-practical-guide.webp"]');
@@ -297,6 +372,8 @@ expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business
     expect(posting.image.description).toBe('An isometric infographic on a glass display illustrating the 7-step process for Building a Business Growth Strategy to achieve sustainable corporate expansion.');
 
     await expect(page.locator('.blog-article-body blockquote')).toHaveCount(5);
+    await expect(page.locator('[data-article-prose]')).toHaveCount(1);
+    await expect(page.locator('[data-article-prose] blockquote')).toHaveCount(5);
 
     const articleBodyText = await page.locator('.blog-article-body').innerText();
     expect(articleBodyText.split(/\r?\n/).some((line) => line.trimStart().startsWith('? '))).toBe(false);
@@ -307,11 +384,36 @@ expect(xml).toContain('https://dr-khaledalmohamad.com/blog/how-to-build-business
 
     await expect(page.locator('.blog-article-body h3').filter({ hasText: '1. Business Performance Assessment: Understanding Your Current Position' })).toHaveCount(1);
 
+    await page.setViewportSize({ width: 375, height: 812 });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1);
+    expect(overflow).toBe(false);
+
     await page.goto('/blog/');
     await expect(page.locator('.blog-card img[src="/images/build-business-growth-strategy-step-by-step.webp"]')).toBeVisible();
   });
 
 
+
+  test('business growth strategy articles share one article prose callout system', async ({ page }) => {
+    for (const path of [
+      '/blog/business-growth-strategy-practical-guide/',
+      '/blog/how-to-build-business-growth-strategy-step-by-step/',
+    ]) {
+      await page.goto(path);
+      const prose = page.locator('[data-article-prose].blog-article-body');
+      await expect(prose).toHaveCount(1);
+      await expect(prose.locator('blockquote')).toHaveCount(path.includes('practical-guide') ? 6 : 5);
+      const calloutStyles = await prose.locator('blockquote').first().evaluate((el) => {
+        const styles = getComputedStyle(el);
+        return {
+          position: styles.position,
+          borderInlineStartWidth: styles.borderInlineStartWidth,
+        };
+      });
+      expect(calloutStyles.position).toBe('relative');
+      expect(Number.parseFloat(calloutStyles.borderInlineStartWidth)).toBeLessThan(2);
+    }
+  });
 
   test('English homepage renders main sections', async ({ page }) => {
     await page.goto('/');

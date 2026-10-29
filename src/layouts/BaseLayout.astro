@@ -18,6 +18,7 @@ interface Props {
   };
   languageSwitcherHref?: string;
   robots?: string;
+  xDefaultHref?: string;
 }
 
 const {
@@ -32,7 +33,8 @@ const {
   canonical = siteConfig.url,
   translations,
   languageSwitcherHref,
-  robots = 'index, follow'
+  robots = 'index, follow',
+  xDefaultHref
 } = Astro.props;
 
 const currentLocale = lang === 'ar' ? siteConfig.seo.ar.locale : siteConfig.seo.en.locale;
@@ -194,7 +196,7 @@ const jsonLd = {
     {translations && translations.ar && (
       <link rel="alternate" hreflang="ar" href={translations.ar.href} />
     )}
-    <link rel="alternate" hreflang="x-default" href={siteConfig.url} />
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref ?? siteConfig.url} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>

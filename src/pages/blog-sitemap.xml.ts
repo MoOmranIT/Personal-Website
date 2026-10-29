@@ -12,7 +12,10 @@ const escapeXml = (value: string) => value
 
 export async function GET() {
   const articles = await getCollection('blog', ({ data }) => !data.draft && data.indexable);
-  const urls = articles
+  const landingLoc = `${siteConfig.url}blog/`;
+  const landingEntry = `  <url>\n    <loc>${escapeXml(landingLoc)}</loc>\n  </url>`;
+
+  const articleEntries = articles
     .map((article) => {
       const path = article.data.lang === 'ar'
         ? `ar/blog/${article.data.slug}/`
@@ -20,8 +23,9 @@ export async function GET() {
       const loc = `${siteConfig.url}${path}`;
       const lastmod = article.data.publishedAt.toISOString().slice(0, 10);
       return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${lastmod}</lastmod>\n  </url>`;
-    })
-    .sort((a, b) => a.localeCompare(b));
+    });
+
+  const urls = [landingEntry, ...articleEntries].sort((a, b) => a.localeCompare(b));
 
   const xml = [
     '<?xml version="1.0" encoding="UTF-8"?>',
