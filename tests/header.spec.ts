@@ -324,13 +324,21 @@ test.describe('Header navigation', () => {
 
   test('shared brand mark replaces KM badges in header and footer', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('#site-header [data-brand-mark]')).toHaveCount(1);
+    const headerMark = page.locator('#site-header [data-brand-mark]');
+    await expect(headerMark).toHaveCount(1);
+    await expect(headerMark.locator('img')).toHaveAttribute('src', '/brand/dr-khaled-monogram-dark.webp');
+    await expect.poll(() => headerMark.locator('img').evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
     await expect(page.locator('#site-header')).not.toContainText(/^KM$/);
     await expect(page.locator('#site-header')).toContainText('Dr. Khaled Al Mohammad');
-    await expect(page.locator('footer [data-brand-mark]')).toHaveCount(1);
+    const footerMark = page.locator('footer [data-brand-mark]');
+    await expect(footerMark).toHaveCount(1);
+    await expect(footerMark.locator('img')).toHaveAttribute('src', '/brand/dr-khaled-monogram-light.webp');
+    await expect.poll(() => footerMark.locator('img').evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
     await expect(page.locator('footer')).not.toContainText(/^KM$/);
     await expect(page.locator('#home img[alt*="Dr. Khaled Al Mohammad"]')).toHaveCount(1);
-    await expect(page.locator('[data-executive-brand-mark]')).toHaveCount(1);
+    const executive = page.locator('[data-executive-brand-mark]');
+    await expect(executive).toHaveCount(1);
+    await expect(executive.locator('[data-brand-mark] img')).toHaveAttribute('src', '/brand/dr-khaled-monogram-light.webp');
   });
 
   test('executive brand mark respects reduced motion without errors', async ({ page }) => {
