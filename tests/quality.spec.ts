@@ -86,7 +86,7 @@ test.describe('Interaction QA', () => {
 
   test('language switch goes to the other locale', async ({ page }) => {
     await page.goto('/');
-    await page.locator('a[aria-label="Switch to العربية"]').click();
+    await page.locator('[data-language-switch]').click();
     await expect(page).toHaveURL(/\/ar\/$/);
     await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   });

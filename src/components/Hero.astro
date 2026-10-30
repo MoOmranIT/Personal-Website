@@ -1,4 +1,6 @@
 ---
+import ExecutiveBrandMark from './brand/ExecutiveBrandMark.astro';
+
 const heroImage = '/images/heroo.webp';
 
 interface Props {
@@ -60,6 +62,9 @@ const headingClass = `reveal delay-2 font-bold text-navy mb-6 tracking-tight her
           fetchPriority="high"
           decoding="async"
         />
+        <div class="absolute z-10 bottom-3 sm:bottom-4 inset-inline-end-2 sm:inset-inline-end-3 hidden sm:block pointer-events-none sm:pointer-events-auto">
+          <ExecutiveBrandMark />
+        </div>
       </div>
     </div>
   </div>

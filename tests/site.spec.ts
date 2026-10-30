@@ -346,7 +346,7 @@ test.describe('Bilingual pages', () => {
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', /blog\/how-to-build-business-growth-strategy-step-by-step\//);
     await expect(page.locator('link[rel="alternate"][hreflang="ar"]')).toHaveCount(0);
     await expect(page.locator('a.blog-language-link')).toHaveCount(0);
-    await expect(page.locator('a[aria-label="Switch to العربية"]')).toHaveAttribute('href', '/ar/blog/');
+    await expect(page.locator('[data-language-switch]')).toHaveAttribute('href', '/ar/blog/');
     await expect(page.locator('header nav[aria-label="Primary"] a[href="/blog/"]')).toHaveAttribute('aria-current', 'page');
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /index, follow/);
 

@@ -238,7 +238,7 @@ test.describe('Header navigation', () => {
 
       await expect(page.locator('#site-header .group')).toBeVisible();
       await expect(page.locator('#menu-toggle')).toBeVisible();
-      await expect(page.locator('#site-header a[href$="/ar/"]')).toBeVisible();
+      await expect(page.locator('#site-header [data-language-switch]')).toBeVisible();
     }
   });
 
@@ -251,5 +251,93 @@ test.describe('Header navigation', () => {
     await expect(blogLink).not.toHaveClass(/hidden/);
     await expect(page.locator('header nav[aria-label="Primary"] > a[href="/ar/blog/"]')).toHaveCount(1);
     await expect(page.locator('#dropdown-proof a[href="/ar/blog/"]')).toHaveCount(0);
+  });
+
+  test('language switcher is compact icon-only with accessible labels', async ({ page }) => {
+    const routes = [
+      { path: '/', href: '/ar/', label: 'Switch language to Arabic' },
+      { path: '/ar/', href: '/', label: 'Switch language to English' },
+      { path: '/blog/', href: '/ar/blog/', label: 'Switch language to Arabic' },
+      { path: '/ar/blog/', href: '/blog/', label: 'Switch language to English' },
+      { path: '/blog/how-to-build-business-growth-strategy-step-by-step/', href: '/ar/blog/', label: 'Switch language to Arabic' },
+      { path: '/blog/ai-brains-scalable-ecosystem-award/', href: '/ar/blog/ai-brains-award/', label: 'Switch language to Arabic' },
+      { path: '/ar/blog/ai-brains-award/', href: '/blog/ai-brains-scalable-ecosystem-award/', label: 'Switch language to English' },
+    ];
+
+    for (const route of routes) {
+      await page.goto(route.path);
+      const switcher = page.locator('#site-header [data-language-switch]');
+      await expect(switcher).toHaveCount(1);
+      await expect(switcher).toHaveAttribute('href', route.href);
+      await expect(switcher).toHaveAttribute('aria-label', route.label);
+      await expect(switcher.locator('svg')).toHaveCount(1);
+      await expect(switcher).not.toContainText('English');
+      await expect(switcher).not.toContainText('العربية');
+      await expect(switcher).not.toContainText('EN');
+      await expect(switcher).not.toContainText('AR');
+      await expect(switcher.locator('text=🇬🇧')).toHaveCount(0);
+      await expect(switcher.locator('text=🇸🇦')).toHaveCount(0);
+      const box = await switcher.boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.width).toBeGreaterThanOrEqual(34);
+      expect(box!.width).toBeLessThanOrEqual(40);
+      await switcher.focus();
+      await expect(switcher).toBeFocused();
+    }
+  });
+
+  test('desktop header spacing keeps Blog separated from Contact CTA', async ({ page }) => {
+    const viewports = [1280, 1366, 1440, 1600, 1920];
+
+    for (const width of viewports) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/');
+      const blog = page.locator('#site-header nav[aria-label="Primary"] a[href="/blog/"]');
+      const contact = page.locator('#site-header a.btn-navy').first();
+      await expect(blog).toBeVisible();
+      await expect(contact).toBeVisible();
+      const blogBox = await blog.boundingBox();
+      const contactBox = await contact.boundingBox();
+      expect(blogBox).not.toBeNull();
+      expect(contactBox).not.toBeNull();
+      expect(contactBox!.x - (blogBox!.x + blogBox!.width)).toBeGreaterThanOrEqual(10);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(1);
+    }
+
+    for (const width of viewports) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto('/ar/');
+      const blog = page.locator('#site-header nav[aria-label="Primary"] a[href="/ar/blog/"]');
+      const contact = page.locator('#site-header a.btn-navy').first();
+      const blogBox = await blog.boundingBox();
+      const contactBox = await contact.boundingBox();
+      expect(blogBox).not.toBeNull();
+      expect(contactBox).not.toBeNull();
+      const separation = Math.max(
+        contactBox!.x - (blogBox!.x + blogBox!.width),
+        blogBox!.x - (contactBox!.x + contactBox!.width),
+      );
+      expect(separation).toBeGreaterThanOrEqual(10);
+    }
+  });
+
+  test('shared brand mark replaces KM badges in header and footer', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#site-header [data-brand-mark]')).toHaveCount(1);
+    await expect(page.locator('#site-header')).not.toContainText(/^KM$/);
+    await expect(page.locator('#site-header')).toContainText('Dr. Khaled Al Mohammad');
+    await expect(page.locator('footer [data-brand-mark]')).toHaveCount(1);
+    await expect(page.locator('footer')).not.toContainText(/^KM$/);
+    await expect(page.locator('#home img[alt*="Dr. Khaled Al Mohammad"]')).toHaveCount(1);
+    await expect(page.locator('[data-executive-brand-mark]')).toHaveCount(1);
+  });
+
+  test('executive brand mark respects reduced motion without errors', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('/');
+    await expect(page.locator('[data-executive-brand-mark]')).toHaveCount(1);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
   });
 });

@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../scripts/siteConfig';
+import BrandMark from './brand/BrandMark.astro';
 
 interface Props {
   translations?: {
@@ -30,8 +31,8 @@ const {
 const lang = currentLang;
 const isAr = lang === 'ar';
 
-const otherLang = languageSwitcherHref || (isAr ? '/' : '/ar/');
-const otherLangLabel = isAr ? 'English' : 'العربية';
+const otherLang = languageSwitcherHref || (isAr ? (isBlog ? '/blog/' : '/') : (isBlog ? '/ar/blog/' : '/ar/'));
+const languageSwitchLabel = isAr ? 'Switch language to English' : 'Switch language to Arabic';
 const homeHref = isAr ? '/ar/' : '/';
 const sectionHref = (section: string) => {
   const id = section.includes('#') ? section.split('#').pop() : section.replace(/^#/, '');
@@ -76,11 +77,9 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
 ---
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-20">
-    <a href={homeHref} class="flex items-center gap-2 sm:gap-3 group min-w-0 flex-shrink">
-      <span class="w-9 h-9 sm:w-11 sm:h-11 rounded-full navy-grad flex items-center justify-center text-white font-bold text-base sm:text-lg transition-transform duration-500 group-hover:rotate-6 group-hover:scale-105 flex-shrink-0">
-        KM
-      </span>
+  <div class="max-w-[90rem] mx-auto px-5 sm:px-8 flex items-center justify-between h-20 gap-3">
+    <a href={homeHref} class="flex items-center gap-2 sm:gap-2.5 group min-w-0 flex-shrink max-w-[min(100%,18rem)] sm:max-w-none">
+      <BrandMark size="sm" interactive />
       <span class="leading-tight min-w-0">
         <span class="block font-serif text-base sm:text-lg font-bold text-navy tracking-wide">
           {isAr ? 'د. خالد المحمد' : siteConfig.name}
@@ -92,7 +91,7 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
     </a>
 
     {isAr ? (
-      <nav class="hidden xl:flex items-center gap-6 xl:gap-8 font-medium text-sm text-slate-700" aria-label="Primary">
+      <nav class="hidden xl:flex items-center gap-[1.15rem] 2xl:gap-7 font-medium text-sm text-slate-700 min-w-0 flex-1 justify-start ms-1 2xl:ms-2" aria-label="Primary">
         <a href={sectionHref('home')} data-active="false" class="nav-link hover:text-navy transition-colors">الرئيسية</a>
         <div class="nav-dropdown relative">
           <button type="button" class="nav-link hover:text-navy transition-colors flex items-center gap-1" aria-expanded="false" aria-controls="dropdown-expertise" data-dropdown="dropdown-expertise">
@@ -117,7 +116,7 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
         <a href={blogHref || '/ar/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" class="nav-link hover:text-navy transition-colors">{isAr ? 'المدونة' : 'Blog'}</a>
       </nav>
     ) : (
-      <nav class="hidden xl:flex items-center gap-6 xl:gap-8 font-medium text-sm text-slate-700" aria-label="Primary">
+      <nav class="hidden xl:flex items-center gap-[1.15rem] 2xl:gap-7 font-medium text-sm text-slate-700 min-w-0 flex-1 justify-start ms-1 2xl:ms-2" aria-label="Primary">
 {enSimpleLinks.map((link) => (
           <a href={sectionHref(link.href)} data-active="false" class="nav-link hover:text-navy transition-colors">{link.label}</a>
         ))}
@@ -169,17 +168,24 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
       </nav>
     )}
 
-    <div class="flex items-center gap-3">
-      <a href={contactHref} class="hidden sm:inline-flex btn-navy btn-sheen px-6 py-3 rounded-full text-sm font-semibold">
+    <div class="flex items-center gap-2 shrink-0 ps-2 xl:ps-4 2xl:ps-5 ms-auto xl:ms-0">
+      <a href={contactHref} class="hidden sm:inline-flex btn-navy btn-sheen px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap">
         {translations.contact || 'Contact Me for Advice'}
       </a>
       <a
         href={otherLang}
-        class="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-navy border border-navy/20 rounded-full px-3 py-2 sm:px-4 hover:bg-navy hover:text-white transition-colors"
-        aria-label={`Switch to ${otherLangLabel}`}
+        data-language-switch
+        class="lang-switch-btn inline-flex items-center justify-center rounded-full border border-navy/15 text-navy hover:border-[#c59c07]/45 hover:bg-navy/[0.04] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#c59c07] focus-visible:ring-offset-2 active:scale-[0.98]"
+        aria-label={languageSwitchLabel}
+        title={languageSwitchLabel}
       >
-        <span class="text-base leading-none">{isAr ? '🇬🇧' : '🇸🇦'}</span>
-        <span class="inline">{otherLangLabel}</span>
+        <svg class="lang-switch-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3c2.6 2.8 4 6 4 9s-1.4 6.2-4 9" />
+          <path d="M12 3c-2.6 2.8-4 6-4 9s1.4 6.2 4 9" />
+          <path d="M8 7.5h8M7.5 16.5h9" stroke-linecap="round" />
+        </svg>
       </a>
       <button
         id="menu-toggle"
@@ -194,6 +200,18 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
       </button>
     </div>
   </div>
+
+  <style>
+    .lang-switch-btn {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    .lang-switch-btn__icon {
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+  </style>
 
   <div
     id="mobile-menu"
