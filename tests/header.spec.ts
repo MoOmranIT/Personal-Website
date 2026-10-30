@@ -415,6 +415,44 @@ test.describe('Header navigation', () => {
     }
   });
 
+  test('mobile doctor name stays readable and the subtitle yields only on the narrowest phones', async ({ page }) => {
+    const widths = [320, 360, 375, 390, 412, 430];
+
+    for (const path of ['/', '/ar/']) {
+      const expectedName = path === '/ar/' ? 'د. خالد المحمد' : 'Dr. Khaled Al Mohammad';
+      for (const width of widths) {
+        await page.setViewportSize({ width, height: 700 });
+        await page.goto(path);
+        const metrics = await page.evaluate(() => {
+          const name = document.querySelector('[data-header-name]') as HTMLElement;
+          const subtitle = document.querySelector('[data-header-subtitle]') as HTMLElement;
+          const nameStyle = getComputedStyle(name);
+          const lang = document.querySelector('[data-language-switch]')!.getBoundingClientRect();
+          const menu = document.querySelector('#menu-toggle')!.getBoundingClientRect();
+          return {
+            text: name.textContent?.trim() ?? '',
+            font: parseFloat(nameStyle.fontSize),
+            whiteSpace: nameStyle.whiteSpace,
+            textOverflow: nameStyle.textOverflow,
+            nameOverflow: name.scrollWidth - name.clientWidth,
+            subtitleHidden: getComputedStyle(subtitle).display === 'none',
+            lang: Math.round(lang.width),
+            menu: Math.round(menu.width),
+          };
+        });
+
+        expect(metrics.text, `${path} ${width}`).toBe(expectedName);
+        expect(metrics.font, `${path} ${width}`).toBeGreaterThanOrEqual(12);
+        expect(metrics.whiteSpace, `${path} ${width}`).toBe('nowrap');
+        expect(metrics.textOverflow, `${path} ${width}`).not.toBe('ellipsis');
+        expect(metrics.nameOverflow, `${path} ${width}`).toBeLessThanOrEqual(1);
+        expect(metrics.lang, `${path} ${width}`).toBeGreaterThanOrEqual(36);
+        expect(metrics.menu, `${path} ${width}`).toBeGreaterThanOrEqual(40);
+        expect(metrics.subtitleHidden, `${path} ${width}`).toBe(width < 360);
+      }
+    }
+  });
+
   test('desktop Blog link keeps an editorial marker without changing its name', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto('/');
