@@ -77,14 +77,14 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
 ---
 
 <header id="site-header" class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md transition-all duration-300">
-  <div class="max-w-[90rem] mx-auto px-5 sm:px-8 flex items-center justify-between h-20 gap-3">
-    <a href={homeHref} class="flex items-center gap-2 sm:gap-2.5 group min-w-0 flex-shrink max-w-[min(100%,18rem)] sm:max-w-none">
+  <div data-header-bar class="header-bar max-w-[90rem] mx-auto px-5 sm:px-8 flex items-center h-20 gap-2 sm:gap-3">
+    <a href={homeHref} class="header-brand group" data-header-brand>
       <BrandMark size="sm" interactive />
-      <span class="leading-tight min-w-0">
-        <span class="block font-serif text-[0.95rem] sm:text-lg font-bold text-navy tracking-wide leading-[1.15]">
+      <span class="header-brand__copy">
+        <span class="header-brand__name font-serif" data-header-name>
           {isAr ? 'د. خالد المحمد' : siteConfig.name}
         </span>
-        <span class="block text-[9px] sm:text-[11px] uppercase tracking-[0.06em] sm:tracking-[.2em] text-slate-400 leading-tight">
+        <span class="header-brand__subtitle" data-header-subtitle>
           {isAr ? 'مستشار تطوير أعمال في دبي' : 'Strategic Business Development & Marketing Consultant'}
         </span>
       </span>
@@ -113,7 +113,7 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
             {arProofItems.map((link) => <a href={sectionHref(link.href)} data-active="false" class="nav-link block py-2.5 px-4 hover:text-navy hover:bg-navy/5 transition-colors">{link.label}</a>)}
           </div>
         </div>
-        <a href={blogHref || '/ar/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" class="nav-link hover:text-navy transition-colors">{isAr ? 'المدونة' : 'Blog'}</a>
+        <a href={blogHref || '/ar/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" data-nav-blog class="nav-link nav-link--blog hover:text-navy transition-colors">المدونة</a>
       </nav>
     ) : (
       <nav class="hidden xl:flex items-center gap-[1.15rem] 2xl:gap-7 font-medium text-sm text-slate-700 min-w-0 flex-1 justify-start ms-1 2xl:ms-2" aria-label="Primary">
@@ -164,11 +164,11 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
             ))}
           </div>
         </div>
-        <a href={blogHref || '/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" class="nav-link hover:text-navy transition-colors">Blog</a>
+        <a href={blogHref || '/blog/'} aria-current={isBlog ? 'page' : undefined} data-active="false" data-nav-blog class="nav-link nav-link--blog hover:text-navy transition-colors">Blog</a>
       </nav>
     )}
 
-    <div class="flex items-center gap-2 shrink-0 ps-2 xl:ps-4 2xl:ps-5 ms-auto xl:ms-0">
+    <div data-header-actions class="header-actions flex items-center gap-2 shrink-0 ps-2 xl:ps-4 2xl:ps-5">
       <a href={contactHref} class="hidden sm:inline-flex btn-navy btn-sheen px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap">
         {translations.contact || 'Contact Me for Advice'}
       </a>
@@ -202,6 +202,72 @@ const contactHref = isAr ? '/ar/#contact' : (isBlog ? '/#contact' : '#contact');
   </div>
 
   <style>
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-width: 0;
+      flex: 1 1 auto;
+      container-type: inline-size;
+    }
+
+    .header-brand__copy {
+      min-width: 0;
+    }
+
+    .header-brand__name {
+      display: block;
+      max-width: 100%;
+      white-space: nowrap;
+      color: var(--navy);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: 0;
+      font-size: clamp(0.65rem, 5.35cqi, 1.125rem);
+    }
+
+    .header-brand__subtitle {
+      display: block;
+      margin-top: 0.12rem;
+      color: #94a3b8;
+      font-size: 9px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      margin-inline-start: auto;
+    }
+
+    @media (min-width: 640px) {
+      .header-brand {
+        gap: 0.625rem;
+      }
+
+      .header-brand__subtitle {
+        font-size: 11px;
+        letter-spacing: 0.08em;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .header-brand {
+        flex: 0 1 auto;
+        container-type: normal;
+      }
+
+      .header-brand__name {
+        font-size: 1.125rem;
+        letter-spacing: 0.025em;
+      }
+
+      .header-brand__subtitle {
+        letter-spacing: 0.16em;
+      }
+    }
+
     .lang-switch-btn {
       width: 2.25rem;
       height: 2.25rem;

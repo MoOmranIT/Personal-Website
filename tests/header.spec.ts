@@ -300,7 +300,7 @@ test.describe('Header navigation', () => {
       const contactBox = await contact.boundingBox();
       expect(blogBox).not.toBeNull();
       expect(contactBox).not.toBeNull();
-      expect(contactBox!.x - (blogBox!.x + blogBox!.width)).toBeGreaterThanOrEqual(10);
+      expect(contactBox!.x - (blogBox!.x + blogBox!.width)).toBeGreaterThanOrEqual(12);
       const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
       expect(overflow).toBeLessThanOrEqual(1);
     }
@@ -318,7 +318,7 @@ test.describe('Header navigation', () => {
         contactBox!.x - (blogBox!.x + blogBox!.width),
         blogBox!.x - (contactBox!.x + contactBox!.width),
       );
-      expect(separation).toBeGreaterThanOrEqual(10);
+      expect(separation).toBeGreaterThanOrEqual(12);
     }
   });
 
@@ -347,5 +347,133 @@ test.describe('Header navigation', () => {
     await expect(page.locator('[data-executive-brand-mark]')).toHaveCount(1);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow).toBeLessThanOrEqual(1);
+  });
+
+  test('header controls stay inside the bar across the responsive matrix', async ({ page }) => {
+    const widths = [320, 375, 390, 430, 768, 1024, 1279, 1280, 1366, 1440, 1600, 1920];
+
+    for (const path of ['/', '/ar/']) {
+      for (const width of widths) {
+        await page.setViewportSize({ width, height: 900 });
+        await page.goto(path);
+        const metrics = await page.evaluate(() => {
+          const bar = document.querySelector('[data-header-bar]') as HTMLElement;
+          const barBox = bar.getBoundingClientRect();
+          const nodes = [
+            '[data-brand-mark]',
+            '[data-header-name]',
+            '[data-header-subtitle]',
+            '[data-language-switch]',
+            '#menu-toggle',
+            'nav[aria-label="Primary"]',
+            '[data-nav-blog]',
+            '#site-header a.btn-navy',
+          ].map((selector) => {
+            const el = document.querySelector(selector) as HTMLElement | null;
+            if (!el) return null;
+            const box = el.getBoundingClientRect();
+            const style = getComputedStyle(el);
+            const visible = style.display !== 'none' && style.visibility !== 'hidden' && box.width > 0 && box.height > 0;
+            return { selector, visible, box };
+          });
+          const brand = document.querySelector('[data-header-brand]')!.getBoundingClientRect();
+          const actions = document.querySelector('[data-header-actions]')!.getBoundingClientRect();
+          const name = document.querySelector('[data-header-name]') as HTMLElement;
+          return {
+            overflow: document.documentElement.scrollWidth - window.innerWidth,
+            bar: { top: barBox.top, bottom: barBox.bottom, left: barBox.left, right: barBox.right },
+            nodes,
+            overlap: !(brand.right <= actions.left + 0.5 || actions.right <= brand.left + 0.5),
+            nameOverflow: name.scrollWidth - name.clientWidth,
+          };
+        });
+
+        expect(metrics.overflow, `${path} ${width}`).toBeLessThanOrEqual(1);
+        expect(metrics.overlap, `${path} ${width}`).toBe(false);
+        expect(metrics.nameOverflow, `${path} ${width}`).toBeLessThanOrEqual(1);
+        expect(metrics.bar.left).toBeGreaterThanOrEqual(-1);
+        expect(metrics.bar.right).toBeLessThanOrEqual(width + 1);
+
+        for (const node of metrics.nodes) {
+          if (!node?.visible) continue;
+          expect(node.box.top, `${path} ${width} ${node.selector}`).toBeGreaterThanOrEqual(metrics.bar.top - 1);
+          expect(node.box.bottom, `${path} ${width} ${node.selector}`).toBeLessThanOrEqual(metrics.bar.bottom + 1);
+          expect(node.box.left, `${path} ${width} ${node.selector}`).toBeGreaterThanOrEqual(-1);
+          expect(node.box.right, `${path} ${width} ${node.selector}`).toBeLessThanOrEqual(width + 1);
+        }
+
+        const menu = metrics.nodes.find((node) => node?.selector === '#menu-toggle');
+        const nav = metrics.nodes.find((node) => node?.selector === 'nav[aria-label="Primary"]');
+        if (width < 1280) {
+          expect(menu?.visible, `${path} ${width} menu`).toBe(true);
+          expect(nav?.visible, `${path} ${width} nav`).toBe(false);
+        } else {
+          expect(menu?.visible, `${path} ${width} menu`).toBe(false);
+          expect(nav?.visible, `${path} ${width} nav`).toBe(true);
+        }
+      }
+    }
+  });
+
+  test('desktop Blog link keeps an editorial marker without changing its name', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    const blog = page.locator('#site-header [data-nav-blog]');
+    await expect(blog).toHaveClass(/nav-link--blog/);
+    await expect(blog).toHaveText('Blog');
+    expect((await blog.textContent())?.trim()).toBe('Blog');
+
+    await page.goto('/blog/');
+    await expect(page.locator('#site-header [data-nav-blog]')).toHaveAttribute('aria-current', 'page');
+
+    await page.goto('/ar/');
+    const arBlog = page.locator('#site-header [data-nav-blog]');
+    await expect(arBlog).toHaveClass(/nav-link--blog/);
+    await expect(arBlog).toHaveText('المدونة');
+    expect((await arBlog.textContent())?.trim()).toBe('المدونة');
+  });
+
+  test('shared hero portrait uses the responsive WebP set in both languages', async ({ page }) => {
+    for (const path of ['/', '/ar/']) {
+      await page.setViewportSize({ width: 1440, height: 900 });
+      const failed: string[] = [];
+      page.on('response', (response) => {
+        if (response.url().includes('/images/hero-dr-khaled') && response.status() >= 400) {
+          failed.push(`${response.status()} ${response.url()}`);
+        }
+      });
+      await page.goto(path);
+      const img = page.locator('#home img.hero-portrait');
+      await expect(img).toHaveCount(1);
+      await expect(img).toHaveAttribute('src', '/images/hero-dr-khaled-800.webp');
+      const srcset = await img.getAttribute('srcset');
+      expect(srcset).toContain('/images/hero-dr-khaled-480.webp 480w');
+      expect(srcset).toContain('/images/hero-dr-khaled.webp 1013w');
+      await expect(img).toHaveAttribute('sizes', '(min-width: 768px) 28rem, calc(100vw - 2.5rem)');
+      await expect(img).toHaveAttribute('width', '800');
+      await expect(img).toHaveAttribute('height', '809');
+      const decoded = await img.evaluate(async (element) => {
+        const image = element as HTMLImageElement;
+        const probe = new Image();
+        probe.src = image.currentSrc || image.src;
+        await probe.decode();
+        const frame = image.getBoundingClientRect();
+        return {
+          width: probe.naturalWidth,
+          height: probe.naturalHeight,
+          displayed: frame.width > 0 && frame.height > 0,
+          inside: frame.width <= window.innerWidth + 1,
+        };
+      });
+      expect([480, 640, 800, 960, 1013]).toContain(decoded.width);
+      expect(decoded.height).toBeGreaterThan(0);
+      expect(decoded.displayed).toBe(true);
+      expect(decoded.inside).toBe(true);
+      await expect(page.locator('[data-executive-brand-mark]')).toHaveCount(1);
+      await expect(page.locator('#home img.hero-portrait')).toBeVisible();
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+      expect(overflow).toBeLessThanOrEqual(1);
+      expect(failed).toEqual([]);
+    }
   });
 });

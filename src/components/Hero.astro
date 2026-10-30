@@ -1,7 +1,15 @@
 ---
 import ExecutiveBrandMark from './brand/ExecutiveBrandMark.astro';
 
-const heroImage = '/images/heroo.webp';
+const heroSrc = '/images/hero-dr-khaled-800.webp';
+const heroSrcSet = [
+  '/images/hero-dr-khaled-480.webp 480w',
+  '/images/hero-dr-khaled-640.webp 640w',
+  '/images/hero-dr-khaled-800.webp 800w',
+  '/images/hero-dr-khaled-960.webp 960w',
+  '/images/hero-dr-khaled.webp 1013w',
+].join(', ');
+const heroSizes = '(min-width: 768px) 28rem, calc(100vw - 2.5rem)';
 
 interface Props {
   translations?: {
@@ -25,6 +33,9 @@ const { translations = {}, lang = 'en' } = Astro.props;
 const t = translations.hero || {};
 const arrow = lang === 'ar' ? '←' : '→';
 const isAr = lang === 'ar';
+const heroAlt = isAr
+  ? 'د. خالد المحمد، مستشار أعمال في دبي'
+  : 'Dr. Khaled Al Mohammad, Business Consultant in Dubai';
 const headingClass = `reveal delay-2 font-bold text-navy mb-6 tracking-tight hero-heading${isAr ? ' hero-heading--ar text-[2.55rem] sm:text-5xl lg:text-[3.35rem]' : ' text-4xl sm:text-5xl lg:text-[3.6rem] leading-[1.05]'}`;
 ---
 
@@ -52,17 +63,21 @@ const headingClass = `reveal delay-2 font-bold text-navy mb-6 tracking-tight her
       <div class="w-full max-w-md mx-auto relative">
         <div aria-hidden="true" class="absolute -inset-3 rounded-[2.6rem] border border-[#c59c07]/25 pointer-events-none"></div>
         <div aria-hidden="true" class="absolute -inset-1 rounded-[2.5rem] bg-navy-soft/10 pointer-events-none"></div>
-        <img
-          src={heroImage}
-          alt="Dr. Khaled Al Mohammad, Business Consultant in Dubai"
-          width="800"
-          height="800"
-          class="relative rounded-[2.5rem] w-full max-w-md mx-auto aspect-square object-cover object-top shadow-2xl parallax-img"
-          loading="eager"
-          fetchPriority="high"
-          decoding="async"
-        />
-        <div class="absolute z-10 bottom-3 sm:bottom-4 inset-inline-end-2 sm:inset-inline-end-3 hidden sm:block pointer-events-none sm:pointer-events-auto">
+        <picture class="relative block w-full max-w-md mx-auto">
+          <img
+            src={heroSrc}
+            srcset={heroSrcSet}
+            sizes={heroSizes}
+            alt={heroAlt}
+            width="800"
+            height="809"
+            class="hero-portrait rounded-[2.5rem] w-full aspect-square object-cover object-top shadow-2xl parallax-img"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div class="hero-plaque hidden sm:block pointer-events-none sm:pointer-events-auto">
           <ExecutiveBrandMark />
         </div>
       </div>
@@ -115,6 +130,20 @@ const headingClass = `reveal delay-2 font-bold text-navy mb-6 tracking-tight her
   @media (min-width: 1024px) {
     .hero-heading--ar {
       line-height: 1.18;
+    }
+  }
+
+  .hero-plaque {
+    position: absolute;
+    z-index: 10;
+    bottom: 0.75rem;
+    inset-inline-end: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .hero-plaque {
+      bottom: 1rem;
+      inset-inline-end: 0.75rem;
     }
   }
 </style>

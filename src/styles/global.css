@@ -322,6 +322,23 @@
     color: var(--navy);
   }
 
+  .nav-link--blog {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .nav-link--blog::before {
+    content: '';
+    width: 4.5px;
+    height: 4.5px;
+    border-radius: 999px;
+    background: var(--gold);
+    flex: none;
+  }
+
   .scroll-progress {
     transform-origin: 0;
     background: var(--grad-gold);
